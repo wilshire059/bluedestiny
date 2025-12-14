@@ -125,13 +125,13 @@
 
 ---
 
-## 4. DATA ASSETS (PDA_) - 24 Total | 21 Migrated
+## 4. DATA ASSETS (PDA_) - 24 Total | 24 Migrated
 
 - [x] PDA_Action
 - [x] PDA_AI_Ability
 - [x] PDA_AnimData
 - [x] PDA_BaseCharacterInfo
-- [ ] PDA_Buff
+- [x] PDA_Buff
 - [x] PDA_Calculations
 - [x] PDA_CombatReactionAnimData
 - [x] PDA_CombatReactionAnimData_Player
@@ -147,9 +147,9 @@
 - [x] PDA_MainMenuData
 - [x] PDA_MovementSpeedData
 - [x] PDA_PoiseBreakAnimData
-- [ ] PDA_StatusEffect
-- [ ] PDA_Vendor
-- [ ] PDA_WeaponAbility
+- [x] PDA_StatusEffect
+- [x] PDA_Vendor
+- [x] PDA_WeaponAbility
 - [x] PDA_WeaponAnimset
 
 ---
