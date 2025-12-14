@@ -183,34 +183,34 @@
 ## 6. ACTORS/CLASSES (B_) - 109 Total | ~21 Migrated
 
 ### Core Actors:
-- [ ] B_AbilityEffectBase
+- [x] B_AbilityEffectBase
 - [x] B_Action
-- [ ] B_Action_Backstab
-- [ ] B_Action_ComboHeavy
-- [ ] B_Action_ComboLight_L
-- [ ] B_Action_ComboLight_R
-- [ ] B_Action_Crouch
-- [ ] B_Action_Dodge
-- [ ] B_Action_DrinkFlask_HP
-- [ ] B_Action_DualWieldAttack
-- [ ] B_Action_Execute
-- [ ] B_Action_GuardCancel
-- [ ] B_Action_GuardEnd
-- [ ] B_Action_GuardStart
-- [ ] B_Action_Jump
-- [ ] B_Action_JumpAttack
-- [ ] B_Action_PickupItemMontage
-- [ ] B_Action_ScrollWheel_LeftHand
-- [ ] B_Action_ScrollWheel_RightHand
-- [ ] B_Action_ScrollWheel_Tools
-- [ ] B_Action_SprintAttack
-- [ ] B_Action_StartSprinting
-- [ ] B_Action_StopSprinting
-- [ ] B_Action_ThrowProjectile
-- [ ] B_Action_TwoHandedStance_L
-- [ ] B_Action_TwoHandedStance_R
-- [ ] B_Action_UseEquippedTool
-- [ ] B_Action_WeaponAbility
+- [x] B_Action_Backstab
+- [x] B_Action_ComboHeavy
+- [x] B_Action_ComboLight_L
+- [x] B_Action_ComboLight_R
+- [x] B_Action_Crouch
+- [x] B_Action_Dodge
+- [x] B_Action_DrinkFlask_HP
+- [x] B_Action_DualWieldAttack
+- [x] B_Action_Execute
+- [x] B_Action_GuardCancel
+- [x] B_Action_GuardEnd
+- [x] B_Action_GuardStart
+- [x] B_Action_Jump
+- [x] B_Action_JumpAttack
+- [x] B_Action_PickupItemMontage
+- [x] B_Action_ScrollWheel_LeftHand
+- [x] B_Action_ScrollWheel_RightHand
+- [x] B_Action_ScrollWheel_Tools
+- [x] B_Action_SprintAttack
+- [x] B_Action_StartSprinting
+- [x] B_Action_StopSprinting
+- [x] B_Action_ThrowProjectile
+- [x] B_Action_TwoHandedStance_L
+- [x] B_Action_TwoHandedStance_R
+- [x] B_Action_UseEquippedTool
+- [x] B_Action_WeaponAbility
 
 ### Stats (Attack Power):
 - [ ] B_AP_Fire
@@ -297,19 +297,19 @@
 - [x] B_PickupItem
 
 ### Buffs/Effects:
-- [ ] B_Buff
-- [ ] B_Buff_AttackPower
-- [ ] B_StatusEffect
-- [ ] B_StatusEffect_Bleed
-- [ ] B_StatusEffect_Burn
-- [ ] B_StatusEffect_Corruption
-- [ ] B_StatusEffect_Frostbite
-- [ ] B_StatusEffect_Madness
-- [ ] B_StatusEffect_Plague
-- [ ] B_StatusEffect_Poison
-- [ ] B_StatusEffectArea
-- [ ] B_StatusEffectBuildup
-- [ ] B_StatusEffectOneShot
+- [x] B_Buff
+- [x] B_Buff_AttackPower
+- [x] B_StatusEffect
+- [x] B_StatusEffect_Bleed
+- [x] B_StatusEffect_Burn
+- [x] B_StatusEffect_Corruption
+- [x] B_StatusEffect_Frostbite
+- [x] B_StatusEffect_Madness
+- [x] B_StatusEffect_Plague
+- [x] B_StatusEffect_Poison
+- [x] B_StatusEffectArea
+- [x] B_StatusEffectBuildup
+- [x] B_StatusEffectOneShot
 
 ### Projectiles:
 - [ ] B_BaseProjectile
