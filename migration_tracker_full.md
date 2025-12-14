@@ -96,7 +96,7 @@
 
 ---
 
-## 3. INTERFACES (BPI_ / ALI_) - 20 Total | 15 Migrated
+## 3. INTERFACES (BPI_ / ALI_) - 20 Total | 20 Migrated
 
 ### Animation Layer Interfaces:
 - [x] ALI_LocomotionStates
@@ -109,7 +109,7 @@
 - [x] BPI_Damageable (C++ only - no JSON)
 - [x] BPI_DestructibleHelper
 - [x] BPI_Enemy
-- [ ] BPI_EnemyHealthbar
+- [x] BPI_EnemyHealthbar
 - [x] BPI_Executable
 - [x] BPI_ExecutionIndicator
 - [x] BPI_GameInstance
@@ -117,11 +117,11 @@
 - [x] BPI_Interactable
 - [x] BPI_Item
 - [x] BPI_MainMenu
-- [ ] BPI_NPC
+- [x] BPI_NPC
 - [x] BPI_Player
-- [ ] BPI_Projectile
-- [ ] BPI_RestingPoint
-- [ ] BPI_StatEntry
+- [x] BPI_Projectile
+- [x] BPI_RestingPoint
+- [x] BPI_StatEntry
 
 ---
 
