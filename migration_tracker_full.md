@@ -14,23 +14,23 @@
 
 ---
 
-## 1. ENUMS (E_) - 37 Total | 26 Migrated
+## 1. ENUMS (E_) - 37 Total | 37 Migrated
 
 - [x] E_ActionWeaponSlot
-- [ ] E_AI_BossEncounterType
+- [x] E_AI_BossEncounterType
 - [x] E_AI_Senses
-- [ ] E_AI_StateHandle
+- [x] E_AI_StateHandle
 - [x] E_AI_States
-- [ ] E_AI_StrafeLocations
+- [x] E_AI_StrafeLocations
 - [x] E_AttackPower
-- [ ] E_CalculationType
-- [ ] E_DebugWindowScaleType
+- [x] E_CalculationType
+- [x] E_DebugWindowScaleType
 - [x] E_Direction
-- [ ] E_DotProductThreshold
+- [x] E_DotProductThreshold
 - [x] E_EnclosureLevel
 - [x] E_ExecutionType
 - [x] E_FadeTypes
-- [ ] E_HitReactType
+- [x] E_HitReactType
 - [x] E_InputAction
 - [x] E_InventoryAmountedActionType
 - [x] E_InventorySlotType
@@ -38,9 +38,9 @@
 - [x] E_ItemSubCategory
 - [x] E_KeyType
 - [x] E_LadderClimbState
-- [ ] E_LightningMode
-- [ ] E_MontageSection
-- [ ] E_MovementType
+- [x] E_LightningMode
+- [x] E_MontageSection
+- [x] E_MovementType
 - [x] E_NpcState
 - [x] E_OverlayState
 - [x] E_Progress
@@ -51,8 +51,8 @@
 - [x] E_StatScaling
 - [x] E_TraceType
 - [x] E_ValueType
-- [ ] E_VendorType
-- [ ] E_WeaponAbilityHandle
+- [x] E_VendorType
+- [x] E_WeaponAbilityHandle
 - [x] E_WorldMeshStyle
 
 ---
