@@ -213,45 +213,45 @@
 - [x] B_Action_WeaponAbility
 
 ### Stats (Attack Power):
-- [ ] B_AP_Fire
-- [ ] B_AP_Frost
-- [ ] B_AP_Holy
-- [ ] B_AP_Lightning
-- [ ] B_AP_Magic
-- [ ] B_AP_Physical
+- [x] B_AP_Fire
+- [x] B_AP_Frost
+- [x] B_AP_Holy
+- [x] B_AP_Lightning
+- [x] B_AP_Magic
+- [x] B_AP_Physical
 
 ### Stats (Attributes):
-- [ ] B_Arcane
-- [ ] B_Dexterity
-- [ ] B_Discovery
-- [ ] B_Endurance
-- [ ] B_Faith
-- [ ] B_FP
-- [ ] B_HP
-- [ ] B_IncantationPower
-- [ ] B_Intelligence
-- [ ] B_Mind
-- [ ] B_Poise
-- [ ] B_Stamina
-- [ ] B_Stance
+- [x] B_Arcane
+- [x] B_Dexterity
+- [x] B_Discovery
+- [x] B_Endurance
+- [x] B_Faith
+- [x] B_FP
+- [x] B_HP
+- [x] B_IncantationPower
+- [x] B_Intelligence
+- [x] B_Mind
+- [x] B_Poise
+- [x] B_Stamina
+- [x] B_Stance
 - [x] B_Stat
-- [ ] B_Strength
-- [ ] B_Vigor
-- [ ] B_Weight
+- [x] B_Strength
+- [x] B_Vigor
+- [x] B_Weight
 
 ### Stats (Defense/Negation):
-- [ ] B_DN_Fire
-- [ ] B_DN_Frost
-- [ ] B_DN_Holy
-- [ ] B_DN_Lightning
-- [ ] B_DN_Magic
-- [ ] B_DN_Physical
+- [x] B_DN_Fire
+- [x] B_DN_Frost
+- [x] B_DN_Holy
+- [x] B_DN_Lightning
+- [x] B_DN_Magic
+- [x] B_DN_Physical
 
 ### Stats (Resistance):
-- [ ] B_Resistance_Focus
-- [ ] B_Resistance_Immunity
-- [ ] B_Resistance_Robustness
-- [ ] B_Resistance_Vitality
+- [x] B_Resistance_Focus
+- [x] B_Resistance_Immunity
+- [x] B_Resistance_Robustness
+- [x] B_Resistance_Vitality
 
 ### Characters:
 - [x] B_BaseCharacter
