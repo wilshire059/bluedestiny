@@ -257,13 +257,13 @@
 - [x] B_BaseCharacter
 - [x] B_Soulslike_Character
 - [x] B_Soulslike_Enemy
-- [ ] B_Soulslike_Boss
-- [ ] B_Soulslike_Boss_Malgareth
-- [ ] B_Soulslike_Enemy_Guard
-- [ ] B_Soulslike_Enemy_Showcase
-- [ ] B_Soulslike_NPC
-- [ ] B_Soulslike_NPC_ShowcaseGuide
-- [ ] B_Soulslike_NPC_ShowcaseVendor
+- [x] B_Soulslike_Boss
+- [x] B_Soulslike_Boss_Malgareth
+- [x] B_Soulslike_Enemy_Guard
+- [x] B_Soulslike_Enemy_Showcase
+- [x] B_Soulslike_NPC
+- [x] B_Soulslike_NPC_ShowcaseGuide
+- [x] B_Soulslike_NPC_ShowcaseVendor
 
 ### Interactables:
 - [x] B_Interactable
@@ -272,7 +272,7 @@
 - [x] B_DeathTrigger
 - [x] B_Destructible
 - [x] B_Door
-- [ ] B_Door_Demo
+- [x] B_Door_Demo
 - [x] B_Ladder
 - [x] B_LocationActor
 - [x] B_PatrolPath
@@ -282,18 +282,18 @@
 ### Items:
 - [x] B_Item
 - [x] B_Item_AI_Weapon
-- [ ] B_Item_AI_Weapon_BossMace
-- [ ] B_Item_AI_Weapon_Greatsword
-- [ ] B_Item_AI_Weapon_Sword
+- [x] B_Item_AI_Weapon_BossMace
+- [x] B_Item_AI_Weapon_Greatsword
+- [x] B_Item_AI_Weapon_Sword
 - [x] B_Item_Lantern
 - [x] B_Weapon (B_Item_Weapon)
-- [ ] B_Item_Weapon_BossMace
-- [ ] B_Item_Weapon_Greatsword
-- [ ] B_Item_Weapon_Katana
-- [ ] B_Item_Weapon_PoisonSword
+- [x] B_Item_Weapon_BossMace
+- [x] B_Item_Weapon_Greatsword
+- [x] B_Item_Weapon_Katana
+- [x] B_Item_Weapon_PoisonSword
 - [x] B_Item_Shield (B_Item_Weapon_Shield)
-- [ ] B_Item_Weapon_SwordExample01
-- [ ] B_Item_Weapon_SwordExample02
+- [x] B_Item_Weapon_SwordExample01
+- [x] B_Item_Weapon_SwordExample02
 - [x] B_PickupItem
 
 ### Buffs/Effects:
@@ -312,20 +312,20 @@
 - [x] B_StatusEffectOneShot
 
 ### Projectiles:
-- [ ] B_BaseProjectile
-- [ ] B_Projectile_Boss_Fireball
-- [ ] B_Projectile_ThrowingKnife
+- [x] B_BaseProjectile
+- [x] B_Projectile_Boss_Fireball
+- [x] B_Projectile_ThrowingKnife
 
 ### Misc Actors:
-- [ ] B_Chaos_ForceField
-- [ ] B_DeathCurrency
-- [ ] B_Demo_TimeSlider
-- [ ] B_DemoDisplay
-- [ ] B_DemoRoom
-- [ ] B_SequenceActor
-- [ ] B_ShowcaseEnemy_ExitCombat
-- [ ] B_ShowcaseEnemy_StatDisplay
-- [ ] B_SkyManager
+- [x] B_Chaos_ForceField
+- [x] B_DeathCurrency
+- [x] B_Demo_TimeSlider
+- [x] B_DemoDisplay
+- [x] B_DemoRoom
+- [x] B_SequenceActor
+- [x] B_ShowcaseEnemy_ExitCombat
+- [x] B_ShowcaseEnemy_StatDisplay
+- [x] B_SkyManager
 
 ---
 
