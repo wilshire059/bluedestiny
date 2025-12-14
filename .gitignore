@@ -1,0 +1,133 @@
+# Unreal Engine 5 .gitignore
+# Best practices for UE5 projects
+
+# =============================================================================
+# Compiled/Generated Folders
+# =============================================================================
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+
+# =============================================================================
+# Build Artifacts
+# =============================================================================
+Build/
+*.sln
+*.suo
+*.opensdf
+*.sdf
+*.VC.db
+*.VC.opendb
+
+# =============================================================================
+# Visual Studio
+# =============================================================================
+.vs/
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+
+# =============================================================================
+# JetBrains IDEs (Rider)
+# =============================================================================
+.idea/
+*.iml
+
+# =============================================================================
+# VS Code
+# =============================================================================
+.vscode/
+
+# =============================================================================
+# macOS
+# =============================================================================
+.DS_Store
+*.DS_Store
+
+# =============================================================================
+# Windows
+# =============================================================================
+Thumbs.db
+Desktop.ini
+
+# =============================================================================
+# Linux
+# =============================================================================
+*~
+
+# =============================================================================
+# Build Logs (keep some for reference, ignore most)
+# =============================================================================
+build_log_*.txt
+build_output.txt
+build_verify.txt
+ubt_log.txt
+
+# =============================================================================
+# Python Cache
+# =============================================================================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+
+# =============================================================================
+# Temporary Files
+# =============================================================================
+*.tmp
+*.temp
+*.swp
+*.bak
+*.log
+
+# =============================================================================
+# Archive/Duplicate folders (project-specific)
+# =============================================================================
+_Archive_Duplicates/
+ManualConversion_Staging/
+
+# =============================================================================
+# Analysis/Debug outputs (project-specific)
+# =============================================================================
+analysis_output.json
+enhanced_analysis.json
+duplicates_report.txt
+current_duplicates.txt
+internal_dupes.txt
+validation_report.txt
+export_comparison.txt
+export_comparison_result.txt
+temp_file_list.txt
+temp_file_list_utf8.txt
+
+# =============================================================================
+# KEEP THESE (Important for migration tracking)
+# =============================================================================
+# !CLAUDE.md
+# !migration_tracker_full.md
+# !migration_tracker_backup.md
+# !task.md
+# !walkthrough.md
+# !verification_findings.md
+
+# =============================================================================
+# Plugin-specific
+# =============================================================================
+# Keep NodeToCode exports (they are the source of truth)
+# !Plugins/NodeToCode/ExportedBlueprints/
+
+# =============================================================================
+# Content - Binary Assets (EXCLUDED - 2.6GB)
+# =============================================================================
+# Content folder is excluded to keep repo lightweight.
+# Blueprint source is preserved in Plugins/NodeToCode/ExportedBlueprints/
+Content/
+
+# Note: If Content tracking is needed later, set up Git LFS:
+# git lfs install
+# git lfs track "*.uasset"
+# git lfs track "*.umap"

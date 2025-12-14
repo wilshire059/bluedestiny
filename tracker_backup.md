@@ -1,0 +1,473 @@
+# Manual Blueprint to C++ Conversion Tracker
+
+## Process Checklist
+For each file, the following steps must be taken:
+1.  **Analyze JSON**: Read the source JSON file to understand properties, functions, and logic.
+2.  **Check Dependencies**: Identify any structs, enums, or classes this file depends on.
+3.  **UE 5.7 Compatibility**: Ensure code uses modern UE 5.7 standards (e.g., `TObjectPtr`, `IncludeOrderVersion`).
+4.  **Logic Matching**: Manually implement the logic from the EventGraph/FunctionGraphs.
+5.  **Verify**: Visual check of the generated code.
+6.  **Self-Validation**: Validate created files against JSON and check dependencies (e.g. missing variables, incorrect types, missing includes).
+
+## File Status
+
+### Enums
+- [x] `E_AI_BossEncounterType`
+- [x] `E_AI_Senses`
+- [x] `E_AI_StateHandle`
+- [x] `E_AI_States`
+- [x] `E_AI_StrafeLocations`
+- [x] `E_ActionWeaponSlot`
+- [x] `E_AttackPower`
+- [x] `E_CalculationType`
+- [x] `E_DebugWindowScaleType`
+- [x] `E_Direction`
+- [x] `E_DotProductThreshold`
+- [x] `E_EnclosureLevel`
+- [x] `E_ExecutionType`
+- [x] `E_FadeTypes`
+- [x] `E_HitReactType`
+- [x] `E_InputAction`
+- [x] `E_InventoryAmountedActionType`
+- [x] `E_InventorySlotType`
+- [x] `E_ItemCategory`
+- [x] `E_ItemSubCategory`
+- [x] `E_KeyType`
+- [x] `E_LadderClimbState`
+- [x] `E_LightningMode`
+- [x] `E_MontageSection`
+- [x] `E_MovementType`
+- [x] `E_NpcState`
+- [x] `E_OverlayState`
+- [x] `E_Progress`
+- [x] `E_SaveBehavior`
+- [x] `E_SettingCategory`
+- [x] `E_SettingEntry`
+- [x] `E_StatCategory`
+- [x] `E_StatScaling`
+- [x] `E_TraceType`
+- [x] `E_ValueType`
+- [x] `E_VendorType`
+- [x] `E_WeaponAbilityHandle`
+- [x] `E_WorldMeshStyle`
+
+### Structs
+- [x] `FAiAttackEntry`
+- [x] `FAnimationData`
+- [x] `FEquipmentStat`
+- [x] `FExecutionAnimInfo`
+
+### Interfaces
+- [x] `BPI_AIC`
+- [x] `BPI_BossDoor`
+- [x] `BPI_Controller`
+- [x] `BPI_DestructibleHelper`
+- [x] `BPI_Enemy`
+- [x] `BPI_EnemyHealthbar`
+- [x] `BPI_Executable`
+- [x] `BPI_ExecutionIndicator`
+- [x] `BPI_GameInstance`
+- [x] `BPI_GenericCharacter`
+- [x] `BPI_Interactable`
+- [x] `BPI_Item`
+- [x] `BPI_MainMenu`
+- [x] `BPI_NPC`
+- [x] `BPI_Player`
+- [x] `BPI_Projectile`
+- [x] `BPI_RestingPoint`
+- [x] `BPI_StatEntry`
+
+### Actor Components
+- [x] `AC_AI_BehaviorManager`
+- [x] `AC_AI_Boss`
+- [x] `AC_AI_CombatManager`
+- [x] `AC_AI_InteractionManager`
+- [x] `AC_ActionManager`
+- [x] `AC_BuffManager`
+- [x] `AC_CollisionManager`
+- [x] `AC_CombatManager`
+- [x] `AC_DebugCentral`
+- [x] `AC_EquipmentManager`
+- [x] `AC_InputBuffer`
+- [x] `AC_InteractionManager`
+- [x] `AC_InventoryManager`
+- [x] `AC_LadderManager`
+- [x] `AC_LootDropManager`
+- [x] `AC_ProgressManager`
+- [x] `AC_RadarElement`
+- [x] `AC_RadarManager`
+- [x] `AC_SaveLoadManager`
+- [x] `AC_StatManager`
+- [x] `AC_StatusEffectManager`
+
+### Core Classes
+- [x] `B_Soulslike_Character`
+- [x] `GS_SoulslikeFramework`
+- [x] `PC_Menu_SoulslikeFramework`
+- [x] `PC_SoulslikeFramework`
+- [x] `PS_SoulslikeFramework`
+
+### Animation Blueprints
+- [x] `ABP_Manny_PostProcess`
+- [x] `ABP_Quinn_PostProcess`
+- [ ] `ABP_SoulslikeBossNew`
+- [ ] `ABP_SoulslikeCharacter_Additive`
+- [ ] `ABP_SoulslikeEnemy`
+- [x] `ABP_SoulslikeNPC`
+
+### Game Modes
+- [x] `GM_Menu_SoulslikeFramework`
+- [x] `GM_SoulslikeFramework`
+
+### Widgets
+- [x] `W_AbilityDisplay`
+- [x] `W_BigScreenMessage`
+- [x] `W_Boss_Healthbar`
+- [x] `W_BrowserFilterEntry`
+- [x] `W_Browser_Action`
+- [x] `W_Browser_Action_Tooltip`
+- [x] `W_Browser_Animset`
+- [x] `W_Browser_AnimsetTooltip`
+- [x] `W_Browser_Animset_OwnerEntry`
+- [x] `W_Browser_Categories`
+- [x] `W_Browser_CategoryEntry`
+- [x] `W_Browser_Item`
+- [x] `W_Browser_StatusEffect`
+- [x] `W_Browser_StatusEffect_Tooltip`
+- [x] `W_Browser_Tooltip`
+- [x] `W_Browser_WeaponAbility`
+- [x] `W_Browser_WeaponAbility_Tooltip`
+- [x] `W_Buff`
+- [x] `W_CategoryEntry`
+- [x] `W_CharacterSelection`
+- [x] `W_CharacterSelectionCard`
+- [x] `W_CharacterSelection_StatEntry`
+- [x] `W_Crafting`
+- [x] `W_CraftingAction`
+- [x] `W_CraftingEntry`
+- [x] `W_CraftingEntrySimple`
+- [x] `W_CreditEntry`
+- [x] `W_CreditEntry_Extra`
+- [x] `W_CreditEntry_Sub`
+- [x] `W_CreditEntry_Sub_NameEntry`
+- [x] `W_Credits`
+- [x] `W_CurrencyContainer`
+- [x] `W_CurrencyEntry`
+- [x] `W_DebugWindow`
+- [x] `W_Debug_ComponentSlot`
+- [x] `W_Debug_ComponentTooltip`
+- [x] `W_Debug_HUD`
+- [x] `W_Dialog`
+- [x] `W_EnemyHealthbar`
+- [x] `W_Equipment`
+- [x] `W_EquipmentSlot`
+- [x] `W_Equipment_Item_AttackPower`
+- [x] `W_Equipment_Item_DamageNegation`
+- [x] `W_Equipment_Item_ItemEffect`
+- [x] `W_Equipment_Item_OnUseEffect`
+- [x] `W_Equipment_Item_RequiredStats`
+- [x] `W_Equipment_Item_Resistance`
+- [x] `W_Equipment_Item_StatScaling`
+- [x] `W_Equipment_Item_StatsGranted`
+- [x] `W_Error`
+- [x] `W_FirstLootNotification`
+- [x] `W_GameMenu`
+- [x] `W_GameMenu_Button`
+- [x] `W_GenericButton`
+- [x] `W_GenericError`
+- [x] `W_HUD`
+- [x] `W_Interaction`
+- [x] `W_InteractionError`
+- [x] `W_Inventory`
+- [x] `W_InventoryAction`
+- [x] `W_InventoryActionAmount`
+- [x] `W_InventorySlot`
+- [x] `W_Inventory_ActionButton`
+- [x] `W_Inventory_CategoryEntry`
+- [x] `W_ItemInfoEntry`
+- [x] `W_ItemInfoEntry_RequiredStats`
+- [x] `W_ItemInfoEntry_StatScaling`
+- [x] `W_ItemWheelSlot`
+- [x] `W_ItemWheel_NextSlot`
+- [x] `W_LevelCurrencyBlock_LevelUp`
+- [x] `W_LevelEntry`
+- [x] `W_LevelUp`
+- [x] `W_LevelUpCost`
+- [x] `W_LoadGame`
+- [x] `W_LoadGame_Entry`
+- [x] `W_LoadingScreen`
+- [x] `W_LootNotification`
+- [x] `W_MainMenu`
+- [x] `W_MainMenu_Button`
+- [x] `W_NPC_Window`
+- [x] `W_NPC_Window_Vendor`
+- [x] `W_Navigable`
+- [x] `W_Navigable_InputReader`
+- [x] `W_Radar`
+- [x] `W_Radar_Cardinal`
+- [x] `W_Radar_TrackedElement`
+- [x] `W_Resources`
+- [x] `W_RestMenu`
+- [x] `W_RestMenu_Button`
+- [x] `W_RestMenu_TimeEntry`
+- [x] `W_Settings`
+- [x] `W_Settings_CategoryEntry`
+- [x] `W_Settings_CenteredText`
+- [x] `W_Settings_ControlEntry`
+- [x] `W_Settings_ControlsDisplay`
+- [x] `W_Settings_Entry`
+- [x] `W_Settings_InputKeySelector`
+- [x] `W_Settings_KeyMapping`
+- [x] `W_Settings_KeyMapping_Category`
+- [x] `W_Settings_KeyMapping_Entry`
+- [x] `W_Settings_PlayerCard`
+- [x] `W_Settings_QuitConfirmation`
+- [x] `W_SkipCinematic`
+- [x] `W_StatBlock`
+- [x] `W_StatBlock_LevelUp`
+- [x] `W_StatEntry`
+- [x] `W_StatEntry_LevelUp`
+- [x] `W_StatEntry_StatName`
+- [x] `W_StatEntry_Status`
+- [x] `W_Status`
+- [x] `W_StatusEffectBar`
+- [x] `W_StatusEffectNotification`
+- [x] `W_Status_LevelCurrencyBlock`
+- [x] `W_Status_StatBlock`
+- [x] `W_TargetExecutionIndicator`
+- [x] `W_TargetLock`
+- [x] `W_TimePass`
+- [x] `W_Utility_Asset`
+- [x] `W_Utility_AssetTooltip`
+- [x] `W_Utility_Component`
+- [x] `W_VendorAction`
+- [x] `W_VendorSlot`
+
+### Blueprints
+- [ ] `B_AP_Fire`
+- [ ] `B_AP_Frost`
+- [ ] `B_AP_Holy`
+- [ ] `B_AP_Lightning`
+- [ ] `B_AP_Magic`
+- [ ] `B_AP_Physical`
+- [ ] `B_AbilityEffectBase`
+- [ ] `B_Action`
+- [ ] `B_Action_Backstab`
+- [ ] `B_Action_ComboHeavy`
+- [ ] `B_Action_ComboLight_L`
+- [ ] `B_Action_ComboLight_R`
+- [ ] `B_Action_Crouch`
+- [ ] `B_Action_Dodge`
+- [ ] `B_Action_DrinkFlask_HP`
+- [ ] `B_Action_DualWieldAttack`
+- [ ] `B_Action_Execute`
+- [ ] `B_Action_GuardCancel`
+- [ ] `B_Action_GuardEnd`
+- [ ] `B_Action_GuardStart`
+- [ ] `B_Action_Jump`
+- [ ] `B_Action_JumpAttack`
+- [ ] `B_Action_PickupItemMontage`
+- [ ] `B_Action_ScrollWheel_LeftHand`
+- [ ] `B_Action_ScrollWheel_RightHand`
+- [ ] `B_Action_ScrollWheel_Tools`
+- [ ] `B_Action_SprintAttack`
+- [ ] `B_Action_StartSprinting`
+- [ ] `B_Action_StopSprinting`
+- [ ] `B_Action_ThrowProjectile`
+- [ ] `B_Action_TwoHandedStance_L`
+- [ ] `B_Action_TwoHandedStance_R`
+- [ ] `B_Action_UseEquippedTool`
+- [ ] `B_Action_WeaponAbility`
+- [ ] `B_Arcane`
+- [ ] `B_BaseCharacter`
+- [ ] `B_BaseProjectile`
+- [ ] `B_BossDoor`
+- [ ] `B_Buff`
+- [ ] `B_Buff_AttackPower`
+- [ ] `B_Chaos_ForceField`
+- [ ] `B_Container`
+- [ ] `B_DN_Fire`
+- [ ] `B_DN_Frost`
+- [ ] `B_DN_Holy`
+- [ ] `B_DN_Lightning`
+- [ ] `B_DN_Magic`
+- [ ] `B_DN_Physical`
+- [ ] `B_DeathCurrency`
+- [ ] `B_DeathTrigger`
+- [ ] `B_DemoDisplay`
+- [ ] `B_DemoRoom`
+- [ ] `B_Demo_TimeSlider`
+- [ ] `B_Destructible`
+- [ ] `B_Dexterity`
+- [ ] `B_Discovery`
+- [ ] `B_Door`
+- [ ] `B_Door_Demo`
+- [ ] `B_Endurance`
+- [ ] `B_FP`
+- [ ] `B_Faith`
+- [ ] `B_HP`
+- [ ] `B_IncantationPower`
+- [ ] `B_Intelligence`
+- [ ] `B_Interactable`
+- [ ] `B_Item`
+- [x] `B_Item_AI_Weapon`
+- [x] `B_Item_AI_Weapon_BossMace`
+- [x] `B_Item_AI_Weapon_Greatsword`
+- [x] `B_Item_AI_Weapon_Sword`
+- [x] `B_Item_Lantern`
+- [x] `B_Item_Weapon`
+- [x] `B_Item_Weapon_BossMace`
+- [x] `B_Item_Weapon_Greatsword`
+- [x] `B_Item_Weapon_Katana`
+- [x] `B_Item_Weapon_PoisonSword`
+- [x] `B_Item_Weapon_Shield`
+- [x] `B_Item_Weapon_SwordExample01`
+- [x] `B_Item_Weapon_SwordExample02`
+- [x] `B_Ladder`
+- [x] `B_LocationActor`
+- [x] `B_Mind`
+- [x] `B_PatrolPath`
+- [x] `B_PickupItem`
+- [x] `B_Poise`
+- [ ] `B_Projectile_Boss_Fireball`
+- [ ] `B_Projectile_ThrowingKnife`
+- [x] `B_Resistance_Focus`
+- [x] `B_Resistance_Immunity`
+- [x] `B_Resistance_Robustness`
+- [x] `B_Resistance_Vitality`
+- [x] `B_RestingPoint`
+- [x] `B_SequenceActor`
+- [x] `B_ShowcaseEnemy_ExitCombat`
+- [x] `B_ShowcaseEnemy_StatDisplay`
+- [x] `B_SkyManager`
+- [x] `B_Soulslike_Boss`
+- [x] `B_Soulslike_Boss_Malgareth`
+- [x] `B_Soulslike_Enemy`
+- [ ] `B_Soulslike_Enemy_Guard`
+- [ ] `B_Soulslike_Enemy_Showcase`
+- [x] `B_Soulslike_NPC`
+- [x] `B_Soulslike_NPC_ShowcaseGuide`
+- [ ] `B_Soulslike_NPC_ShowcaseVendor`
+- [ ] `B_Stamina`
+- [ ] `B_Stance`
+- [ ] `B_Stat`
+- [ ] `B_StatusEffect`
+- [ ] `B_StatusEffectArea`
+- [ ] `B_StatusEffectBuildup`
+- [ ] `B_StatusEffectOneShot`
+- [ ] `B_StatusEffect_Bleed`
+- [ ] `B_StatusEffect_Burn`
+- [ ] `B_StatusEffect_Corruption`
+- [ ] `B_StatusEffect_Frostbite`
+- [ ] `B_StatusEffect_Madness`
+- [ ] `B_StatusEffect_Plague`
+- [ ] `B_StatusEffect_Poison`
+- [ ] `B_Strength`
+- [ ] `B_Torch`
+- [ ] `B_Vigor`
+- [ ] `B_Weight`
+
+### Function Libraries
+- [ ] `BFL_Helper`
+
+### Data Assets
+- [ ] `PDA_AI_Ability`
+- [ ] `PDA_Action`
+- [ ] `PDA_AnimData`
+- [ ] `PDA_BaseCharacterInfo`
+- [ ] `PDA_Buff`
+- [ ] `PDA_Calculations`
+- [ ] `PDA_CombatReactionAnimData`
+- [ ] `PDA_CombatReactionAnimData_Player`
+- [ ] `PDA_Credits`
+- [ ] `PDA_CustomSettings`
+- [ ] `PDA_DayNight`
+- [ ] `PDA_DefaultMeshData`
+- [x] `PDA_Dialog`
+- [ ] `PDA_ExecutionAnimData`
+- [ ] `PDA_Item`
+- [ ] `PDA_LadderAnimData`
+- [ ] `PDA_LoadingScreens`
+- [ ] `PDA_MainMenuData`
+- [ ] `PDA_MovementSpeedData`
+- [ ] `PDA_PoiseBreakAnimData`
+- [ ] `PDA_StatusEffect`
+- [ ] `PDA_Vendor`
+- [ ] `PDA_WeaponAbility`
+- [ ] `PDA_WeaponAnimset`
+
+### Uncategorized
+- [ ] `AIC_SoulslikeFramework`
+- [ ] `ALI_LocomotionStates`
+- [ ] `ALI_OverlayStates`
+- [x] `ANS_AI_FistTrace`
+- [x] `ANS_AI_RotateTowardsTarget`
+- [x] `ANS_AI_Trail`
+- [x] `ANS_AI_WeaponTrace`
+- [x] `ANS_FistTrace`
+- [x] `ANS_HyperArmor`
+- [x] `ANS_InputBuffer`
+- [x] `ANS_InvincibilityFrame`
+- [x] `ANS_RegisterAttackSequence`
+- [x] `ANS_ToggleChaosField`
+- [x] `ANS_Trail`
+- [x] `ANS_WeaponTrace`
+- [x] `AN_AI_SpawnProjectile`
+- [x] `AN_AdjustStat`
+- [x] `AN_AoeDamage`
+- [x] `AN_CameraShake`
+- [x] `AN_FootstepTrace`
+- [x] `AN_InterruptMontage`
+- [x] `AN_LaunchField`
+- [x] `AN_PlayCameraSequence`
+- [x] `AN_SetAiState`
+- [x] `AN_SetMovementMode`
+- [x] `AN_SpawnProjectile`
+- [x] `AN_TryGuard`
+- [x] `AN_WorldCameraShake`
+- [ ] `BML_HelperMacros`
+- [ ] `BML_StructConversion`
+- [ ] `BTS_ChaseBounds`
+- [ ] `BTS_DistanceCheck`
+- [ ] `BTS_IsTargetDead`
+- [ ] `BTS_SetMovementModeBasedOnDistance`
+- [ ] `BTS_TryGetAbility`
+- [ ] `BTT_ClearKey`
+- [ ] `BTT_GetCurrentLocation`
+- [ ] `BTT_GetRandomPoint`
+- [ ] `BTT_GetRandomPointNearStartPosition`
+- [ ] `BTT_GetStrafePointAroundTarget`
+- [ ] `BTT_PatrolPath`
+- [ ] `BTT_SetKey`
+- [ ] `BTT_SetMovementMode`
+- [ ] `BTT_SimpleMoveTo`
+- [ ] `BTT_SwitchState`
+- [ ] `BTT_SwitchToPreviousState`
+- [ ] `BTT_ToggleFocus`
+- [ ] `BTT_TryExecuteAbility`
+- [ ] `CR_Mannequin_BasicFootIK`
+- [ ] `CR_Mannequin_Procedural`
+- [ ] `CR_SoulslikeFramework`
+- [ ] `CS_Boss_Roar`
+- [ ] `CS_Guard`
+- [ ] `CS_JumpHit`
+- [ ] `CS_Seq_Handheld`
+- [ ] `CS_StrongHit`
+- [ ] `CS_SubtleHit`
+- [ ] `EUO_Hook`
+- [ ] `EUW_AI_AbilityCreator`
+- [ ] `EUW_ActionBrowser`
+- [ ] `EUW_ActionCreator`
+- [ ] `EUW_EnemyViewer`
+- [ ] `EUW_ItemBrowser`
+- [ ] `EUW_ItemCreator`
+- [ ] `EUW_Setup`
+- [ ] `EUW_StatusEffectBrowser`
+- [ ] `EUW_StatusEffectCreator`
+- [ ] `EUW_WeaponAbilityBrowser`
+- [ ] `EUW_WeaponAbilityCreator`
+- [ ] `EUW_WeaponAnimsetBrowser`
+- [ ] `EUW_WeaponAnimsetCreator`
+- [ ] `GI_SoulslikeFramework`
+- [ ] `SG_SaveSlots`
+- [ ] `SG_SoulslikeFramework`

@@ -1,0 +1,55 @@
+# Unreal Engine .gitattributes
+# Auto detect text files and perform LF normalization
+
+* text=auto
+
+# Source code - ensure LF line endings
+*.cpp text eol=lf
+*.h text eol=lf
+*.c text eol=lf
+*.cs text eol=lf
+*.py text eol=lf
+
+# Config files
+*.ini text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.xml text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+
+# Build files
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.sh text eol=lf
+
+# Unreal Engine binary files
+*.uasset binary
+*.umap binary
+*.upk binary
+*.udk binary
+
+# Other binaries
+*.exe binary
+*.dll binary
+*.pdb binary
+*.lib binary
+*.a binary
+*.so binary
+*.dylib binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.bmp binary
+*.tga binary
+*.dds binary
+*.wav binary
+*.mp3 binary
+*.ogg binary
+*.fbx binary
+*.obj binary
+*.ttf binary
+*.otf binary
