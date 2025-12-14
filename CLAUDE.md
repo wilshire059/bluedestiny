@@ -51,6 +51,46 @@ The user specifically requested that you creating a `manual_update_guide.md`.
 
 - **Output (C++)**: `c:\scripts\BlueDestiny\Source\SLF_5_7\Converted`
 
+## Automated Migration Workflow (MANDATORY)
+
+**CRITICAL RULES:**
+1. **NEVER truncate `migration_tracker_full.md`** - Only update checkboxes `[ ]` → `[x]`
+2. **Always use BOTH data sources** when converting
+3. **Commit after each successful migration**
+
+### Per-Item Migration Steps:
+
+```
+1. READ SOURCE FILES
+   - NodeToCode JSON: Plugins/NodeToCode/ExportedBlueprints/{Name}.json
+   - Bulk Export: Saved/BlueprintComponentExports/*{Name}*.json (for defaults)
+
+2. CONVERT TO C++
+   - Create .h and .cpp in Source/SLF_5_7/Converted/{Category}/
+   - Target: Unreal Engine 5.7
+   - Cross-reference defaults from Bulk Export
+
+3. COMPILE
+   - Run: CompileBatch18.bat (single-threaded, avoids OOM)
+   - Fix any errors before proceeding
+
+4. COMMIT TO GITHUB
+   - git add -A
+   - git commit -m "Migrate {ClassName} to C++"
+   - git push
+
+5. UPDATE TRACKER
+   - Edit migration_tracker_full.md
+   - Change [ ] to [x] for completed item
+   - Update summary counts in CLAUDE.md if needed
+```
+
+### Git Configuration
+- **Repository**: https://github.com/wilshire059/bluedestiny.git
+- **Account**: wilshire059
+- **Remote URL**: https://wilshire059@github.com/wilshire059/bluedestiny.git
+- **Content folder**: EXCLUDED (2.6GB - stays local only)
+
 ## Recent Accomplishments (System Batch)
 We just completed the migration of the Save/Load system and Main Menus.
 **Created Classes**:
