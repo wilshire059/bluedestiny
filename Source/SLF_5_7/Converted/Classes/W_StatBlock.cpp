@@ -17,10 +17,10 @@ void UW_StatBlock::NativeConstruct()
     APawn* PlayerPawn = GetOwningPlayerPawn();
     if (PlayerPawn)
     {
-        UAC_StatManager* StatManager = PlayerPawn->FindComponentByClass<UAC_StatManager>();
-        if (StatManager)
+        UAC_StatManager* LocalStatManager = PlayerPawn->FindComponentByClass<UAC_StatManager>();
+        if (LocalStatManager)
         {
-            StatManager->OnStatsInitialized.AddDynamic(this, &UW_StatBlock::OnStatsInitialized);
+            LocalStatManager->OnStatsInitialized.AddDynamic(this, &UW_StatBlock::OnStatsInitialized);
             SetupCurrentStats(); // Try setup immediately
         }
     }
@@ -40,16 +40,16 @@ void UW_StatBlock::SetupCurrentStats()
     APawn* PlayerPawn = GetOwningPlayerPawn();
     if (!PlayerPawn) return;
 
-    UAC_StatManager* StatManager = PlayerPawn->FindComponentByClass<UAC_StatManager>();
-    if (!StatManager) return;
+    UAC_StatManager* LocalStatManager = PlayerPawn->FindComponentByClass<UAC_StatManager>();
+    if (!LocalStatManager) return;
 
     // Use GetAllStats if available in C++ API of StatManager
     // Assuming StatManager has a function or map
-    // If StatManager was migrated, check its API. 
+    // If StatManager was migrated, check its API.
     // Usually it has a TMap or TArray of stats.
-    
+
     // Iterate over Stats map directly
-    for (auto& Elem : StatManager->Stats)
+    for (auto& Elem : LocalStatManager->Stats)
     {
         UB_Stat* Stat = Elem.Value;
         if (Stat)

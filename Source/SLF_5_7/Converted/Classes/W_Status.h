@@ -27,9 +27,6 @@ protected:
     UFUNCTION()
     void OnLevelUpdated(int32 Level);
 
-    virtual void OnVisibilityChanged_Implementation(ESlateVisibility InVisibility); // Override if available (Wait, Widget doesn't have virtual impl easily, use event)
-    
-    // UUserWidget doesn't have virtual OnVisibilityChanged exposed to BP in the same way.
-    // We can hook into OnNativeVisibilityChanged or just override NativeOnVisibilityChanged if UE 5.
-    // virtual void NativeOnVisibilityChanged(ESlateVisibility InVisibility) override;
+    // NOTE: OnVisibilityChanged is not easily overridable in UUserWidget.
+    // If needed, hook into NativeOnVisibilityChanged instead.
 };
