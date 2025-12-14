@@ -17,14 +17,15 @@ public class SLF_5_7 : ModuleRules
 			Path.Combine(ModuleDirectory, "Converted", "Interfaces"),
 			Path.Combine(ModuleDirectory, "Converted", "DataAssets"),
 			Path.Combine(ModuleDirectory, "Converted", "Components"),
-			Path.Combine(ModuleDirectory, "Converted", "Classes")
+			Path.Combine(ModuleDirectory, "Converted", "Classes"),
+			Path.Combine(ModuleDirectory, "Converted", "Animation")
 		});
 	
-		PublicDependencyModuleNames.AddRange(new string[] { 
-			"Core", 
-			"CoreUObject", 
-			"Engine", 
-			"InputCore", 
+		PublicDependencyModuleNames.AddRange(new string[] {
+			"Core",
+			"CoreUObject",
+			"Engine",
+			"InputCore",
 			"EnhancedInput",
 			"UMG",
 			"Slate",
@@ -35,7 +36,8 @@ public class SLF_5_7 : ModuleRules
 			"NavigationSystem",
 			"Niagara",
 			"GeometryCollectionEngine",
-			"ChaosSolverEngine"
+			"ChaosSolverEngine",
+			"PhysicsCore"
 		});
 
 		// Editor-only modules (Blutility for Editor Utility Widgets)
