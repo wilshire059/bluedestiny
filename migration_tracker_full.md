@@ -154,29 +154,29 @@
 
 ---
 
-## 5. COMPONENTS (AC_) - 17 Total | 15 Migrated
+## 5. COMPONENTS (AC_) - 21 Total | 21 Migrated
 
 - [x] AC_ActionManager
 - [x] AC_AI_BehaviorManager
 - [x] AC_AI_Boss
 - [x] AC_AI_CombatManager
 - [x] AC_AI_InteractionManager
-- [ ] AC_BuffManager
+- [x] AC_BuffManager
 - [x] AC_CollisionManager
 - [x] AC_CombatManager
-- [ ] AC_DebugCentral
+- [x] AC_DebugCentral
 - [x] AC_EquipmentManager
 - [x] AC_InputBuffer
-- [ ] AC_InteractionManager
+- [x] AC_InteractionManager
 - [x] AC_InventoryManager
 - [x] AC_LadderManager
 - [x] AC_LootDropManager
 - [x] AC_ProgressManager
-- [ ] AC_RadarElement
-- [ ] AC_RadarManager
+- [x] AC_RadarElement
+- [x] AC_RadarManager
 - [x] AC_SaveLoadManager
 - [x] AC_StatManager
-- [ ] AC_StatusEffectManager
+- [x] AC_StatusEffectManager
 
 ---
 
