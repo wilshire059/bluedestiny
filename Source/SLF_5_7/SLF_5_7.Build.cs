@@ -19,7 +19,9 @@ public class SLF_5_7 : ModuleRules
 			Path.Combine(ModuleDirectory, "Converted", "Components"),
 			Path.Combine(ModuleDirectory, "Converted", "Classes"),
 			Path.Combine(ModuleDirectory, "Converted", "Animation"),
-			Path.Combine(ModuleDirectory, "Converted", "AI")
+			Path.Combine(ModuleDirectory, "Converted", "AI"),
+			Path.Combine(ModuleDirectory, "Converted", "CameraShakes"),
+			Path.Combine(ModuleDirectory, "Converted", "Libraries")
 		});
 	
 		PublicDependencyModuleNames.AddRange(new string[] {
@@ -38,7 +40,8 @@ public class SLF_5_7 : ModuleRules
 			"Niagara",
 			"GeometryCollectionEngine",
 			"ChaosSolverEngine",
-			"PhysicsCore"
+			"PhysicsCore",
+			"EngineCameras"
 		});
 
 		// Editor-only modules (Blutility for Editor Utility Widgets)

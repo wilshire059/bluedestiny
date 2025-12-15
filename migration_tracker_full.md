@@ -568,40 +568,42 @@
 
 ## 13. AI CONTROLLER (AIC_) - 1 Total | 0 Migrated
 
-- [ ] AIC_SoulslikeFramework
+- [x] AIC_SoulslikeFramework
 
 ---
 
-## 14. GAME FRAMEWORK - 9 Total | 2 Migrated
+## 14. GAME FRAMEWORK - 9 Total | 9 Migrated
 
 - [x] GI_SoulslikeFramework
-- [ ] GM_Menu_SoulslikeFramework
-- [ ] GM_SoulslikeFramework
-- [ ] GS_SoulslikeFramework
-- [ ] PC_Menu_SoulslikeFramework
-- [ ] PC_SoulslikeFramework
-- [ ] PS_SoulslikeFramework
+- [x] GM_Menu_SoulslikeFramework
+- [x] GM_SoulslikeFramework
+- [x] GS_SoulslikeFramework
+- [x] PC_Menu_SoulslikeFramework
+- [x] PC_SoulslikeFramework
+- [x] PS_SoulslikeFramework
 - [x] SG_SoulslikeFramework
-- [ ] SG_SaveSlots
+- [x] SG_SaveSlots
 
 ---
 
-## 15. CONTROL RIGS (CR_) - 3 Total | 0 Migrated
+## 15. CONTROL RIGS (CR_) - 3 Total | SKIP (Best in Blueprint)
 
-- [ ] CR_Mannequin_BasicFootIK
-- [ ] CR_Mannequin_Procedural
-- [ ] CR_SoulslikeFramework
+Control Rigs are complex procedural animation systems that are better maintained in Blueprint.
+
+- [S] CR_Mannequin_BasicFootIK
+- [S] CR_Mannequin_Procedural
+- [S] CR_SoulslikeFramework
 
 ---
 
-## 16. CAMERA SHAKES (CS_) - 6 Total | 0 Migrated
+## 16. CAMERA SHAKES (CS_) - 6 Total | 6 Migrated
 
-- [ ] CS_Boss_Roar
-- [ ] CS_Guard
-- [ ] CS_JumpHit
-- [ ] CS_Seq_Handheld
-- [ ] CS_StrongHit
-- [ ] CS_SubtleHit
+- [x] CS_Boss_Roar
+- [x] CS_Guard
+- [x] CS_JumpHit
+- [x] CS_Seq_Handheld
+- [x] CS_StrongHit
+- [x] CS_SubtleHit
 
 ---
 
@@ -627,11 +629,11 @@ These are editor-only tools and do not need C++ migration.
 
 ---
 
-## 18. BLUEPRINT LIBRARIES (BFL_ / BML_) - 3 Total | 0 Migrated
+## 18. BLUEPRINT LIBRARIES (BFL_ / BML_) - 3 Total | 1 Migrated | 2 SKIP
 
-- [ ] BFL_Helper
-- [ ] BML_HelperMacros
-- [ ] BML_StructConversion
+- [x] BFL_Helper
+- [S] BML_HelperMacros (Macro Libraries don't translate to C++)
+- [S] BML_StructConversion (Macro Libraries don't translate to C++)
 
 ---
 
