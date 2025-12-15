@@ -18,7 +18,8 @@ public class SLF_5_7 : ModuleRules
 			Path.Combine(ModuleDirectory, "Converted", "DataAssets"),
 			Path.Combine(ModuleDirectory, "Converted", "Components"),
 			Path.Combine(ModuleDirectory, "Converted", "Classes"),
-			Path.Combine(ModuleDirectory, "Converted", "Animation")
+			Path.Combine(ModuleDirectory, "Converted", "Animation"),
+			Path.Combine(ModuleDirectory, "Converted", "AI")
 		});
 	
 		PublicDependencyModuleNames.AddRange(new string[] {

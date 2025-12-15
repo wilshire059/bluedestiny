@@ -26,4 +26,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "AI")
 	void ClearTarget();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "AI")
+	void InitializeBehavior(class UBehaviorTree* BehaviorTree);
 };

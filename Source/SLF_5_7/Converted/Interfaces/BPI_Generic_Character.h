@@ -10,6 +10,7 @@
 #include "Classes/B_Ladder.h"
 #include "Classes/B_Container.h"
 #include "Classes/B_Door.h"
+#include "E_MovementType.h"
 #include "BPI_Generic_Character.generated.h"
 
 UINTERFACE(MinimalAPI)
@@ -79,4 +80,7 @@ public:
 
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Generic Character")
     void OpenDoor(UAnimMontage* Montage, AB_Door* Door);
+
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Generic Character")
+    void SetMovementMode(E_MovementType MovementType);
 };

@@ -65,6 +65,24 @@ void UAC_AI_CombatManager::EndEncounter()
     {
         IBPI_Enemy::Execute_PickAndSpawnLoot(GetOwner());
     }
-    
+
     // Destroy Actor logic deferred to BP or specialized cleanup
+}
+
+UObject* UAC_AI_CombatManager::TryGetAbility()
+{
+    // Stub implementation - returns nullptr
+    // Override in BP or extend to select abilities
+    return nullptr;
+}
+
+bool UAC_AI_CombatManager::ExecuteAbility(UObject* Ability)
+{
+    // Stub implementation - returns false
+    // Override in BP or extend to execute abilities
+    if (!Ability)
+    {
+        return false;
+    }
+    return true;
 }

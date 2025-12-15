@@ -17,6 +17,12 @@ public:
 
     UFUNCTION(BlueprintCallable, Category = "AI Combat")
     void EndEncounter();
+
+    UFUNCTION(BlueprintCallable, Category = "AI Combat")
+    UObject* TryGetAbility();
+
+    UFUNCTION(BlueprintCallable, Category = "AI Combat")
+    bool ExecuteAbility(UObject* Ability);
     
 protected:
     virtual void BeginPlay() override;
