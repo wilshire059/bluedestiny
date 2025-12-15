@@ -3,7 +3,8 @@
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
 #include "GameplayTagContainer.h"
-#include "Structs/FStatInfo.h" 
+#include "StructUtils/InstancedStruct.h"
+#include "Structs/FStatInfo.h"
 #include "Enums/E_Direction.h"
 #include "BPI_Controller.generated.h"
 

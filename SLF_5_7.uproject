@@ -47,6 +47,10 @@
 		},
         {
 			"Name": "NodeToCode",
+			"Enabled": false
+		},
+		{
+			"Name": "StructUtils",
 			"Enabled": true
 		},
 		{

@@ -5,7 +5,7 @@
 #include "Enums/E_AI_States.h"
 #include "Classes/B_PatrolPath.h"
 #include "Structs/FAiPatrolPathInfo.h"
-#include "InstancedStruct.h"
+#include "StructUtils/InstancedStruct.h"
 #include "AC_AI_BehaviorManager.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnStateChanged, E_AI_States, NewState, E_AI_States, OldState);

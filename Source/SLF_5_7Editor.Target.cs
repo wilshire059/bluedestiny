@@ -9,6 +9,7 @@ public class SLF_5_7EditorTarget : TargetRules
 	{
 		Type = TargetType.Editor;
 		DefaultBuildSettings = BuildSettingsVersion.V6;
+		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_7;
 
 		ExtraModuleNames.AddRange( new string[] { "SLF_5_7" } );
 	}
