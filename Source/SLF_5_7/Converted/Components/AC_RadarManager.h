@@ -7,7 +7,7 @@
 class UAC_RadarElement;
 class UUserWidget;
 
-UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+UCLASS(ClassGroup=(Custom), Blueprintable, meta=(BlueprintSpawnableComponent))
 class SLF_5_7_API UAC_RadarManager : public UActorComponent
 {
 	GENERATED_BODY()

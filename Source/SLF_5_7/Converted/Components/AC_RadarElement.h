@@ -14,7 +14,7 @@ enum class E_RadarElementType : uint8
 	Item UMETA(DisplayName = "Item")
 };
 
-UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+UCLASS(ClassGroup=(Custom), Blueprintable, meta=(BlueprintSpawnableComponent))
 class SLF_5_7_API UAC_RadarElement : public UActorComponent
 {
 	GENERATED_BODY()

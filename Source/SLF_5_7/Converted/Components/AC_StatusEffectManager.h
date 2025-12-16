@@ -11,7 +11,7 @@ class UObject;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnStatusEffectChanged, UPDA_StatusEffect*, Effect, bool, bAdded);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnStatusEffectBuildupChanged, UPDA_StatusEffect*, Effect, double, CurrentBuildup, double, MaxBuildup);
 
-UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+UCLASS(ClassGroup=(Custom), Blueprintable, meta=(BlueprintSpawnableComponent))
 class SLF_5_7_API UAC_StatusEffectManager : public UActorComponent
 {
 	GENERATED_BODY()

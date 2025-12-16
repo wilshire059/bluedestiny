@@ -10,7 +10,7 @@ class UObject;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnBuffDetected, UPDA_Buff*, Buff, bool, bAdded);
 
-UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+UCLASS(ClassGroup=(Custom), Blueprintable, meta=(BlueprintSpawnableComponent))
 class SLF_5_7_API UAC_BuffManager : public UActorComponent
 {
 	GENERATED_BODY()

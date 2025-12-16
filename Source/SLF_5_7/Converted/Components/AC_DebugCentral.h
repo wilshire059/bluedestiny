@@ -4,7 +4,7 @@
 #include "Components/ActorComponent.h"
 #include "AC_DebugCentral.generated.h"
 
-UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+UCLASS(ClassGroup=(Custom), Blueprintable, meta=(BlueprintSpawnableComponent))
 class SLF_5_7_API UAC_DebugCentral : public UActorComponent
 {
 	GENERATED_BODY()

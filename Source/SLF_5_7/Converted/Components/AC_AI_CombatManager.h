@@ -4,7 +4,7 @@
 #include "Components/AC_CombatManager.h"
 #include "AC_AI_CombatManager.generated.h"
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS( ClassGroup=(Custom), Blueprintable, meta=(BlueprintSpawnableComponent) )
 class SLF_5_7_API UAC_AI_CombatManager : public UAC_CombatManager
 {
     GENERATED_BODY()

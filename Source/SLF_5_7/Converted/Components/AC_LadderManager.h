@@ -5,7 +5,7 @@
 #include "Enums/E_LadderClimbState.h"
 #include "AC_LadderManager.generated.h"
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS( ClassGroup=(Custom), Blueprintable, meta=(BlueprintSpawnableComponent) )
 class SLF_5_7_API UAC_LadderManager : public UActorComponent
 {
 	GENERATED_BODY()

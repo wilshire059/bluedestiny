@@ -8,7 +8,7 @@ class UPrimitiveComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnActorTraced, AActor*, Actor, FHitResult, Hit, double, Multiplier);
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS( ClassGroup=(Custom), Blueprintable, meta=(BlueprintSpawnableComponent) )
 class SLF_5_7_API UAC_CollisionManager : public UActorComponent
 {
     GENERATED_BODY()
