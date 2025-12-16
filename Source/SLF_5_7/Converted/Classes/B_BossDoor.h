@@ -25,13 +25,6 @@ public:
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BossDoor")
     FText InteractableDisplayName;
-    
-    // Portals (Likely reference points for travel or camera)
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BossDoor")
-    TObjectPtr<AActor> Portal_Front;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BossDoor")
-    TObjectPtr<AActor> Portal_Back;
 
     // Components
     // Assuming DeathCurrencySpawnPoint is a SceneComponent

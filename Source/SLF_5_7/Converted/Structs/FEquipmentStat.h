@@ -13,5 +13,5 @@ struct FEquipmentStat
 	FGameplayTag StatTag;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	double Delta;
+	double Delta = 0.0;
 };

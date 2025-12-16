@@ -13,5 +13,5 @@ struct FAiAttackEntry
 	TSoftObjectPtr<UAnimMontage> AttackMontage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	double Weight;
+	double Weight = 1.0;
 };

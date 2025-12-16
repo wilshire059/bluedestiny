@@ -1,7 +1,8 @@
 #include "B_Stance.h"
+#include "SLFGameplayTags.h"
 
 UB_Stance::UB_Stance()
 {
-	StatTag = FGameplayTag::RequestGameplayTag(FName("SoulslikeFramework.Stat.Secondary.Stance"));
+	StatTag = SLFGameplayTags::Stat_Secondary_Stance;
 	MaxValue = 9999.0f;
 }

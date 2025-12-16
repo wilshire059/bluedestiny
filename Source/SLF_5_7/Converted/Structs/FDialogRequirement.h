@@ -15,7 +15,7 @@ struct SLF_5_7_API FDialogRequirement
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialog")
-	E_Progress RequiredProgress;
+	E_Progress RequiredProgress = E_Progress::None;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialog")
 	TSoftObjectPtr<UDataTable> DialogTable;
