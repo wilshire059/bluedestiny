@@ -42,7 +42,8 @@ public class SLF_5_7 : ModuleRules
 			"ChaosSolverEngine",
 			"PhysicsCore",
 			"EngineCameras",
-			"StructUtils"
+			"StructUtils",
+			"LevelSequence"
 		});
 
 		// Editor-only modules (Blutility for Editor Utility Widgets)
