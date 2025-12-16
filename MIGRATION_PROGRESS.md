@@ -16,37 +16,37 @@
 - **Skip**: ~16 (Editor utilities)
 
 ## ACTIVE MIGRATION TARGET
-**Currently Migrating**: AC_ActionManager (PRIORITY - re-migration)
-**Last Checkpoint**: Starting comprehensive re-migration
+**Currently Migrating**: AC_SaveLoadManager
+**Last Checkpoint**: Completed AC_StatManager, analyzing remaining components
 
 ---
 
-## CATEGORY: Actor Components (AC_*) - 17 files
+## CATEGORY: Actor Components (AC_*) - 21 files
 Priority: HIGH - These are core gameplay components
 
-| # | File | Status | Graphs in JSON | Graphs in C++ | Notes |
-|---|------|--------|----------------|---------------|-------|
-| 1 | AC_ActionManager.json | [P] | 11 | 3 | NEEDS RE-MIGRATION |
-| 2 | AC_AI_BehaviorManager.json | [P] | ? | ? | Verify completeness |
-| 3 | AC_AI_Boss.json | [P] | ? | ? | Verify completeness |
-| 4 | AC_AI_CombatManager.json | [P] | ? | ? | Verify completeness |
-| 5 | AC_AI_InteractionManager.json | [P] | ? | ? | Verify completeness |
-| 6 | AC_BuffManager.json | [P] | ? | ? | Verify completeness |
-| 7 | AC_CollisionManager.json | [P] | ? | ? | Verify completeness |
-| 8 | AC_CombatManager.json | [P] | ? | ? | Verify completeness |
-| 9 | AC_DebugCentral.json | [P] | ? | ? | Verify completeness |
-| 10 | AC_EquipmentManager.json | [P] | ? | ? | Verify completeness |
-| 11 | AC_InputBuffer.json | [P] | ? | ? | Verify completeness |
-| 12 | AC_InteractionManager.json | [P] | ? | ? | Verify completeness |
-| 13 | AC_InventoryManager.json | [P] | ? | ? | Verify completeness |
-| 14 | AC_LadderManager.json | [P] | ? | ? | Verify completeness |
-| 15 | AC_LootDropManager.json | [P] | ? | ? | Verify completeness |
-| 16 | AC_ProgressManager.json | [P] | ? | ? | Verify completeness |
-| 17 | AC_RadarElement.json | [P] | ? | ? | Verify completeness |
-| 18 | AC_RadarManager.json | [P] | ? | ? | Verify completeness |
-| 19 | AC_SaveLoadManager.json | [P] | ? | ? | Verify completeness |
-| 20 | AC_StatManager.json | [P] | ? | ? | Verify completeness |
-| 21 | AC_StatusEffectManager.json | [P] | ? | ? | Verify completeness |
+| # | File | Status | Graphs | Functions | Completion | Notes |
+|---|------|--------|--------|-----------|------------|-------|
+| 1 | AC_ActionManager.json | [x] | 11 | 16 | HIGH | Complete re-migration |
+| 2 | AC_StatManager.json | [x] | 18 | 16 | HIGH | Complete re-migration |
+| 3 | AC_BuffManager.json | [x] | 1 | 7 | HIGH | Minimal graphs, well-implemented |
+| 4 | AC_StatusEffectManager.json | [x] | 1 | 7 | HIGH | Minimal graphs, well-implemented |
+| 5 | AC_InputBuffer.json | [x] | 2 | 4 | HIGH | Complete |
+| 6 | AC_LadderManager.json | [x] | 3 | 4 | HIGH | Complete |
+| 7 | AC_LootDropManager.json | [x] | 3 | 3 | HIGH | Complete |
+| 8 | AC_DebugCentral.json | [P] | 3 | 2 | MED | 67% |
+| 9 | AC_CollisionManager.json | [P] | 4 | 2 | MED | 50% |
+| 10 | AC_RadarElement.json | [P] | 5 | 2 | LOW | 40% |
+| 11 | AC_AI_BehaviorManager.json | [P] | 7 | 2 | LOW | 29% |
+| 12 | AC_ProgressManager.json | [P] | 8 | 2 | LOW | 25% |
+| 13 | AC_RadarManager.json | [P] | 10 | 4 | LOW | 40% |
+| 14 | AC_AI_InteractionManager.json | [P] | 10 | 1 | LOW | 10% - CRITICAL |
+| 15 | AC_SaveLoadManager.json | [P] | 13 | 4 | LOW | 31% - IN PROGRESS |
+| 16 | AC_AI_Boss.json | [P] | 25 | 2 | LOW | 8% - CRITICAL |
+| 17 | AC_EquipmentManager.json | [P] | 50 | 8 | LOW | 16% - CRITICAL |
+| 18 | AC_InventoryManager.json | [P] | 51 | 6 | LOW | 12% - CRITICAL |
+| 19 | AC_AI_CombatManager.json | [P] | 55 | 5 | LOW | 9% - CRITICAL |
+| 20 | AC_CombatManager.json | [P] | 61 | 5 | LOW | 8% - CRITICAL |
+| 21 | AC_InteractionManager.json | [P] | 64 | 3 | LOW | 5% - CRITICAL |
 
 ---
 
