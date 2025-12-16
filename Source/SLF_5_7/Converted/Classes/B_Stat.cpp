@@ -80,3 +80,26 @@ void UB_Stat::OnRegenTick()
         ModifyStat(Amount);
     }
 }
+
+void UB_Stat::UpdateStatInfo(const FStatInfo& NewStatInfo)
+{
+    StatInfo = NewStatInfo;
+
+    // Apply the stat info values
+    StatTag = NewStatInfo.Tag;
+    CurrentValue = NewStatInfo.Value;
+    MaxValue = NewStatInfo.MaxValue;
+
+    // Broadcast update
+    OnStatUpdated.Broadcast(this, 0.0, false, E_ValueType::Current);
+    OnStatChanged.Broadcast(CurrentValue, MaxValue, GetPercent());
+}
+
+FStatInfo UB_Stat::GetStatInfo() const
+{
+    FStatInfo Info;
+    Info.Tag = StatTag;
+    Info.Value = CurrentValue;
+    Info.MaxValue = MaxValue;
+    return Info;
+}

@@ -3,10 +3,13 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "Structs/FRegen.h"
+#include "Structs/FStatInfo.h"
+#include "Enums/E_ValueType.h"
 #include "GameplayTagContainer.h"
 #include "B_Stat.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnStatChanged, double, NewValue, double, MaxValue, double, Percent);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnStatUpdated, UB_Stat*, UpdatedStat, double, Change, bool, bUpdateAffectedStats, E_ValueType, ValueType);
 
 UCLASS(Blueprintable, BlueprintType)
 class SLF_5_7_API UB_Stat : public UObject
@@ -52,6 +55,20 @@ public:
 
     UPROPERTY(BlueprintAssignable, Category = "Stat")
     FOnStatChanged OnStatChanged;
+
+    UPROPERTY(BlueprintAssignable, Category = "Stat")
+    FOnStatUpdated OnStatUpdated;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat")
+    FStatInfo StatInfo;
+
+    // Update stat from loaded info
+    UFUNCTION(BlueprintCallable, Category = "Stat")
+    void UpdateStatInfo(const FStatInfo& NewStatInfo);
+
+    // Get stat info struct
+    UFUNCTION(BlueprintPure, Category = "Stat")
+    FStatInfo GetStatInfo() const;
 
 protected:
     FTimerHandle RegenTimerHandle;
