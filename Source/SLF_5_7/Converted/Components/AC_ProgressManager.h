@@ -7,6 +7,8 @@
 #include "AC_ProgressManager.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnProgressUpdated, FGameplayTag, ID, E_Progress, NewState);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnProgressSaveRequested, FGameplayTag, SaveDataTag);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayTimeUpdated, FTimespan, NewTime);
 
 UCLASS( ClassGroup=(Custom), Blueprintable, meta=(BlueprintSpawnableComponent) )
 class SLF_5_7_API UAC_ProgressManager : public UActorComponent
@@ -25,6 +27,12 @@ public:
 
     UPROPERTY(BlueprintAssignable, Category = "Progress")
     FOnProgressUpdated OnProgressUpdated;
+
+    UPROPERTY(BlueprintAssignable, Category = "Progress")
+    FOnProgressSaveRequested OnSaveRequested;
+
+    UPROPERTY(BlueprintAssignable, Category = "Progress")
+    FOnPlayTimeUpdated OnPlayTimeUpdated;
 
     UFUNCTION(BlueprintCallable, Category = "Progress")
     void SetProgress(FGameplayTag ID, E_Progress State);

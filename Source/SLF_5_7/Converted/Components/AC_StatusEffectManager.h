@@ -10,6 +10,8 @@ class UObject;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnStatusEffectChanged, UPDA_StatusEffect*, Effect, bool, bAdded);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnStatusEffectBuildupChanged, UPDA_StatusEffect*, Effect, double, CurrentBuildup, double, MaxBuildup);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStatusEffectTriggered, FText, TriggeredText);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStatusEffectRemoved, UPDA_StatusEffect*, StatusEffect);
 
 UCLASS(ClassGroup=(Custom), Blueprintable, meta=(BlueprintSpawnableComponent))
 class SLF_5_7_API UAC_StatusEffectManager : public UActorComponent
@@ -30,6 +32,12 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "Status Effects")
 	FOnStatusEffectBuildupChanged OnStatusEffectBuildupChanged;
+
+	UPROPERTY(BlueprintAssignable, Category = "Status Effects")
+	FOnStatusEffectTriggered OnStatusEffectTriggered;
+
+	UPROPERTY(BlueprintAssignable, Category = "Status Effects")
+	FOnStatusEffectRemoved OnStatusEffectRemoved;
 
 	UFUNCTION(BlueprintCallable, Category = "Status Effects")
 	void TryAddStatusEffect(UPDA_StatusEffect* EffectClass, int32 Rank = 1, bool bStartBuildup = true, double StartAmount = 0.0);

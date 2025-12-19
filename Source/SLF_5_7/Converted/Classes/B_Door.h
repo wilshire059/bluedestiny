@@ -14,6 +14,8 @@
 
 #include "B_Door.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDoorOpened);
+
 UCLASS()
 class SLF_5_7_API AB_Door : public AB_Interactable
 {
@@ -40,7 +42,10 @@ public:
     FDoorLockInfo LockInfo;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Door")
-    TObjectPtr<UCurveFloat> DoorCurve; 
+    TObjectPtr<UCurveFloat> DoorCurve;
+
+    UPROPERTY(BlueprintAssignable, Category = "Events")
+    FOnDoorOpened OnDoorOpened;
 
     // Timeline Track
     FOnTimelineFloat UpdateTimelineFloat;

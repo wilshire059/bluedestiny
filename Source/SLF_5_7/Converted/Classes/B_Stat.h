@@ -10,6 +10,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnStatChanged, double, NewValue, double, MaxValue, double, Percent);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnStatUpdated, UB_Stat*, UpdatedStat, double, Change, bool, bUpdateAffectedStats, E_ValueType, ValueType);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLeveledUp, int32, Delta);
 
 UCLASS(Blueprintable, BlueprintType)
 class SLF_5_7_API UB_Stat : public UObject
@@ -58,6 +59,9 @@ public:
 
     UPROPERTY(BlueprintAssignable, Category = "Stat")
     FOnStatUpdated OnStatUpdated;
+
+    UPROPERTY(BlueprintAssignable, Category = "Events")
+    FOnLeveledUp OnLeveledUp;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat")
     FStatInfo StatInfo;

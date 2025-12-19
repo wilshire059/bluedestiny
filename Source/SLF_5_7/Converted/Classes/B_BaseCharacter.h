@@ -11,6 +11,10 @@
 #include "Components/AC_InventoryManager.h"
 #include "B_BaseCharacter.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLocationLerpEnd);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnRotationLerpEnd);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLocationRotationLerpEnd);
+
 UCLASS()
 class SLF_5_7_API AB_BaseCharacter : public ACharacter, public IBPI_Generic_Character
 {
@@ -44,6 +48,16 @@ public:
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
     UAC_InventoryManager* InventoryManager;
+
+    // Delegates
+    UPROPERTY(BlueprintAssignable, Category = "Events")
+    FOnLocationLerpEnd OnLocationLerpEnd;
+
+    UPROPERTY(BlueprintAssignable, Category = "Events")
+    FOnRotationLerpEnd OnRotationLerpEnd;
+
+    UPROPERTY(BlueprintAssignable, Category = "Events")
+    FOnLocationRotationLerpEnd OnLocationRotationLerpEnd;
 
     // BPI_Generic_Character Implementation
     virtual void SpawnActorReplicated_Implementation(TSubclassOf<AActor> ActorClass, FTransform Transform, ESpawnActorCollisionHandlingMethod CollisionMethod, AActor* ActorOwner, APawn* InstigatorPawn) override;

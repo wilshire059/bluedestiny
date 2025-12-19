@@ -15,6 +15,7 @@ class UUserWidget;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDialogStarted, UDataTable*, DialogTable);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDialogEnded);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnDialogEntryChanged, int32, EntryIndex, FName, RowName);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDialogFinished);
 
 UCLASS(ClassGroup = (Custom), Blueprintable, meta = (BlueprintSpawnableComponent))
 class SLF_5_7_API UAC_AI_InteractionManager : public UActorComponent
@@ -65,6 +66,9 @@ public:
 
     UPROPERTY(BlueprintAssignable, Category = "Interaction")
     FOnDialogEntryChanged OnDialogEntryChanged;
+
+    UPROPERTY(BlueprintAssignable, Category = "Interaction")
+    FOnDialogFinished OnDialogFinished;
 
     // ============================================================
     // DIALOG FUNCTIONS

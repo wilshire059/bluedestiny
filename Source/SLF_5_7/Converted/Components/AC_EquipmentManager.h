@@ -27,6 +27,12 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWeaponUnequipDelegate, E_ActionWe
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnWeaponAbilityUpdated);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnWeaponAbilityRemoved);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnWeaponStatCheckFailed);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnStanceChanged, bool, bRightHand, bool, bTwoHand);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnItemEffectAdded);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnItemEffectRemoved);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEquipmentSaveRequested, FGameplayTag, SaveDataTag);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnItemEquippedToSlot, FGameplayTag, TargetSlot, UPDA_Item*, ItemData);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnItemUnequippedFromSlot, FGameplayTag, TargetSlot);
 
 UCLASS(ClassGroup = (Custom), Blueprintable, meta = (BlueprintSpawnableComponent))
 class SLF_5_7_API UAC_EquipmentManager : public UActorComponent
@@ -130,6 +136,24 @@ public:
 
     UPROPERTY(BlueprintAssignable, Category = "Equipment|Stats")
     FOnWeaponStatCheckFailed OnWeaponStatCheckFailed;
+
+    UPROPERTY(BlueprintAssignable, Category = "Equipment")
+    FOnStanceChanged OnStanceChanged;
+
+    UPROPERTY(BlueprintAssignable, Category = "Equipment")
+    FOnItemEffectAdded OnItemEffectAdded;
+
+    UPROPERTY(BlueprintAssignable, Category = "Equipment")
+    FOnItemEffectRemoved OnItemEffectRemoved;
+
+    UPROPERTY(BlueprintAssignable, Category = "Equipment")
+    FOnEquipmentSaveRequested OnSaveRequested;
+
+    UPROPERTY(BlueprintAssignable, Category = "Equipment")
+    FOnItemEquippedToSlot OnItemEquippedToSlot;
+
+    UPROPERTY(BlueprintAssignable, Category = "Equipment")
+    FOnItemUnequippedFromSlot OnItemUnequippedFromSlot;
 
     // ============================================================
     // WEAPON EQUIP/UNEQUIP
