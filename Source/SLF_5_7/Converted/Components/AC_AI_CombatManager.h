@@ -91,6 +91,12 @@ public:
     UFUNCTION(BlueprintCallable, Category = "AI Combat|Death")
     void HandleAIDeath(bool bRagdoll, E_Direction Direction, AActor* Killer);
 
+    UFUNCTION(BlueprintPure, Category = "AI Combat|Stats")
+    TArray<FStatInfo> GetAllStats() const;
+
+    UFUNCTION(BlueprintPure, Category = "AI Combat|Utility")
+    UAnimInstance* GetSoulslikeAnimInstance() const;
+
 protected:
     virtual void BeginPlay() override;
 

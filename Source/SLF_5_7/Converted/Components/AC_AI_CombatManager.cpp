@@ -155,3 +155,35 @@ UAC_InventoryManager* UAC_AI_CombatManager::GetInventoryComponent() const
     }
     return nullptr;
 }
+
+TArray<FStatInfo> UAC_AI_CombatManager::GetAllStats() const
+{
+    TArray<FStatInfo> AllStats;
+
+    for (const auto& StatPair : ActiveStats)
+    {
+        if (UB_Stat* Stat = StatPair.Value)
+        {
+            FStatInfo Info;
+            Info.StatTag = StatPair.Key;
+            Info.CurrentValue = Stat->CurrentValue;
+            Info.MaxValue = Stat->MaxValue;
+            AllStats.Add(Info);
+        }
+    }
+
+    return AllStats;
+}
+
+UAnimInstance* UAC_AI_CombatManager::GetSoulslikeAnimInstance() const
+{
+    AActor* Owner = GetOwner();
+    if (ACharacter* Character = Cast<ACharacter>(Owner))
+    {
+        if (USkeletalMeshComponent* MeshComp = Character->GetMesh())
+        {
+            return MeshComp->GetAnimInstance();
+        }
+    }
+    return nullptr;
+}

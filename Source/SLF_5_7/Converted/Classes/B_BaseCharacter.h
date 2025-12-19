@@ -9,11 +9,20 @@
 #include "Components/AC_ActionManager.h"
 #include "Components/AC_CombatManager.h"
 #include "Components/AC_InventoryManager.h"
+#include "Components/AC_StatusEffectManager.h"
+#include "NiagaraSystem.h"
+#include "NiagaraFunctionLibrary.h"
+#include "DataAssets/PDA_MovementSpeedData.h"
 #include "B_BaseCharacter.generated.h"
 
+// Movement/Lerp Delegates
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLocationLerpEnd);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnRotationLerpEnd);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLocationRotationLerpEnd);
+
+// Status/Combat Delegates
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnMeshInitialized);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHitstopEnd, float, Duration);
 
 UCLASS()
 class SLF_5_7_API AB_BaseCharacter : public ACharacter, public IBPI_Generic_Character
@@ -26,13 +35,19 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-    // Components
+    //========================================
+    // COMPONENTS
+    //========================================
+
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
     UWidgetComponent* TargetLockonWidget;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+    USceneComponent* ProjectileHomingPosition;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
     UAC_StatManager* StatManager;
@@ -49,15 +64,158 @@ public:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
     UAC_InventoryManager* InventoryManager;
 
-    // Delegates
-    UPROPERTY(BlueprintAssignable, Category = "Events")
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+    UAC_StatusEffectManager* StatusEffectManager;
+
+    //========================================
+    // MOVEMENT PROPERTIES
+    //========================================
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement|Speed")
+    UPDA_MovementSpeedData* SpeedAsset;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement|Speed")
+    float RunSpeed;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement|Speed")
+    float WalkSpeed;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement|Speed")
+    float SprintSpeed;
+
+    //========================================
+    // HITSTOP PROPERTIES
+    //========================================
+
+    UPROPERTY(BlueprintReadOnly, Category = "Combat|Hitstop")
+    bool bIsInHitstop;
+
+    UPROPERTY(BlueprintReadOnly, Category = "Combat|Hitstop")
+    FTimerHandle HitstopTimerHandle;
+
+    //========================================
+    // LERP PROPERTIES
+    //========================================
+
+    UPROPERTY(BlueprintReadOnly, Category = "Movement|Lerp")
+    bool bIsLerpingLocation;
+
+    UPROPERTY(BlueprintReadOnly, Category = "Movement|Lerp")
+    bool bIsLerpingRotation;
+
+    UPROPERTY(BlueprintReadOnly, Category = "Movement|Lerp")
+    FVector LerpTargetLocation;
+
+    UPROPERTY(BlueprintReadOnly, Category = "Movement|Lerp")
+    FRotator LerpTargetRotation;
+
+    UPROPERTY(BlueprintReadOnly, Category = "Movement|Lerp")
+    float LerpAlpha;
+
+    UPROPERTY(BlueprintReadOnly, Category = "Movement|Lerp")
+    float LerpSpeed;
+
+    //========================================
+    // DELEGATES
+    //========================================
+
+    UPROPERTY(BlueprintAssignable, Category = "Events|Movement")
     FOnLocationLerpEnd OnLocationLerpEnd;
 
-    UPROPERTY(BlueprintAssignable, Category = "Events")
+    UPROPERTY(BlueprintAssignable, Category = "Events|Movement")
     FOnRotationLerpEnd OnRotationLerpEnd;
 
-    UPROPERTY(BlueprintAssignable, Category = "Events")
+    UPROPERTY(BlueprintAssignable, Category = "Events|Movement")
     FOnLocationRotationLerpEnd OnLocationRotationLerpEnd;
+
+    UPROPERTY(BlueprintAssignable, Category = "Events|Combat")
+    FOnHitstopEnd OnHitstopEnd;
+
+    UPROPERTY(BlueprintAssignable, Category = "Events|Initialization")
+    FOnMeshInitialized OnMeshInitialized;
+
+    //========================================
+    // MOVEMENT FUNCTIONS
+    //========================================
+
+    UFUNCTION(BlueprintCallable, Category = "Movement")
+    void SetSpeed(float Speed);
+
+    UFUNCTION(BlueprintCallable, Category = "Movement")
+    void SetMovementMode(EMovementMode NewMode);
+
+    UFUNCTION(BlueprintCallable, Category = "Movement")
+    void Jump_Custom();
+
+    //========================================
+    // HITSTOP FUNCTIONS
+    //========================================
+
+    UFUNCTION(BlueprintCallable, Category = "Combat|Hitstop")
+    void StartHitstop(float Duration);
+
+    UFUNCTION(BlueprintCallable, Category = "Combat|Hitstop")
+    void StopHitstop();
+
+    //========================================
+    // STAT/STATUS FUNCTIONS
+    //========================================
+
+    UFUNCTION(BlueprintCallable, Category = "Stats")
+    bool IsStatusEffectActive(FGameplayTag StatusEffectTag) const;
+
+    UFUNCTION(BlueprintCallable, Category = "Stats")
+    FStatInfo GetStat(FGameplayTag StatTag) const;
+
+    UFUNCTION(BlueprintCallable, Category = "Stats")
+    class APC_SoulslikeFramework* GetSoulslikeController() const;
+
+    //========================================
+    // NETWORK REPLICATION (Server RPCs)
+    //========================================
+
+    UFUNCTION(Server, Reliable, Category = "Network")
+    void SRV_PlayMontage(UAnimMontage* Montage, float PlayRate, float StartPos, FName StartSection);
+
+    UFUNCTION(Server, Reliable, Category = "Network")
+    void SRV_SpawnNiagaraOneshotAttached(UNiagaraSystem* System, USceneComponent* AttachComponent, FName SocketName, FVector Location, FRotator Rotation);
+
+    UFUNCTION(Server, Reliable, Category = "Network")
+    void SRV_SpawnNiagaraOneshot(UNiagaraSystem* System, FVector Location, FRotator Rotation);
+
+    UFUNCTION(Server, Reliable, Category = "Network")
+    void SRV_SpawnPickupItem(TSubclassOf<class AB_PickupItem> ItemClass, FVector Location, FRotator Rotation);
+
+    UFUNCTION(Server, Reliable, Category = "Network")
+    void SRV_SpawnActor(TSubclassOf<AActor> ActorClass, FTransform Transform);
+
+    UFUNCTION(Server, Reliable, Category = "Network")
+    void SRV_DestroyActor(AActor* ActorToDestroy);
+
+    UFUNCTION(Server, Reliable, Category = "Network")
+    void SRV_SetSpeed(float NewSpeed);
+
+    UFUNCTION(Server, Reliable, Category = "Network")
+    void SRV_Jump();
+
+    //========================================
+    // NETWORK REPLICATION (Multicast RPCs)
+    //========================================
+
+    UFUNCTION(NetMulticast, Reliable, Category = "Network")
+    void MC_PlayMontage(UAnimMontage* Montage, float PlayRate, float StartPos, FName StartSection);
+
+    UFUNCTION(NetMulticast, Reliable, Category = "Network")
+    void MC_SpawnNiagaraOneshotAttached(UNiagaraSystem* System, USceneComponent* AttachComponent, FName SocketName, FVector Location, FRotator Rotation);
+
+    UFUNCTION(NetMulticast, Reliable, Category = "Network")
+    void MC_SpawnNiagaraOneshot(UNiagaraSystem* System, FVector Location, FRotator Rotation);
+
+    UFUNCTION(NetMulticast, Reliable, Category = "Network")
+    void MC_SetSpeed(float NewSpeed);
+
+    UFUNCTION(NetMulticast, Reliable, Category = "Network")
+    void MC_Jump();
 
     // BPI_Generic_Character Implementation
     virtual void SpawnActorReplicated_Implementation(TSubclassOf<AActor> ActorClass, FTransform Transform, ESpawnActorCollisionHandlingMethod CollisionMethod, AActor* ActorOwner, APawn* InstigatorPawn) override;
