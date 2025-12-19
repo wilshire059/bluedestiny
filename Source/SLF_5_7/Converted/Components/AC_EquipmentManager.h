@@ -24,6 +24,9 @@ class USkeletalMesh;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnEquipmentChanged, FGameplayTag, Slot, const UPDA_Item*, Item);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnWeaponEquipDelegate, UPDA_Item*, Item, bool, bRightHand);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWeaponUnequipDelegate, E_ActionWeaponSlot, WeaponSlot);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnWeaponAbilityUpdated);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnWeaponAbilityRemoved);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnWeaponStatCheckFailed);
 
 UCLASS(ClassGroup = (Custom), Blueprintable, meta = (BlueprintSpawnableComponent))
 class SLF_5_7_API UAC_EquipmentManager : public UActorComponent
@@ -118,6 +121,15 @@ public:
 
     UPROPERTY(BlueprintAssignable, Category = "Equipment")
     FOnWeaponUnequipDelegate OnWeaponUnequipDelegate;
+
+    UPROPERTY(BlueprintAssignable, Category = "Equipment|Ability")
+    FOnWeaponAbilityUpdated OnWeaponAbilityUpdated;
+
+    UPROPERTY(BlueprintAssignable, Category = "Equipment|Ability")
+    FOnWeaponAbilityRemoved OnWeaponAbilityRemoved;
+
+    UPROPERTY(BlueprintAssignable, Category = "Equipment|Stats")
+    FOnWeaponStatCheckFailed OnWeaponStatCheckFailed;
 
     // ============================================================
     // WEAPON EQUIP/UNEQUIP

@@ -22,6 +22,12 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInventoryUpdated, const UPDA_Item
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnItemAdded, UPDA_Item*, Item, int32, Amount);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnItemRemoved, UPDA_Item*, Item, int32, Amount);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStorageUpdated);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCurrencyIncreased, int32, IncreaseAmount);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCurrencyUpdated, int32, NewCurrency);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnErrorTrigger, FText, ErrorMessage);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnItemAmountUpdated, UPDA_Item*, Item, int32, NewAmount);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSaveRequested, FGameplayTag, SaveGameTag);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInventoryItemLooted, FSLFItemInfo, Item, int32, Amount);
 
 UCLASS(ClassGroup = (Custom), Blueprintable, meta = (BlueprintSpawnableComponent))
 class SLF_5_7_API UAC_InventoryManager : public UActorComponent
@@ -71,6 +77,24 @@ public:
 
     UPROPERTY(BlueprintAssignable, Category = "Inventory")
     FOnStorageUpdated OnStorageUpdated;
+
+    UPROPERTY(BlueprintAssignable, Category = "Inventory|Currency")
+    FOnCurrencyIncreased OnCurrencyIncreased;
+
+    UPROPERTY(BlueprintAssignable, Category = "Inventory|Currency")
+    FOnCurrencyUpdated OnCurrencyUpdated;
+
+    UPROPERTY(BlueprintAssignable, Category = "Inventory|Error")
+    FOnErrorTrigger OnErrorTrigger;
+
+    UPROPERTY(BlueprintAssignable, Category = "Inventory")
+    FOnItemAmountUpdated OnItemAmountUpdated;
+
+    UPROPERTY(BlueprintAssignable, Category = "Inventory|Save")
+    FOnSaveRequested OnSaveRequested;
+
+    UPROPERTY(BlueprintAssignable, Category = "Inventory|Loot")
+    FOnInventoryItemLooted OnItemLooted;
 
     // ============================================================
     // CORE INVENTORY FUNCTIONS
