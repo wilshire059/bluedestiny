@@ -29,9 +29,9 @@ public:
     virtual void OnWeaponEquip_Implementation(bool bRightHand) override;
     virtual void OnWeaponUnequip_Implementation() override;
 
-    // Functions
+    // Combat Functions
     UFUNCTION(BlueprintCallable, Category = "Combat")
-    void TryApplyDamage(AActor* DamagedActor, FHitResult Hit, double Multiplier);
+    virtual void TryApplyDamage(AActor* DamagedActor, FHitResult Hit, double Multiplier);
 
 protected:
     virtual void BeginPlay() override;
