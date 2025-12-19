@@ -5,6 +5,7 @@
 #include "GameFramework/Controller.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/AC_InventoryManager.h"
+#include "Classes/B_Stat.h"
 #include "Interfaces/BPI_Enemy.h"
 #include "Interfaces/BPI_Controller.h"
 
@@ -165,8 +166,8 @@ TArray<FStatInfo> UAC_AI_CombatManager::GetAllStats() const
         if (UB_Stat* Stat = StatPair.Value)
         {
             FStatInfo Info;
-            Info.StatTag = StatPair.Key;
-            Info.CurrentValue = Stat->CurrentValue;
+            Info.Tag = StatPair.Key;
+            Info.Value = Stat->CurrentValue;
             Info.MaxValue = Stat->MaxValue;
             AllStats.Add(Info);
         }

@@ -142,7 +142,10 @@ public:
     void SetSpeed(float Speed);
 
     UFUNCTION(BlueprintCallable, Category = "Movement")
-    void SetMovementMode(EMovementMode NewMode);
+    void SetCharacterMovementMode(EMovementMode NewMode);
+
+    // BPI_Generic_Character interface implementation
+    virtual void SetMovementMode_Implementation(E_MovementType MovementType) override;
 
     UFUNCTION(BlueprintCallable, Category = "Movement")
     void Jump_Custom();

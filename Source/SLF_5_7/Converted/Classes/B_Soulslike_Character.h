@@ -25,7 +25,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnTargetLockRotationEnd);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCameraResetFinished);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInputDetected);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInteractPressed);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDataLoaded, const FString&, LoadedData);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterDataLoaded, const FString&, LoadedData);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSpawnedFromSave);
 
 UCLASS()
@@ -120,8 +120,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 	bool bIsGuarding;
 
-	UPROPERTY(BlueprintReadOnly, Category = "State")
-	bool bIsCrouched;
+	// Note: bIsCrouched is inherited from ACharacter
 
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 	bool bIsClimbing;
@@ -179,7 +178,7 @@ public:
 	FOnInteractPressed OnInteractPressed;
 
 	UPROPERTY(BlueprintAssignable, Category = "Events|Save")
-	FOnDataLoaded OnDataLoaded;
+	FOnCharacterDataLoaded OnDataLoaded;
 
 	UPROPERTY(BlueprintAssignable, Category = "Events|Save")
 	FOnSpawnedFromSave OnSpawnedFromSaveDelegate;
@@ -357,7 +356,7 @@ public:
 	bool ActorTagMatches(AActor* Actor, FName Tag) const;
 
 	UFUNCTION(BlueprintCallable, Category = "UI")
-	class UW_PlayerHUD* GetPlayerHUD() const;
+	UUserWidget* GetPlayerHUD() const;
 
 	UFUNCTION(BlueprintCallable, Category = "Progress")
 	class UAC_ProgressManager* GetProgressManager() const;

@@ -5,11 +5,12 @@
 #include "Components/AC_InputBuffer.h"
 #include "Components/AC_LadderManager.h"
 #include "Components/AC_ProgressManager.h"
-#include "GameFramework/PC_SoulslikeFramework.h"
+#include "Classes/PC_SoulslikeFramework.h"
 #include "Classes/B_Ladder.h"
 #include "Classes/B_PickupItem.h"
 #include "DataAssets/PDA_Action.h"
-#include "Widgets/W_PlayerHUD.h"
+#include "Interfaces/BPI_Interactable.h"
+#include "Blueprint/UserWidget.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 
@@ -422,7 +423,7 @@ void AB_Soulslike_Character::ConsumeInputBuffer()
 {
 	if (InputBuffer)
 	{
-		InputBuffer->ConsumeBuffer();
+		InputBuffer->ConsumeInputBuffer();
 	}
 }
 
@@ -430,7 +431,14 @@ void AB_Soulslike_Character::ExecuteActionImmediately(UPDA_Action* Action)
 {
 	if (ActionManager && Action)
 	{
-		ActionManager->ExecuteAction(Action);
+		// ActionManager uses PerformAction with FGameplayTag
+		// Need to look up the action tag - for now use primary asset ID as tag
+		FPrimaryAssetId AssetId = Action->GetPrimaryAssetId();
+		FGameplayTag ActionTag = FGameplayTag::RequestGameplayTag(FName(AssetId.PrimaryAssetName.ToString()), false);
+		if (ActionTag.IsValid())
+		{
+			ActionManager->PerformAction(ActionTag);
+		}
 	}
 }
 
@@ -438,7 +446,13 @@ void AB_Soulslike_Character::QueueAction(UPDA_Action* Action)
 {
 	if (InputBuffer && Action)
 	{
-		InputBuffer->QueueAction(Action);
+		// InputBuffer uses QueueAction with FGameplayTag
+		FPrimaryAssetId AssetId = Action->GetPrimaryAssetId();
+		FGameplayTag ActionTag = FGameplayTag::RequestGameplayTag(FName(AssetId.PrimaryAssetName.ToString()), false);
+		if (ActionTag.IsValid())
+		{
+			InputBuffer->QueueAction(ActionTag);
+		}
 	}
 }
 
@@ -528,7 +542,8 @@ bool AB_Soulslike_Character::DoesEquipmentSupportGuard() const
 {
 	if (EquipmentManager)
 	{
-		return EquipmentManager->CanBlock();
+		// Check if we have a valid guard sequence (indicates we can block)
+		return EquipmentManager->ActiveBlockSequence != nullptr;
 	}
 	return false;
 }
@@ -537,7 +552,7 @@ int32 AB_Soulslike_Character::GetActiveWeaponSlot() const
 {
 	if (EquipmentManager)
 	{
-		return EquipmentManager->GetActiveWeaponSlot();
+		return static_cast<int32>(EquipmentManager->GetActiveWeaponSlot());
 	}
 	return 0;
 }
@@ -546,7 +561,8 @@ bool AB_Soulslike_Character::IsDualWieldPossible() const
 {
 	if (EquipmentManager)
 	{
-		return EquipmentManager->IsDualWieldPossible();
+		// Check if both weapon slots have items equipped
+		return EquipmentManager->AreBothWeaponSlotsActive();
 	}
 	return false;
 }
@@ -647,7 +663,7 @@ void AB_Soulslike_Character::OnInteract()
 	AB_Interactable* Closest = GetClosestInteractable();
 	if (Closest)
 	{
-		Closest->Interact(this);
+		IBPI_Interactable::Execute_OnInteract(Closest, this);
 	}
 }
 
@@ -696,12 +712,12 @@ bool AB_Soulslike_Character::ActorTagMatches(AActor* Actor, FName Tag) const
 	return Actor && Actor->ActorHasTag(Tag);
 }
 
-UW_PlayerHUD* AB_Soulslike_Character::GetPlayerHUD() const
+UUserWidget* AB_Soulslike_Character::GetPlayerHUD() const
 {
 	APC_SoulslikeFramework* PC = GetSoulslikeController();
 	if (PC)
 	{
-		return PC->GetPlayerHUD();
+		return PC->GetPlayerHUD_Implementation();
 	}
 	return nullptr;
 }
@@ -740,7 +756,8 @@ void AB_Soulslike_Character::SendBigScreenMessage(const FText& Message, float Du
 	APC_SoulslikeFramework* PC = GetSoulslikeController();
 	if (PC)
 	{
-		IBPI_Controller::Execute_SendBigScreenMessage(PC, Message, Duration);
+		// BPI_Controller::SendBigScreenMessage takes (Text, GradientMaterial, bBackdrop, PlayRate)
+		IBPI_Controller::Execute_SendBigScreenMessage(PC, Message, nullptr, false, static_cast<double>(Duration));
 	}
 }
 

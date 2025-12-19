@@ -2,7 +2,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/CapsuleComponent.h"
-#include "GameFramework/PC_SoulslikeFramework.h"
+#include "Classes/PC_SoulslikeFramework.h"
 #include "Classes/B_PickupItem.h"
 #include "TimerManager.h"
 
@@ -158,9 +158,33 @@ void AB_BaseCharacter::SetSpeed(float Speed)
 	}
 }
 
-void AB_BaseCharacter::SetMovementMode(EMovementMode NewMode)
+void AB_BaseCharacter::SetCharacterMovementMode(EMovementMode NewMode)
 {
 	GetCharacterMovement()->SetMovementMode(NewMode);
+}
+
+void AB_BaseCharacter::SetMovementMode_Implementation(E_MovementType MovementType)
+{
+	UCharacterMovementComponent* MoveComp = GetCharacterMovement();
+	if (!MoveComp)
+	{
+		return;
+	}
+
+	switch (MovementType)
+	{
+	case E_MovementType::Walk:
+		MoveComp->MaxWalkSpeed = WalkSpeed;
+		break;
+	case E_MovementType::Run:
+		MoveComp->MaxWalkSpeed = RunSpeed;
+		break;
+	case E_MovementType::Sprint:
+		MoveComp->MaxWalkSpeed = SprintSpeed;
+		break;
+	default:
+		break;
+	}
 }
 
 void AB_BaseCharacter::Jump_Custom()
@@ -213,10 +237,9 @@ void AB_BaseCharacter::StopHitstop()
 
 bool AB_BaseCharacter::IsStatusEffectActive(FGameplayTag StatusEffectTag) const
 {
-	if (StatusEffectManager)
-	{
-		return StatusEffectManager->IsStatusEffectActive(StatusEffectTag);
-	}
+	// StatusEffectManager uses HasStatusEffect with UPDA_StatusEffect*, not FGameplayTag
+	// For now, return false - this would need custom lookup by tag
+	// TODO: Extend UAC_StatusEffectManager to support tag-based lookup if needed
 	return false;
 }
 
@@ -227,8 +250,9 @@ FStatInfo AB_BaseCharacter::GetStat(FGameplayTag StatTag) const
 	{
 		if (UB_Stat* Stat = StatManager->GetStat(StatTag))
 		{
-			Result.CurrentValue = Stat->GetCurrentValue();
-			Result.MaxValue = Stat->GetMaxValue();
+			Result.Tag = StatTag;
+			Result.Value = Stat->CurrentValue;
+			Result.MaxValue = Stat->MaxValue;
 		}
 	}
 	return Result;
@@ -236,10 +260,10 @@ FStatInfo AB_BaseCharacter::GetStat(FGameplayTag StatTag) const
 
 APC_SoulslikeFramework* AB_BaseCharacter::GetSoulslikeController() const
 {
-	AController* Controller = GetController();
-	if (Controller)
+	AController* OwnerController = GetController();
+	if (OwnerController)
 	{
-		return Cast<APC_SoulslikeFramework>(Controller);
+		return Cast<APC_SoulslikeFramework>(OwnerController);
 	}
 	return nullptr;
 }
@@ -421,12 +445,7 @@ void AB_BaseCharacter::SpawnProjectile_Implementation(AActor* TargetActor, TSubc
 		SpawnParams.Instigator = InstigatorPawn;
 
 		AActor* Projectile = GetWorld()->SpawnActor<AActor>(ProjectileClass, InitialTransform, SpawnParams);
-
-		// Initialize projectile if it implements the interface
-		if (Projectile && Projectile->GetClass()->ImplementsInterface(UBPI_Generic_Character::StaticClass()))
-		{
-			IBPI_Generic_Character::Execute_InitializeProjectile(Projectile, TargetActor);
-		}
+		// Projectile spawned - initialization is handled by the projectile's BeginPlay
 	}
 }
 

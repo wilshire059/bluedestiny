@@ -349,7 +349,7 @@ void APC_SoulslikeFramework::AdjustValue(UB_Stat* Stat, float Delta)
 {
 	if (Stat)
 	{
-		Stat->AdjustCurrentValue(Delta);
+		Stat->ModifyStat(Delta);
 	}
 }
 
@@ -359,7 +359,7 @@ void APC_SoulslikeFramework::ResetStat(FGameplayTag StatTag)
 	{
 		if (UB_Stat* Stat = StatManager->GetStat(StatTag))
 		{
-			Stat->ResetToMax();
+			Stat->SetCurrentValue(Stat->MaxValue);
 		}
 	}
 }
@@ -383,8 +383,8 @@ TArray<FStatInfo> APC_SoulslikeFramework::GetAllStats() const
 			if (UB_Stat* Stat = StatPair.Value)
 			{
 				FStatInfo Info;
-				Info.StatTag = StatPair.Key;
-				Info.CurrentValue = Stat->CurrentValue;
+				Info.Tag = StatPair.Key;
+				Info.Value = Stat->CurrentValue;
 				Info.MaxValue = Stat->MaxValue;
 				AllStats.Add(Info);
 			}
@@ -710,8 +710,8 @@ void APC_SoulslikeFramework::SerializeStatsData(TArray<FInstancedStruct>& OutDat
 			if (UB_Stat* Stat = StatPair.Value)
 			{
 				FStatInfo Info;
-				Info.StatTag = StatPair.Key;
-				Info.CurrentValue = Stat->CurrentValue;
+				Info.Tag = StatPair.Key;
+				Info.Value = Stat->CurrentValue;
 				Info.MaxValue = Stat->MaxValue;
 
 				FInstancedStruct InstancedData;
@@ -920,9 +920,9 @@ UAnimInstance* APC_SoulslikeFramework::GetSoulslikeAnimInstance() const
 {
 	if (APawn* ControlledPawn = GetPawn())
 	{
-		if (ACharacter* Character = Cast<ACharacter>(ControlledPawn))
+		if (ACharacter* ControlledCharacter = Cast<ACharacter>(ControlledPawn))
 		{
-			if (USkeletalMeshComponent* Mesh = Character->GetMesh())
+			if (USkeletalMeshComponent* Mesh = ControlledCharacter->GetMesh())
 			{
 				return Mesh->GetAnimInstance();
 			}
