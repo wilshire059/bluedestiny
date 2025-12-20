@@ -639,7 +639,7 @@ E_ActionWeaponSlot UAC_InteractionManager::GetActiveWeaponSlot() const
             return EquipMgr->GetActiveWeaponSlot();
         }
     }
-    return E_ActionWeaponSlot::RightHand;
+    return E_ActionWeaponSlot::Right;
 }
 
 // ============================================================

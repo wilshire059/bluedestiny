@@ -294,7 +294,7 @@ E_Direction UAC_CombatManager::GetDirectionFromHit(const FHitResult& HitResult) 
     AActor* Owner = GetOwner();
     if (!Owner)
     {
-        return E_Direction::Forward;
+        return E_Direction::Fwd;
     }
 
     FVector HitDirection = HitResult.ImpactNormal;
@@ -304,11 +304,11 @@ E_Direction UAC_CombatManager::GetDirectionFromHit(const FHitResult& HitResult) 
 
     if (Dot > 0.5f)
     {
-        return E_Direction::Backward;
+        return E_Direction::Bwd;
     }
     else if (Dot < -0.5f)
     {
-        return E_Direction::Forward;
+        return E_Direction::Fwd;
     }
     else
     {
@@ -590,7 +590,7 @@ UPDA_Item* UAC_CombatManager::GetItemAtSlot(E_ActionWeaponSlot Slot) const
 
 E_ActionWeaponSlot UAC_CombatManager::GetActiveWeaponSlot() const
 {
-    return E_ActionWeaponSlot::RightHand;
+    return E_ActionWeaponSlot::Right;
 }
 
 // ============================================================

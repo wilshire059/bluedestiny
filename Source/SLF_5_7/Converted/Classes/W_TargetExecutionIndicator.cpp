@@ -1,26 +1,40 @@
 #include "W_TargetExecutionIndicator.h"
+#include "Animation/WidgetAnimation.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 
-void UW_TargetExecutionIndicator::ShowIndicator_Implementation(AActor* TargetActor)
+void UW_TargetExecutionIndicator::ToggleExecutionIcon_Implementation(bool bVisible)
 {
-	// Determine if execution is available based on target
-	bool bCanExecute = TargetActor != nullptr;
-	SetCanExecute(bCanExecute);
-	SetVisibility(ESlateVisibility::Visible);
-}
+	if (bVisible)
+	{
+		// Show the icon and play fade animation
+		if (ExecuteLockIcon)
+		{
+			ExecuteLockIcon->SetVisibility(ESlateVisibility::Visible);
+		}
 
-void UW_TargetExecutionIndicator::HideIndicator_Implementation()
-{
-	SetVisibility(ESlateVisibility::Collapsed);
+		if (FadeExecuteIcon)
+		{
+			PlayAnimation(FadeExecuteIcon);
+		}
+	}
+	else
+	{
+		// Hide the icon
+		if (ExecuteLockIcon)
+		{
+			ExecuteLockIcon->SetVisibility(ESlateVisibility::Collapsed);
+		}
+	}
 }
 
 void UW_TargetExecutionIndicator::SetCanExecute(bool bCanExecute)
 {
-	if (ExecutionIcon)
+	if (ExecuteLockIcon)
 	{
 		UTexture2D* Icon = bCanExecute ? ExecuteAvailableIcon : ExecuteUnavailableIcon;
 		if (Icon)
 		{
-			ExecutionIcon->SetBrushFromTexture(Icon);
+			ExecuteLockIcon->SetBrushFromTexture(Icon);
 		}
 	}
 }

@@ -12,15 +12,14 @@ class UBPI_ExecutionIndicator : public UInterface
 
 /**
  * Interface for Execution Indicator widgets.
+ * Matches Blueprint BPI_ExecutionIndicator exactly.
  */
 class SLF_5_7_API IBPI_ExecutionIndicator
 {
 	GENERATED_BODY()
 
 public:
+	/** Toggle execution indicator visibility (matches Blueprint signature) */
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Execution")
-	void ShowIndicator(AActor* TargetActor);
-
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Execution")
-	void HideIndicator();
+	void ToggleExecutionIcon(bool bVisible);
 };

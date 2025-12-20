@@ -6,6 +6,8 @@
 #include "Interfaces/BPI_ExecutionIndicator.h"
 #include "W_TargetExecutionIndicator.generated.h"
 
+class UWidgetAnimation;
+
 UCLASS()
 class SLF_5_7_API UW_TargetExecutionIndicator : public UW_UserWidget_Base, public IBPI_ExecutionIndicator
 {
@@ -13,7 +15,10 @@ class SLF_5_7_API UW_TargetExecutionIndicator : public UW_UserWidget_Base, publi
 
 public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	TObjectPtr<UImage> ExecutionIcon;
+	TObjectPtr<UImage> ExecuteLockIcon;
+
+	UPROPERTY(Transient, meta = (BindWidgetAnim))
+	TObjectPtr<UWidgetAnimation> FadeExecuteIcon;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
 	TObjectPtr<UTexture2D> ExecuteAvailableIcon;
@@ -21,9 +26,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
 	TObjectPtr<UTexture2D> ExecuteUnavailableIcon;
 
-	// BPI_ExecutionIndicator Interface
-	virtual void ShowIndicator_Implementation(AActor* TargetActor) override;
-	virtual void HideIndicator_Implementation() override;
+	// BPI_ExecutionIndicator Interface (matches Blueprint signature)
+	virtual void ToggleExecutionIcon_Implementation(bool bVisible) override;
 
 	UFUNCTION(BlueprintCallable, Category = "Execution")
 	void SetCanExecute(bool bCanExecute);

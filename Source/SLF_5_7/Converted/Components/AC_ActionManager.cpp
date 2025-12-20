@@ -14,7 +14,7 @@ UAC_ActionManager::UAC_ActionManager()
 	PrimaryComponentTick.bCanEverTick = true;
 	SetIsReplicatedByDefault(true);
 
-	MovementDirection = E_Direction::None;
+	MovementDirection = E_Direction::Idle;
 	MovementVector = FVector2D::ZeroVector;
 	bIsOnLadder = false;
 	MinValue = 0.0;
@@ -61,7 +61,7 @@ void UAC_ActionManager::SetMoveDir(FVector2D IAMove)
 	E_Direction NewDirection = CalculateDirectionFromAngle(Degrees);
 
 	// Only update if direction changed and is not None
-	if (NewDirection != MovementDirection && NewDirection != E_Direction::None)
+	if (NewDirection != MovementDirection && NewDirection != E_Direction::Idle)
 	{
 		SRV_SetDirection(NewDirection);
 	}
@@ -81,11 +81,11 @@ E_Direction UAC_ActionManager::CalculateDirectionFromAngle(double Degrees) const
 
 	if (Degrees >= 67.5 && Degrees < 112.5)
 	{
-		return E_Direction::Forward;
+		return E_Direction::Fwd;
 	}
 	else if (Degrees >= 22.5 && Degrees < 67.5)
 	{
-		return E_Direction::ForwardRight;
+		return E_Direction::FwdRight;
 	}
 	else if (Degrees >= -22.5 && Degrees < 22.5)
 	{
@@ -93,19 +93,19 @@ E_Direction UAC_ActionManager::CalculateDirectionFromAngle(double Degrees) const
 	}
 	else if (Degrees >= -67.5 && Degrees < -22.5)
 	{
-		return E_Direction::BackwardRight;
+		return E_Direction::BwdRight;
 	}
 	else if (Degrees >= -112.5 && Degrees < -67.5)
 	{
-		return E_Direction::Backward;
+		return E_Direction::Bwd;
 	}
 	else if (Degrees >= -157.5 && Degrees < -112.5)
 	{
-		return E_Direction::BackwardLeft;
+		return E_Direction::BwdLeft;
 	}
 	else if (Degrees >= 112.5 && Degrees < 157.5)
 	{
-		return E_Direction::ForwardLeft;
+		return E_Direction::FwdLeft;
 	}
 	else // >= 157.5 || < -157.5
 	{

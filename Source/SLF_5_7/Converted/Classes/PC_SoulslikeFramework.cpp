@@ -610,7 +610,7 @@ E_ActionWeaponSlot APC_SoulslikeFramework::GetActiveWeaponSlot() const
 	{
 		return InventoryManager->GetActiveWeaponSlot();
 	}
-	return E_ActionWeaponSlot::RightHand;
+	return E_ActionWeaponSlot::Right;
 }
 
 bool APC_SoulslikeFramework::IsItemEquipped(UPDA_Item* Item) const

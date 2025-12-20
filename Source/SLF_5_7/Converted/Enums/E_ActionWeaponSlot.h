@@ -3,12 +3,13 @@
 #include "CoreMinimal.h"
 #include "E_ActionWeaponSlot.generated.h"
 
+// Matches Blueprint E_ActionWeaponSlot exactly
+// JSON values: Null, Right, Left, Dual
 UENUM(BlueprintType)
 enum class E_ActionWeaponSlot : uint8
 {
-	None UMETA(DisplayName = "None"),
-	RightHand UMETA(DisplayName = "Right Hand"),
-	LeftHand UMETA(DisplayName = "Left Hand"),
-	TwoHand UMETA(DisplayName = "Two Hand"),
-    MatchActiveHand UMETA(DisplayName = "Match Active Hand")
+	Null UMETA(DisplayName = "Null"),
+	Right UMETA(DisplayName = "Right"),
+	Left UMETA(DisplayName = "Left"),
+	Dual UMETA(DisplayName = "Dual")
 };

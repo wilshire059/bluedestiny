@@ -561,7 +561,7 @@ E_ActionWeaponSlot UAC_InventoryManager::GetActiveWeaponSlot() const
             return EquipMgr->GetActiveWeaponSlot();
         }
     }
-    return E_ActionWeaponSlot::RightHand;
+    return E_ActionWeaponSlot::Right;
 }
 
 bool UAC_InventoryManager::IsItemEquipped(UPDA_Item* Item) const

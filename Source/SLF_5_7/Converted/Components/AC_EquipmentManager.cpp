@@ -64,29 +64,29 @@ void UAC_EquipmentManager::UnequipWeaponAtSlot(E_ActionWeaponSlot WeaponSlot)
 
     switch (WeaponSlot)
     {
-        case E_ActionWeaponSlot::RightHand:
+        case E_ActionWeaponSlot::Right:
             // Unequip from active right hand slot
             if (RightHandSlots.Num() > 0)
             {
                 SlotTag = RightHandSlots.GetByIndex(ActiveRightHandIndex);
             }
             break;
-        case E_ActionWeaponSlot::LeftHand:
+        case E_ActionWeaponSlot::Left:
             // Unequip from active left hand slot
             if (LeftHandSlots.Num() > 0)
             {
                 SlotTag = LeftHandSlots.GetByIndex(ActiveLeftHandIndex);
             }
             break;
-        case E_ActionWeaponSlot::TwoHand:
+        case E_ActionWeaponSlot::Dual:
             // Unequip from both hands - use right hand for two-handed weapons
             if (RightHandSlots.Num() > 0)
             {
                 SlotTag = RightHandSlots.GetByIndex(ActiveRightHandIndex);
             }
             break;
-        case E_ActionWeaponSlot::MatchActiveHand:
-            // Match current active hand
+        case E_ActionWeaponSlot::Null:
+            // Match current active hand based on stance
             if (bTwoHandStance && RightHandSlots.Num() > 0)
             {
                 SlotTag = RightHandSlots.GetByIndex(ActiveRightHandIndex);
@@ -407,9 +407,9 @@ E_ActionWeaponSlot UAC_EquipmentManager::GetActiveWeaponSlot() const
     // Determine active slot based on current state
     if (WeaponAbilitySlot == E_WeaponAbilityHandle::RightHand)
     {
-        return E_ActionWeaponSlot::RightHand;
+        return E_ActionWeaponSlot::Right;
     }
-    return E_ActionWeaponSlot::LeftHand;
+    return E_ActionWeaponSlot::Left;
 }
 
 bool UAC_EquipmentManager::AreBothWeaponSlotsActive() const

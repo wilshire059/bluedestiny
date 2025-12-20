@@ -54,12 +54,12 @@ void UBTS_IsTargetDead::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 
 	if (bTargetIsDead)
 	{
-		// Get our behavior manager and switch to Dead state
+		// Get our behavior manager and switch to configured state (default: Investigating)
 		UAC_AI_BehaviorManager* BehaviorManager = ControlledPawn->FindComponentByClass<UAC_AI_BehaviorManager>();
 		if (BehaviorManager)
 		{
 			FInstancedStruct EmptyData;
-			BehaviorManager->SetState(E_AI_States::Dead, EmptyData);
+			BehaviorManager->SetState(StateToSwitchTo, EmptyData);
 		}
 	}
 }

@@ -34,7 +34,7 @@ E_Progress UAC_ProgressManager::GetProgress(FGameplayTag ID) const
     {
         return ProgressState[ID];
     }
-    return E_Progress::None;
+    return E_Progress::NotStarted;
 }
 
 void UAC_ProgressManager::ExecuteGameplayEvents(const TArray<FDialogGameplayEvent>& GameplayEvents)

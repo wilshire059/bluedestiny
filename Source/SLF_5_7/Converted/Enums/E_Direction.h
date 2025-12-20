@@ -3,16 +3,18 @@
 #include "CoreMinimal.h"
 #include "E_Direction.generated.h"
 
+// Matches Blueprint E_Direction exactly
+// JSON values: Idle, Fwd, Fwd Left, Fwd Right, Left, Right, Bwd, Bwd Left, Bwd Right
 UENUM(BlueprintType)
 enum class E_Direction : uint8
 {
-	None UMETA(DisplayName = "None"),
-	Forward UMETA(DisplayName = "Forward"),
-	Backward UMETA(DisplayName = "Backward"),
+	Idle UMETA(DisplayName = "Idle"),
+	Fwd UMETA(DisplayName = "Fwd"),
+	FwdLeft UMETA(DisplayName = "Fwd Left"),
+	FwdRight UMETA(DisplayName = "Fwd Right"),
 	Left UMETA(DisplayName = "Left"),
 	Right UMETA(DisplayName = "Right"),
-	ForwardLeft UMETA(DisplayName = "Forward Left"),
-	ForwardRight UMETA(DisplayName = "Forward Right"),
-	BackwardLeft UMETA(DisplayName = "Backward Left"),
-	BackwardRight UMETA(DisplayName = "Backward Right")
+	Bwd UMETA(DisplayName = "Bwd"),
+	BwdLeft UMETA(DisplayName = "Bwd Left"),
+	BwdRight UMETA(DisplayName = "Bwd Right")
 };

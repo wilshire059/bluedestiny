@@ -3,17 +3,16 @@
 #include "CoreMinimal.h"
 #include "E_AI_States.generated.h"
 
+// Matches Blueprint E_AI_States exactly
 UENUM(BlueprintType)
 enum class E_AI_States : uint8
 {
 	Idle UMETA(DisplayName = "Idle"),
-	Patrol UMETA(DisplayName = "Patrol"),
-	Chase UMETA(DisplayName = "Chase"),
+	RandomRoam UMETA(DisplayName = "Random Roam"),
+	Patrolling UMETA(DisplayName = "Patrolling"),
+	Investigating UMETA(DisplayName = "Investigating"),
 	Combat UMETA(DisplayName = "Combat"),
-	Investigate UMETA(DisplayName = "Investigate"),
-	Stagger UMETA(DisplayName = "Stagger"),
-	Dead UMETA(DisplayName = "Dead"),
-	Disabled UMETA(DisplayName = "Disabled"),
-	Reset UMETA(DisplayName = "Reset")
+	PoiseBroken UMETA(DisplayName = "Poise Broken"),
+	Uninterruptable UMETA(DisplayName = "Uninterruptable"),
+	OutOfBounds UMETA(DisplayName = "Out of Bounds")
 };
-
