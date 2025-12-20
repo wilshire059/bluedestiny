@@ -11,6 +11,8 @@
 #include "Classes/B_Interactable.h"
 #include "InputMappingContext.h"
 #include "Structs/FModularMeshData.h"
+#include "MovieSceneSequencePlaybackSettings.h"
+#include "GameplayTagContainer.h"
 #include "B_Soulslike_Character.generated.h"
 
 // Forward declarations
@@ -19,6 +21,8 @@ class UAC_LadderManager;
 class AB_Ladder;
 class UPDA_Action;
 class UPDA_BaseCharacterInfo;
+class ULevelSequence;
+class UAC_AI_InteractionManager;
 
 // Delegates
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnTargetLockRotationEnd);
@@ -364,9 +368,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
 	void LootItemToInventory(class AB_PickupItem* Item);
 
-	UFUNCTION(BlueprintCallable, Category = "Camera")
-	void ResetCameraView();
-
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	void SendBigScreenMessage(const FText& Message, float Duration);
 
@@ -381,13 +382,41 @@ public:
 	virtual void DisableChaosDestroy_Implementation() override;
 
 	//========================================
-	// BPI_Player INTERFACE
+	// BPI_Player INTERFACE (All functions)
 	//========================================
 
-	virtual void OnInteractableTraced_Implementation(AB_Interactable* Interactable) override;
-	virtual void OnRest_Implementation(AActor* Campfire) override;
-	virtual void OnLootItem_Implementation(AActor* Item) override;
+	// Camera Functions
+	virtual void ResetCameraView_Implementation(double TimeScale) override;
+	virtual void StopActiveCameraSequence_Implementation() override;
+	virtual void PlayCameraSequence_Implementation(ULevelSequence* Sequence, FMovieSceneSequencePlaybackSettings Settings) override;
+
+	// Combat Functions
+	virtual void PlayBackstabMontage_Implementation(UAnimMontage* Montage, FGameplayTag ExecutionTag) override;
+	virtual void PlayExecuteMontage_Implementation(UAnimMontage* Montage, FGameplayTag ExecutionTag) override;
 	virtual void TriggerChaosField_Implementation(bool bEnable) override;
+	virtual void OnTargetLocked_Implementation(bool bTargetLocked, bool bRotateTowards) override;
+
+	// Interaction Functions
+	virtual void OnInteractableTraced_Implementation(AB_Interactable* Interactable) override;
+	virtual void OnRest_Implementation(AActor* TargetCampfire) override;
+	virtual void OnLootItem_Implementation(AActor* Item) override;
+	virtual void DiscoverRestingPoint_Implementation(UAnimMontage* InteractionMontage, AActor* Point) override;
+	virtual void OnDialogStarted_Implementation(UAC_AI_InteractionManager* DialogComponent) override;
+	virtual void OnNpcTraced_Implementation(AActor* NPC) override;
+
+	// Character Access
+	virtual AActor* GetSoulslikeCharacter_Implementation() override;
+	virtual void ToggleCrouchReplicated_Implementation() override;
+
+	// Equipment Visual Functions
+	virtual void ResetGreaves_Implementation() override;
+	virtual void ResetGloves_Implementation() override;
+	virtual void ResetArmor_Implementation() override;
+	virtual void ResetHeadpiece_Implementation() override;
+	virtual void ChangeGreaves_Implementation(USkeletalMesh* NewMesh) override;
+	virtual void ChangeGloves_Implementation(USkeletalMesh* NewMesh) override;
+	virtual void ChangeArmor_Implementation(USkeletalMesh* NewMesh) override;
+	virtual void ChangeHeadpiece_Implementation(USkeletalMesh* NewMesh) override;
 
 protected:
 	//========================================

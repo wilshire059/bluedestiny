@@ -44,7 +44,8 @@ public class SLF_5_7 : ModuleRules
 			"PhysicsCore",
 			"EngineCameras",
 			"StructUtils",
-			"LevelSequence"
+			"LevelSequence",
+			"MovieScene"
 		});
 
 		// Editor-only modules (Blutility for Editor Utility Widgets)

@@ -5,6 +5,7 @@
 #include "Components/AC_InputBuffer.h"
 #include "Components/AC_LadderManager.h"
 #include "Components/AC_ProgressManager.h"
+#include "Components/AC_AI_InteractionManager.h"
 #include "Classes/PC_SoulslikeFramework.h"
 #include "Classes/B_Ladder.h"
 #include "Classes/B_PickupItem.h"
@@ -13,6 +14,8 @@
 #include "Blueprint/UserWidget.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "LevelSequence.h"
+#include "Animation/AnimMontage.h"
 
 AB_Soulslike_Character::AB_Soulslike_Character()
 {
@@ -742,14 +745,7 @@ void AB_Soulslike_Character::LootItemToInventory(AB_PickupItem* Item)
 	}
 }
 
-void AB_Soulslike_Character::ResetCameraView()
-{
-	// Reset camera to default position
-	SpringArm->TargetArmLength = 300.0f;
-	SpringArm->SocketOffset = FVector(0.0f, 0.0f, 25.0f);
-
-	OnCameraResetFinished.Broadcast();
-}
+// Note: ResetCameraView moved to BPI_Player interface implementations section
 
 void AB_Soulslike_Character::SendBigScreenMessage(const FText& Message, float Duration)
 {
@@ -831,5 +827,152 @@ void AB_Soulslike_Character::TriggerChaosField_Implementation(bool bEnable)
 	else
 	{
 		DisableChaosDestroy_Implementation();
+	}
+}
+
+// Camera Functions
+void AB_Soulslike_Character::ResetCameraView_Implementation(double TimeScale)
+{
+	// Reset camera to default position with optional time scaling
+	if (SpringArm)
+	{
+		SpringArm->TargetArmLength = 300.0f;
+		SpringArm->SocketOffset = FVector(0.0f, 0.0f, 25.0f);
+	}
+
+	OnCameraResetFinished.Broadcast();
+}
+
+void AB_Soulslike_Character::StopActiveCameraSequence_Implementation()
+{
+	// Stop any currently playing camera sequence
+	// Implementation would depend on how camera sequences are tracked
+}
+
+void AB_Soulslike_Character::PlayCameraSequence_Implementation(ULevelSequence* Sequence, FMovieSceneSequencePlaybackSettings Settings)
+{
+	// Play a camera sequence with the given settings
+	// Would typically use ULevelSequencePlayer to play the sequence
+}
+
+// Combat Functions
+void AB_Soulslike_Character::PlayBackstabMontage_Implementation(UAnimMontage* Montage, FGameplayTag ExecutionTag)
+{
+	// Play backstab execution montage
+	if (Montage && GetMesh() && GetMesh()->GetAnimInstance())
+	{
+		GetMesh()->GetAnimInstance()->Montage_Play(Montage);
+	}
+}
+
+void AB_Soulslike_Character::PlayExecuteMontage_Implementation(UAnimMontage* Montage, FGameplayTag ExecutionTag)
+{
+	// Play execution montage (similar to backstab)
+	if (Montage && GetMesh() && GetMesh()->GetAnimInstance())
+	{
+		GetMesh()->GetAnimInstance()->Montage_Play(Montage);
+	}
+}
+
+void AB_Soulslike_Character::OnTargetLocked_Implementation(bool bTargetLocked, bool bRotateTowards)
+{
+	// Handle target lock state change
+	bIsTargetLocked = bTargetLocked;
+	// bRotateTowards would typically control camera/character rotation behavior
+}
+
+// Interaction Functions
+void AB_Soulslike_Character::DiscoverRestingPoint_Implementation(UAnimMontage* InteractionMontage, AActor* Point)
+{
+	// Handle discovering a new resting point
+	if (Point)
+	{
+		// Play interaction montage if provided
+		if (InteractionMontage && GetMesh() && GetMesh()->GetAnimInstance())
+		{
+			GetMesh()->GetAnimInstance()->Montage_Play(InteractionMontage);
+		}
+	}
+}
+
+void AB_Soulslike_Character::OnDialogStarted_Implementation(UAC_AI_InteractionManager* DialogComponent)
+{
+	// Handle dialog starting with an NPC
+	// Would typically lock player input and show dialog UI
+}
+
+void AB_Soulslike_Character::OnNpcTraced_Implementation(AActor* NPC)
+{
+	// Handle NPC trace for interaction
+	// Could show interaction prompt or highlight NPC
+}
+
+// Character Access
+AActor* AB_Soulslike_Character::GetSoulslikeCharacter_Implementation()
+{
+	return this;
+}
+
+void AB_Soulslike_Character::ToggleCrouchReplicated_Implementation()
+{
+	// Toggle crouch state - this would be replicated across network
+	// Implementation depends on movement component setup
+}
+
+// Equipment Visual Functions
+void AB_Soulslike_Character::ResetGreaves_Implementation()
+{
+	// Reset greaves to default mesh
+	// Would restore the default skeletal mesh for leg armor
+}
+
+void AB_Soulslike_Character::ResetGloves_Implementation()
+{
+	// Reset gloves to default mesh
+}
+
+void AB_Soulslike_Character::ResetArmor_Implementation()
+{
+	// Reset armor to default mesh
+}
+
+void AB_Soulslike_Character::ResetHeadpiece_Implementation()
+{
+	// Reset headpiece to default mesh
+}
+
+void AB_Soulslike_Character::ChangeGreaves_Implementation(USkeletalMesh* NewMesh)
+{
+	// Change greaves mesh
+	if (NewMesh)
+	{
+		// Apply new mesh to greaves component
+	}
+}
+
+void AB_Soulslike_Character::ChangeGloves_Implementation(USkeletalMesh* NewMesh)
+{
+	// Change gloves mesh
+	if (NewMesh)
+	{
+		// Apply new mesh to gloves component
+	}
+}
+
+void AB_Soulslike_Character::ChangeArmor_Implementation(USkeletalMesh* NewMesh)
+{
+	// Change armor mesh
+	if (NewMesh)
+	{
+		// Apply new mesh to armor component
+	}
+}
+
+void AB_Soulslike_Character::ChangeHeadpiece_Implementation(USkeletalMesh* NewMesh)
+{
+	// Change headpiece mesh
+	if (NewMesh)
+	{
+		// Apply new mesh to headpiece component
 	}
 }

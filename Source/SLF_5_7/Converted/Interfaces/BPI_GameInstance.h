@@ -48,7 +48,8 @@ public:
 
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Game Instance")
     void SetSelectedClass(UPDA_BaseCharacterInfo* BaseCharacterClass);
-    
-    // Note: The JSON had GetSoulslikeGameInstance but we don't strictly need it if we are already casting or using the interface on the GI itself. 
-    // However, I'll add it for compatibility if needed, but usually redundant in interface on itself.
+
+    /** Get the Soulslike game instance (matches Blueprint signature) */
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Game Instance")
+    UGI_SoulslikeFramework* GetSoulslikeGameInstance();
 };
