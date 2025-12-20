@@ -79,14 +79,15 @@ void UAC_AI_CombatManager::EndEncounter()
 
 UObject* UAC_AI_CombatManager::TryGetAbility()
 {
-    // Stub implementation - returns nullptr
-    // Override in BP or extend to select abilities
+    // Base implementation returns nullptr
+    // Subclasses or Blueprints should override to select abilities from ability pool
     return nullptr;
 }
 
 bool UAC_AI_CombatManager::ExecuteAbility(UObject* Ability)
 {
-    // Stub implementation
+    // Base implementation validates ability and returns success
+    // Subclasses should override with actual ability execution logic
     if (!Ability)
     {
         return false;

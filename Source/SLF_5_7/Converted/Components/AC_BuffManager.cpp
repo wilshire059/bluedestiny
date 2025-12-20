@@ -76,3 +76,23 @@ void UAC_BuffManager::RemoveBuffOfType(UPDA_Buff* Buff)
 	// Full implementation requires B_Buff class
 	OnBuffDetected.Broadcast(Buff, false);
 }
+
+void UAC_BuffManager::TryGrantBuffs(const FGameplayTagContainer& BuffTags)
+{
+	// Grant buffs based on tags
+	// Full implementation would look up buff data assets by tag and call TryAddBuff
+	for (const FGameplayTag& Tag : BuffTags)
+	{
+		// Look up and grant buff for each tag
+		// This is a placeholder - full implementation would use data registry or asset manager
+	}
+}
+
+void UAC_BuffManager::TryRemoveBuffs(const FGameplayTagContainer& BuffTags)
+{
+	// Remove buffs based on tags
+	for (const FGameplayTag& Tag : BuffTags)
+	{
+		RemoveAllBuffsWithTag(Tag);
+	}
+}

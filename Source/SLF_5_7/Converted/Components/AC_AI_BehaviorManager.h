@@ -3,8 +3,11 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "Enums/E_AI_States.h"
+#include "Enums/E_AI_StateHandle.h"
+#include "Enums/E_StrafeMethod.h"
 #include "Classes/B_PatrolPath.h"
 #include "Structs/FAiPatrolPathInfo.h"
+#include "Structs/FStrafeMethodInfo.h"
 #include "StructUtils/InstancedStruct.h"
 #include "AC_AI_BehaviorManager.generated.h"
 
@@ -25,23 +28,38 @@ public:
     // PROPERTIES
     // ============================================================
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|State")
     E_AI_States CurrentState;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
-    TObjectPtr<AB_PatrolPath> PatrolPath;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|State")
+    E_AI_States PreviousState;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
-    TObjectPtr<AActor> Target;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Behavior")
     TObjectPtr<UBehaviorTree> Behavior;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Patrol")
+    TObjectPtr<AB_PatrolPath> PatrolPath;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Target")
+    TObjectPtr<AActor> CurrentTarget;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Distance Thresholds")
     double MaxChaseDistanceThreshold;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
-    double MinChaseDistanceThreshold;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Distance Thresholds")
+    double AttackDistanceThreshold;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Distance Thresholds")
+    double StrafeDistanceThreshold;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Distance Thresholds")
+    double SpeedAdjustDistanceThreshold;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Distance Thresholds")
+    double MinimumStrafePointDistanceThreshold;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Strafe")
+    TArray<FStrafeMethodInfo> StrafeMethods;
 
     // ============================================================
     // DELEGATES
@@ -71,6 +89,12 @@ public:
 
     UFUNCTION(BlueprintCallable, Category = "AI")
     void SetTarget(AActor* NewTarget);
+
+    UFUNCTION(BlueprintPure, Category = "AI")
+    E_AI_States GetState(E_AI_StateHandle Handle) const;
+
+    UFUNCTION(BlueprintPure, Category = "AI")
+    AActor* GetTarget() const;
 
 protected:
 	virtual void BeginPlay() override;

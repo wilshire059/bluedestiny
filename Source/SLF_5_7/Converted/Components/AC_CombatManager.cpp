@@ -11,7 +11,10 @@
 #include "Components/AC_StatManager.h"
 #include "Components/AC_EquipmentManager.h"
 #include "Components/AC_SaveLoadManager.h"
+#include "Components/AC_InventoryManager.h"
 #include "Classes/B_Stat.h"
+#include "Interfaces/BPI_Generic_Character.h"
+#include "Interfaces/BPI_Controller.h"
 
 UAC_CombatManager::UAC_CombatManager()
 {
@@ -65,19 +68,134 @@ void UAC_CombatManager::HandleDeath(UAC_StatManager* StatManager, const FHitResu
 
 void UAC_CombatManager::EnableRagdoll()
 {
-    // Would call BPI_GenericCharacter::EnableRagdoll on the owner
-    // Placeholder: implementation depends on the character class
+    AActor* Owner = GetOwner();
+    if (!Owner)
+    {
+        return;
+    }
+
+    // Call the EnableRagdoll interface function on the owner
+    if (Owner->GetClass()->ImplementsInterface(UBPI_Generic_Character::StaticClass()))
+    {
+        IBPI_Generic_Character::Execute_EnableRagdoll(Owner);
+    }
 }
 
 void UAC_CombatManager::StartRespawn(float FadeDelay)
 {
-    // Would call BPI_GenericCharacter::StartRespawn on the controller
-    // Placeholder: implementation depends on the controller class
+    AActor* Owner = GetOwner();
+    if (!Owner)
+    {
+        return;
+    }
+
+    APawn* Pawn = Cast<APawn>(Owner);
+    if (!Pawn)
+    {
+        return;
+    }
+
+    AController* Controller = Pawn->GetController();
+    if (!Controller)
+    {
+        return;
+    }
+
+    // Call the StartRespawn interface function on the controller
+    if (Controller->GetClass()->ImplementsInterface(UBPI_Controller::StaticClass()))
+    {
+        IBPI_Controller::Execute_StartRespawn(Controller, FadeDelay);
+    }
 }
 
 void UAC_CombatManager::DropCurrency()
 {
-    // Implementation depends on currency pickup actor spawning
+    AActor* Owner = GetOwner();
+    if (!Owner)
+    {
+        return;
+    }
+
+    // Get the killer's inventory manager to adjust their currency
+    APawn* Instigator = Owner->GetInstigator();
+    if (!Instigator)
+    {
+        return;
+    }
+
+    AController* InstigatorController = Instigator->GetController();
+    if (!InstigatorController)
+    {
+        return;
+    }
+
+    UAC_InventoryManager* InventoryManager = InstigatorController->FindComponentByClass<UAC_InventoryManager>();
+    if (!InventoryManager)
+    {
+        return;
+    }
+
+    // Get current currency from inventory
+    int32 CurrentCurrency = InventoryManager->GetCurrentCurrency();
+
+    // Adjust the inventory currency to negative (remove it from player)
+    InventoryManager->AdjustCurrency(-CurrentCurrency);
+
+    // Determine spawn location - check if near boss door or use death location
+    FVector SpawnLocation = GetDeathCurrencySpawnPoint();
+
+    // Check if we're near a boss door using sphere overlap
+    TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
+    ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_WorldStatic));
+
+    TArray<AActor*> ActorsToIgnore;
+    TArray<AActor*> OutActors;
+
+    bool bFoundBossDoor = UKismetSystemLibrary::SphereOverlapActors(
+        this,
+        GetBossDoorCurrencyDropLocation(),
+        204.0f,
+        ObjectTypes,
+        nullptr, // Use nullptr for actor class filter since we're looking for B_Soulslike_Boss
+        ActorsToIgnore,
+        OutActors
+    );
+
+    if (bFoundBossDoor && OutActors.Num() > 0)
+    {
+        SpawnLocation = GetBossDoorCurrencyDropLocation();
+    }
+
+    // Spawn the death currency actor
+    FActorSpawnParameters SpawnParams;
+    SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+
+    UClass* DeathCurrencyClass = LoadClass<AActor>(nullptr, TEXT("/Game/SoulslikeFramework/Blueprints/_WorldActors/Interactables/B_DeathCurrency.B_DeathCurrency_C"));
+
+    if (DeathCurrencyClass)
+    {
+        AActor* SpawnedCurrency = GetWorld()->SpawnActor<AActor>(
+            DeathCurrencyClass,
+            SpawnLocation,
+            FRotator::ZeroRotator,
+            SpawnParams
+        );
+
+        if (SpawnedCurrency)
+        {
+            // Set the currency amount on the spawned actor
+            // The B_DeathCurrency blueprint expects a "CurrencyAmount" property
+            FProperty* CurrencyProp = SpawnedCurrency->GetClass()->FindPropertyByName(TEXT("CurrencyAmount"));
+            if (CurrencyProp)
+            {
+                int32* CurrencyValue = CurrencyProp->ContainerPtrToValuePtr<int32>(SpawnedCurrency);
+                if (CurrencyValue)
+                {
+                    *CurrencyValue = CurrentCurrency;
+                }
+            }
+        }
+    }
 }
 
 FVector UAC_CombatManager::GetBossDoorCurrencyDropLocation() const
@@ -481,14 +599,20 @@ E_ActionWeaponSlot UAC_CombatManager::GetActiveWeaponSlot() const
 
 void UAC_CombatManager::PlayMontageReplicated(UAnimMontage* Montage, float PlayRate, float StartPosition, FName StartSection)
 {
-    // Would call BPI_GenericCharacter::PlayMontageReplicated on the owner
-    // Placeholder: implementation depends on the character class
+    AActor* Owner = GetOwner();
+    if (Owner && Owner->GetClass()->ImplementsInterface(UBPI_Generic_Character::StaticClass()))
+    {
+        IBPI_Generic_Character::Execute_PlayMontageReplicated(Owner, Montage, PlayRate, StartPosition, StartSection);
+    }
 }
 
 void UAC_CombatManager::PlaySoftMontageReplicated(TSoftObjectPtr<UAnimMontage> Montage, float PlayRate, float StartPosition, FName StartSection, bool bPriority)
 {
-    // Would call BPI_GenericCharacter::PlaySoftMontageReplicated on the owner
-    // Placeholder: implementation depends on the character class
+    AActor* Owner = GetOwner();
+    if (Owner && Owner->GetClass()->ImplementsInterface(UBPI_Generic_Character::StaticClass()))
+    {
+        IBPI_Generic_Character::Execute_PlaySoftMontageReplicated(Owner, Montage, PlayRate, StartPosition, StartSection, bPriority);
+    }
 }
 
 void UAC_CombatManager::PlaySoftSoundAtLocation(TSoftObjectPtr<USoundBase> Sound, FVector Location)
@@ -519,8 +643,11 @@ void UAC_CombatManager::PlaySoftNiagaraOneshotAtLocationReplicated(TSoftObjectPt
 
 void UAC_CombatManager::SetMovementMode(E_MovementType Type)
 {
-    // Would call BPI_GenericCharacter::SetMovementMode on the owner
-    // Placeholder: implementation depends on the character class
+    AActor* Owner = GetOwner();
+    if (Owner && Owner->GetClass()->ImplementsInterface(UBPI_Generic_Character::StaticClass()))
+    {
+        IBPI_Generic_Character::Execute_SetMovementMode(Owner, Type);
+    }
 }
 
 void UAC_CombatManager::SetState(E_AI_States NewState, const FInstancedStruct& Data)

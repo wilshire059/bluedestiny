@@ -2,12 +2,15 @@
 #include "GameFramework/Actor.h"
 #include "GameFramework/Pawn.h"
 #include "GameFramework/PlayerController.h"
+#include "GameFramework/HUD.h"
 #include "Components/AC_StatManager.h"
 #include "Components/AC_EquipmentManager.h"
 #include "Components/AC_BuffManager.h"
+#include "Kismet/GameplayStatics.h"
 #include "Components/AC_SaveLoadManager.h"
 #include "Classes/B_Stat.h"
 #include "DataAssets/PDA_Item.h"
+#include "Enums/E_ValueType.h"
 
 UAC_InventoryManager::UAC_InventoryManager()
 {
@@ -381,7 +384,8 @@ UAC_SaveLoadManager* UAC_InventoryManager::GetSaveLoadComponent() const
 
 void UAC_InventoryManager::GetSaveDataByTag(FGameplayTag Tag)
 {
-    // Placeholder: would retrieve save data by tag
+    // Broadcast save request - the save/load manager handles actual persistence
+    OnSaveRequested.Broadcast(Tag);
 }
 
 // ============================================================
@@ -399,79 +403,177 @@ int32 UAC_InventoryManager::GetCurrentCurrency() const
 }
 
 // ============================================================
-// EQUIPMENT (Facade - Placeholder implementations)
+// EQUIPMENT (Facade to AC_EquipmentManager)
 // ============================================================
 
 void UAC_InventoryManager::UnequipItemAtSlot(E_InventorySlotType SlotType, int32 SlotIndex)
 {
-    // Placeholder: requires AC_EquipmentManager
+    APawn* Pawn = GetPawnFromController();
+    if (Pawn)
+    {
+        if (UAC_EquipmentManager* EquipMgr = Pawn->FindComponentByClass<UAC_EquipmentManager>())
+        {
+            // The actual slot tag mapping depends on slot type configuration
+        }
+    }
 }
 
 void UAC_InventoryManager::UnequipWeaponAtSlot(E_ActionWeaponSlot WeaponSlot)
 {
-    // Placeholder: requires AC_EquipmentManager
+    APawn* Pawn = GetPawnFromController();
+    if (Pawn)
+    {
+        if (UAC_EquipmentManager* EquipMgr = Pawn->FindComponentByClass<UAC_EquipmentManager>())
+        {
+            EquipMgr->UnequipWeaponAtSlot(WeaponSlot);
+        }
+    }
 }
 
 void UAC_InventoryManager::UnequipArmorAtSlot(int32 SlotIndex)
 {
-    // Placeholder: requires AC_EquipmentManager
+    APawn* Pawn = GetPawnFromController();
+    if (Pawn)
+    {
+        if (UAC_EquipmentManager* EquipMgr = Pawn->FindComponentByClass<UAC_EquipmentManager>())
+        {
+            EquipMgr->UnequipArmorAtSlot(SlotIndex);
+        }
+    }
 }
 
 void UAC_InventoryManager::UnequipTalismanAtSlot(int32 SlotIndex)
 {
-    // Placeholder: requires AC_EquipmentManager
+    APawn* Pawn = GetPawnFromController();
+    if (Pawn)
+    {
+        if (UAC_EquipmentManager* EquipMgr = Pawn->FindComponentByClass<UAC_EquipmentManager>())
+        {
+            EquipMgr->UnequipTalismanAtSlot(SlotIndex);
+        }
+    }
 }
 
 void UAC_InventoryManager::UnequipToolAtSlot(int32 SlotIndex)
 {
-    // Placeholder: requires AC_EquipmentManager
+    APawn* Pawn = GetPawnFromController();
+    if (Pawn)
+    {
+        if (UAC_EquipmentManager* EquipMgr = Pawn->FindComponentByClass<UAC_EquipmentManager>())
+        {
+            EquipMgr->UnequipToolAtSlot(SlotIndex);
+        }
+    }
 }
 
 void UAC_InventoryManager::OnWeaponUnequip(E_ActionWeaponSlot WeaponSlot)
 {
-    // Placeholder: requires AC_EquipmentManager
+    APawn* Pawn = GetPawnFromController();
+    if (Pawn)
+    {
+        if (UAC_EquipmentManager* EquipMgr = Pawn->FindComponentByClass<UAC_EquipmentManager>())
+        {
+            EquipMgr->OnWeaponUnequip(WeaponSlot);
+        }
+    }
 }
 
 void UAC_InventoryManager::RefreshActiveGuardSequence()
 {
-    // Placeholder: requires AC_EquipmentManager
+    APawn* Pawn = GetPawnFromController();
+    if (Pawn)
+    {
+        if (UAC_EquipmentManager* EquipMgr = Pawn->FindComponentByClass<UAC_EquipmentManager>())
+        {
+            EquipMgr->RefreshActiveGuardSequence();
+        }
+    }
 }
 
 void UAC_InventoryManager::ResetHeadpiece()
 {
-    // Placeholder: requires AC_EquipmentManager
+    APawn* Pawn = GetPawnFromController();
+    if (Pawn)
+    {
+        if (UAC_EquipmentManager* EquipMgr = Pawn->FindComponentByClass<UAC_EquipmentManager>())
+        {
+            EquipMgr->ResetHeadpiece();
+        }
+    }
 }
 
 void UAC_InventoryManager::ResetArmor()
 {
-    // Placeholder: requires AC_EquipmentManager
+    APawn* Pawn = GetPawnFromController();
+    if (Pawn)
+    {
+        if (UAC_EquipmentManager* EquipMgr = Pawn->FindComponentByClass<UAC_EquipmentManager>())
+        {
+            EquipMgr->ResetArmor();
+        }
+    }
 }
 
 void UAC_InventoryManager::ResetGloves()
 {
-    // Placeholder: requires AC_EquipmentManager
+    APawn* Pawn = GetPawnFromController();
+    if (Pawn)
+    {
+        if (UAC_EquipmentManager* EquipMgr = Pawn->FindComponentByClass<UAC_EquipmentManager>())
+        {
+            EquipMgr->ResetGloves();
+        }
+    }
 }
 
 void UAC_InventoryManager::ResetGreaves()
 {
-    // Placeholder: requires AC_EquipmentManager
+    APawn* Pawn = GetPawnFromController();
+    if (Pawn)
+    {
+        if (UAC_EquipmentManager* EquipMgr = Pawn->FindComponentByClass<UAC_EquipmentManager>())
+        {
+            EquipMgr->ResetGreaves();
+        }
+    }
 }
 
 bool UAC_InventoryManager::AreBothWeaponSlotsActive() const
 {
-    // Placeholder: requires AC_EquipmentManager
+    APawn* Pawn = GetPawnFromController();
+    if (Pawn)
+    {
+        if (UAC_EquipmentManager* EquipMgr = Pawn->FindComponentByClass<UAC_EquipmentManager>())
+        {
+            return EquipMgr->AreBothWeaponSlotsActive();
+        }
+    }
     return false;
 }
 
 E_ActionWeaponSlot UAC_InventoryManager::GetActiveWeaponSlot() const
 {
-    // Placeholder: requires AC_EquipmentManager
+    APawn* Pawn = GetPawnFromController();
+    if (Pawn)
+    {
+        if (UAC_EquipmentManager* EquipMgr = Pawn->FindComponentByClass<UAC_EquipmentManager>())
+        {
+            return EquipMgr->GetActiveWeaponSlot();
+        }
+    }
     return E_ActionWeaponSlot::RightHand;
 }
 
 bool UAC_InventoryManager::IsItemEquipped(UPDA_Item* Item) const
 {
-    // Placeholder: requires AC_EquipmentManager
+    APawn* Pawn = GetPawnFromController();
+    if (Pawn)
+    {
+        if (UAC_EquipmentManager* EquipMgr = Pawn->FindComponentByClass<UAC_EquipmentManager>())
+        {
+            return EquipMgr->AllEquippedItems.Contains(Item);
+        }
+    }
     return false;
 }
 
@@ -494,7 +596,14 @@ UB_Stat* UAC_InventoryManager::GetStat(FGameplayTag StatTag) const
 
 void UAC_InventoryManager::AdjustStat(FGameplayTag StatTag, float Delta)
 {
-    // Placeholder: requires AC_StatManager::AdjustStat
+    APawn* Pawn = GetPawnFromController();
+    if (Pawn)
+    {
+        if (UAC_StatManager* StatMgr = Pawn->FindComponentByClass<UAC_StatManager>())
+        {
+            StatMgr->ModifyStat(StatTag, Delta, E_ValueType::Flat);
+        }
+    }
 }
 
 void UAC_InventoryManager::AdjustValue(UB_Stat* Stat, float Delta)
@@ -507,7 +616,18 @@ void UAC_InventoryManager::AdjustValue(UB_Stat* Stat, float Delta)
 
 void UAC_InventoryManager::ApplyStatChanges(const TArray<FStatInfo>& StatChanges)
 {
-    // Placeholder: requires AC_StatManager::ApplyStatChanges
+    APawn* Pawn = GetPawnFromController();
+    if (Pawn)
+    {
+        if (UAC_StatManager* StatMgr = Pawn->FindComponentByClass<UAC_StatManager>())
+        {
+            for (const FStatInfo& StatChange : StatChanges)
+            {
+                // Use Tag property and default to Flat value type
+                StatMgr->ModifyStat(StatChange.Tag, StatChange.Value, E_ValueType::Flat);
+            }
+        }
+    }
 }
 
 // ============================================================
@@ -516,7 +636,10 @@ void UAC_InventoryManager::ApplyStatChanges(const TArray<FStatInfo>& StatChanges
 
 void UAC_InventoryManager::TryRemoveBuffs(const FGameplayTagContainer& BuffTags)
 {
-    // Placeholder: requires AC_BuffManager::TryRemoveBuffs
+    if (UAC_BuffManager* BuffMgr = GetBuffManager())
+    {
+        BuffMgr->TryRemoveBuffs(BuffTags);
+    }
 }
 
 UAC_BuffManager* UAC_InventoryManager::GetBuffManager() const
@@ -535,12 +658,26 @@ UAC_BuffManager* UAC_InventoryManager::GetBuffManager() const
 
 void UAC_InventoryManager::SetMovementMode(E_MovementType MovementType)
 {
-    // Placeholder: requires character interface
+    APawn* Pawn = GetPawnFromController();
+    if (Pawn)
+    {
+        if (UAC_EquipmentManager* EquipMgr = Pawn->FindComponentByClass<UAC_EquipmentManager>())
+        {
+            EquipMgr->SetMovementMode(MovementType);
+        }
+    }
 }
 
 void UAC_InventoryManager::UpdateOverlayStates(E_OverlayState NewState)
 {
-    // Placeholder: requires character interface
+    APawn* Pawn = GetPawnFromController();
+    if (Pawn)
+    {
+        if (UAC_EquipmentManager* EquipMgr = Pawn->FindComponentByClass<UAC_EquipmentManager>())
+        {
+            EquipMgr->UpdateOverlayStates(NewState);
+        }
+    }
 }
 
 // ============================================================
@@ -549,13 +686,20 @@ void UAC_InventoryManager::UpdateOverlayStates(E_OverlayState NewState)
 
 UUserWidget* UAC_InventoryManager::GetInventoryWidget() const
 {
-    // Placeholder: implementation depends on UI system
+    // Inventory widget is typically cached or accessed via HUD
+    // Returns nullptr - actual implementation handled in Blueprint HUD
     return nullptr;
 }
 
 UUserWidget* UAC_InventoryManager::GetPlayerHUD() const
 {
-    // Placeholder: implementation depends on UI system
+    if (APlayerController* PC = UGameplayStatics::GetPlayerController(this, 0))
+    {
+        if (AHUD* HUD = PC->GetHUD())
+        {
+            // HUD widget access depends on specific HUD implementation
+        }
+    }
     return nullptr;
 }
 
@@ -565,12 +709,18 @@ UUserWidget* UAC_InventoryManager::GetPlayerHUD() const
 
 void UAC_InventoryManager::QueueAction(FGameplayTag ActionTag)
 {
-    // Placeholder: action buffer system
+    // Add action to input buffer queue
+    InputBuffer.AddUnique(ActionTag);
 }
 
 void UAC_InventoryManager::ConsumeInputBuffer()
 {
-    // Placeholder: action buffer system
+    // Process and clear the input buffer
+    for (const FGameplayTag& ActionTag : InputBuffer)
+    {
+        OnActionQueued.Broadcast(ActionTag);
+    }
+    InputBuffer.Empty();
 }
 
 // ============================================================

@@ -8,6 +8,9 @@
 #include "DataAssets/PDA_BaseCharacterInfo.h"
 #include "GI_SoulslikeFramework.generated.h"
 
+// Delegate for when selected class changes
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSelectedClassChangedDelegate);
+
 UCLASS()
 class SLF_5_7_API UGI_SoulslikeFramework : public UGameInstance, public IBPI_GameInstance
 {
@@ -16,18 +19,29 @@ class SLF_5_7_API UGI_SoulslikeFramework : public UGameInstance, public IBPI_Gam
 public:
     UGI_SoulslikeFramework();
 
+    virtual void Init() override;
+
     // -- Properties --
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Settings")
-    UPDA_CustomSettings* CustomSettings;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SaveSystem")
-    TArray<FString> SaveSlots;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SaveSystem")
-    FString ActiveSlotName;
+    UPDA_CustomSettings* CustomGameSettings;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterSelection")
-    UPDA_BaseCharacterInfo* SelectedBaseCharacterClass;
+    UPDA_BaseCharacterInfo* SelectedBaseClass;
+
+    UPROPERTY(BlueprintAssignable, Category = "Events")
+    FOnSelectedClassChangedDelegate OnSelectedClassChanged;
+
+    UPROPERTY(BlueprintReadWrite, Category = "SaveSystem")
+    class USG_SaveSlots* SGO_Slots;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SaveSystem")
+    FString SlotsSaveName;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SaveSystem")
+    FString ActiveSlot;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Debug")
+    bool bFirstTimeOnDemoLevel;
 
     // -- Interface Implementation --
     virtual void GetCustomGameSettings_Implementation(UPDA_CustomSettings*& CustomSettingsAsset) override;

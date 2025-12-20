@@ -38,6 +38,9 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Stat")
     void ToggleRegen(bool bEnable);
 
+    UFUNCTION(BlueprintCallable, Category = "Stat")
+    void ResetToBase();
+
     // Properties
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat", meta = (ExposeOnSpawn = "true"))
     FGameplayTag StatTag;

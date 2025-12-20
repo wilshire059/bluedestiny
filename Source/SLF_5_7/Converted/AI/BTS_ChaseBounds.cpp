@@ -1,15 +1,18 @@
 #include "BTS_ChaseBounds.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "AIController.h"
-#include "BehaviorTree/Blackboard/BlackboardKeyType_Bool.h"
-#include "BehaviorTree/Blackboard/BlackboardKeyType_Object.h"
+#include "AC_AI_BehaviorManager.h"
+#include "E_AI_States.h"
+#include "StructUtils/InstancedStruct.h"
+#include "Kismet/KismetMathLibrary.h"
 
 UBTS_ChaseBounds::UBTS_ChaseBounds()
 {
 	NodeName = TEXT("Chase Bounds");
 
-	TargetKey.AddObjectFilter(this, GET_MEMBER_NAME_CHECKED(UBTS_ChaseBounds, TargetKey), AActor::StaticClass());
-	OutOfBoundsKey.AddBoolFilter(this, GET_MEMBER_NAME_CHECKED(UBTS_ChaseBounds, OutOfBoundsKey));
+	StartPositionKey.AddVectorFilter(this, GET_MEMBER_NAME_CHECKED(UBTS_ChaseBounds, StartPositionKey));
+	ChaseDistanceKey.AddFloatFilter(this, GET_MEMBER_NAME_CHECKED(UBTS_ChaseBounds, ChaseDistanceKey));
+	StateKey.AddEnumFilter(this, GET_MEMBER_NAME_CHECKED(UBTS_ChaseBounds, StateKey), StaticEnum<E_AI_States>());
 }
 
 void UBTS_ChaseBounds::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
@@ -28,30 +31,37 @@ void UBTS_ChaseBounds::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 		return;
 	}
 
-	// Set start location on first tick
-	if (!bStartLocationSet && bUseStartLocation)
-	{
-		StartLocation = ControlledPawn->GetActorLocation();
-		bStartLocationSet = true;
-	}
-
 	UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
 	if (!BlackboardComp)
 	{
 		return;
 	}
 
-	AActor* TargetActor = Cast<AActor>(BlackboardComp->GetValueAsObject(TargetKey.SelectedKeyName));
-	if (!TargetActor)
+	// Get start position from blackboard
+	FVector StartPosition = BlackboardComp->GetValueAsVector(StartPositionKey.SelectedKeyName);
+
+	// Get current pawn location
+	FVector CurrentLocation = ControlledPawn->GetActorLocation();
+
+	// Calculate distance from start position
+	double Distance = UKismetMathLibrary::Vector_Distance(StartPosition, CurrentLocation);
+
+	// Get chase distance threshold from blackboard
+	float ChaseDistance = BlackboardComp->GetValueAsFloat(ChaseDistanceKey.SelectedKeyName);
+
+	// Check if we've exceeded the chase bounds
+	if (Distance > ChaseDistance)
 	{
-		return;
+		// Get the state from blackboard and switch to it
+		uint8 StateValue = BlackboardComp->GetValueAsEnum(StateKey.SelectedKeyName);
+		E_AI_States NewState = static_cast<E_AI_States>(StateValue);
+
+		// Get behavior manager and set new state
+		UAC_AI_BehaviorManager* BehaviorManager = ControlledPawn->FindComponentByClass<UAC_AI_BehaviorManager>();
+		if (BehaviorManager)
+		{
+			FInstancedStruct EmptyData;
+			BehaviorManager->SetState(NewState, EmptyData);
+		}
 	}
-
-	// Calculate distance from start location to current position
-	FVector ReferenceLocation = bUseStartLocation ? StartLocation : ControlledPawn->GetActorLocation();
-	float DistanceToTarget = FVector::Dist(ReferenceLocation, TargetActor->GetActorLocation());
-
-	// Check if out of bounds
-	bool bOutOfBounds = DistanceToTarget > MaxChaseDistance;
-	BlackboardComp->SetValueAsBool(OutOfBoundsKey.SelectedKeyName, bOutOfBounds);
 }

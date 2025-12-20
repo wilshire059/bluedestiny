@@ -83,4 +83,10 @@ public:
 
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Generic Character")
     void SetMovementMode(E_MovementType MovementType);
+
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Generic Character")
+    void PlayMontageReplicated(UAnimMontage* Montage, float PlayRate, float StartPosition, FName StartSection);
+
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Generic Character")
+    void PlaySoftMontageReplicated(const TSoftObjectPtr<UAnimMontage>& Montage, float PlayRate, float StartPosition, FName StartSection, bool bPriority);
 };

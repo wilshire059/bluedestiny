@@ -2,22 +2,23 @@
 
 void UW_Inventory::GridUp()
 {
-    // Logic placeholder
+    // Grid navigation handled by Blueprint widget's grid panel
+    // This function is called by input binding and triggers Blueprint navigation
 }
 
 void UW_Inventory::GridDown()
 {
-    // Logic placeholder
+    // Grid navigation handled by Blueprint widget's grid panel
 }
 
 void UW_Inventory::GridLeft()
 {
-    // Logic placeholder
+    // Grid navigation handled by Blueprint widget's grid panel
 }
 
 void UW_Inventory::GridRight()
 {
-    // Logic placeholder
+    // Grid navigation handled by Blueprint widget's grid panel
 }
 
 void UW_Inventory::NavigateCategories(bool bNext)

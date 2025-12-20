@@ -5,16 +5,16 @@
 #include "GameplayTagContainer.h"
 #include "Engine/DataTable.h"
 #include "Enums/E_Progress.h"
+#include "Structs/FDialogEntry.h"
+#include "Structs/FDialogGameplayEvent.h"
 #include "AC_AI_InteractionManager.generated.h"
 
 class UPDA_Dialog;
+class UPDA_Vendor;
 class UAC_ProgressManager;
 class UAC_InventoryManager;
-class UUserWidget;
+class UW_HUD;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDialogStarted, UDataTable*, DialogTable);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDialogEnded);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnDialogEntryChanged, int32, EntryIndex, FName, RowName);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDialogFinished);
 
 UCLASS(ClassGroup = (Custom), Blueprintable, meta = (BlueprintSpawnableComponent))
@@ -26,6 +26,13 @@ public:
     UAC_AI_InteractionManager();
 
     // ============================================================
+    // PROPERTIES - NPC INFO
+    // ============================================================
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction|NPC")
+    FText Name;
+
+    // ============================================================
     // PROPERTIES - DIALOG
     // ============================================================
 
@@ -33,98 +40,62 @@ public:
     TObjectPtr<UPDA_Dialog> DialogAsset;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction|Dialog")
-    TObjectPtr<UDataTable> ActiveDialogTable;
+    TSoftObjectPtr<UDataTable> ActiveTable;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction|Dialog")
-    TArray<FName> DialogRows;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction|Dialog")
+    UPROPERTY(BlueprintReadWrite, Category = "Interaction|Dialog")
     int32 CurrentIndex;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction|Dialog")
-    bool bDialogActive;
+    UPROPERTY(BlueprintReadWrite, Category = "Interaction|Dialog")
+    int32 MaxIndex;
+
+    // ============================================================
+    // PROPERTIES - VENDOR
+    // ============================================================
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction|Vendor")
+    TObjectPtr<UPDA_Vendor> VendorAsset;
 
     // ============================================================
     // PROPERTIES - REFERENCES
     // ============================================================
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction|References")
+    UPROPERTY(BlueprintReadWrite, Category = "Interaction|References")
     TObjectPtr<UAC_ProgressManager> ProgressManager;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction|References")
-    TObjectPtr<UUserWidget> HUDWidget;
 
     // ============================================================
     // DELEGATES
     // ============================================================
 
     UPROPERTY(BlueprintAssignable, Category = "Interaction")
-    FOnDialogStarted OnDialogStarted;
-
-    UPROPERTY(BlueprintAssignable, Category = "Interaction")
-    FOnDialogEnded OnDialogEnded;
-
-    UPROPERTY(BlueprintAssignable, Category = "Interaction")
-    FOnDialogEntryChanged OnDialogEntryChanged;
-
-    UPROPERTY(BlueprintAssignable, Category = "Interaction")
     FOnDialogFinished OnDialogFinished;
+
+    // ============================================================
+    // CUSTOM EVENTS (BlueprintCallable)
+    // ============================================================
+
+    UFUNCTION(BlueprintCallable, Category = "Interaction|Dialog")
+    void Event_BeginDialog(UAC_ProgressManager* InProgressManager, UW_HUD* HUD);
+
+    UFUNCTION(BlueprintCallable, Category = "Interaction|Dialog")
+    void Event_AdjustIndexForExit();
+
+    UFUNCTION(BlueprintCallable, Category = "Interaction|Dialog")
+    void Event_ResetDialogIndex();
 
     // ============================================================
     // DIALOG FUNCTIONS
     // ============================================================
 
     UFUNCTION(BlueprintCallable, Category = "Interaction|Dialog")
-    void BeginDialog(UAC_ProgressManager* InProgressManager, UUserWidget* InHUD);
-
-    UFUNCTION(BlueprintCallable, Category = "Interaction|Dialog")
-    void EndDialog();
-
-    UFUNCTION(BlueprintCallable, Category = "Interaction|Dialog")
-    void AdvanceDialog();
-
-    UFUNCTION(BlueprintCallable, Category = "Interaction|Dialog")
-    bool GetCurrentDialogEntry(UDataTable* DataTable, const TArray<FName>& Rows, FName& OutRowName);
-
-    UFUNCTION(BlueprintPure, Category = "Interaction|Dialog")
-    bool IsDialogActive() const;
-
-    // ============================================================
-    // PROGRESS FUNCTIONS
-    // ============================================================
-
-    UFUNCTION(BlueprintCallable, Category = "Interaction|Progress")
-    void SetProgress(FGameplayTag ProgressTag, E_Progress State);
-
-    UFUNCTION(BlueprintPure, Category = "Interaction|Progress")
-    E_Progress GetProgress(FGameplayTag ProgressTag) const;
-
-    UFUNCTION(BlueprintPure, Category = "Interaction|Progress")
-    UAC_ProgressManager* GetLocalProgressManager() const;
-
-    // ============================================================
-    // DIALOG TABLE FUNCTIONS
-    // ============================================================
-
-    UFUNCTION(BlueprintCallable, Category = "Interaction|Dialog")
-    TSoftObjectPtr<UDataTable> GetDialogTableBasedOnProgress(UAC_ProgressManager* InProgressManager);
-
-    // ============================================================
-    // GAMEPLAY EVENTS
-    // ============================================================
-
-    UFUNCTION(BlueprintCallable, Category = "Interaction|Events")
-    void ExecuteGameplayEvents(const TArray<FGameplayTag>& EventTags);
-
-    // ============================================================
-    // CURRENCY
-    // ============================================================
-
-    UFUNCTION(BlueprintCallable, Category = "Interaction|Currency")
-    void AdjustCurrency(int32 Amount);
+    void GetCurrentDialogEntry(UDataTable* DataTable, const TArray<FName>& Rows, FDialogEntry& OutRow);
 
 protected:
     virtual void BeginPlay() override;
 
-    void OnDialogTableLoaded(TSoftObjectPtr<UDataTable> LoadedTable);
+private:
+    // Helper function for async table loading (Event_BeginDialog)
+    void OnDialogTableLoadedForBeginDialog(TSoftObjectPtr<UDataTable> LoadedTable, UAC_ProgressManager* InProgressManager, UW_HUD* HUD);
+
+    // Helper function for async table loading (Event_AdjustIndexForExit)
+    void OnDialogTableLoadedForAdjustIndex(TSoftObjectPtr<UDataTable> LoadedTable);
 };

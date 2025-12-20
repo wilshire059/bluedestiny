@@ -24,6 +24,7 @@ class APlayerController;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractableDetected, AActor*, Interactable);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInteractableLost);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnTargetLocked_IM, AActor*, Target, bool, bLocked);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCloseAllMenus);
 
 UCLASS(ClassGroup = (Custom), Blueprintable, meta = (BlueprintSpawnableComponent))
 class SLF_5_7_API UAC_InteractionManager : public UActorComponent
@@ -67,6 +68,9 @@ public:
 
     UPROPERTY(BlueprintAssignable, Category = "LockOn")
     FOnTargetLocked_IM OnTargetLockedIM;
+
+    UPROPERTY(BlueprintAssignable, Category = "Menu")
+    FOnCloseAllMenus OnCloseAllMenus;
 
     // ============================================================
     // INTERACTION SYSTEM

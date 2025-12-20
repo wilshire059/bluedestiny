@@ -72,6 +72,12 @@ void UB_Stat::ToggleRegen(bool bEnable)
     }
 }
 
+void UB_Stat::ResetToBase()
+{
+    CurrentValue = BaseValue;
+    OnStatChanged.Broadcast(CurrentValue, MaxValue, GetPercent());
+}
+
 void UB_Stat::OnRegenTick()
 {
     if (CurrentValue < MaxValue)

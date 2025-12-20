@@ -5,6 +5,8 @@
 #include "BehaviorTree/BehaviorTreeTypes.h"
 #include "BTS_ChaseBounds.generated.h"
 
+class UAC_AI_BehaviorManager;
+
 UCLASS()
 class SLF_5_7_API UBTS_ChaseBounds : public UBTService_BlueprintBase
 {
@@ -14,21 +16,14 @@ public:
 	UBTS_ChaseBounds();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Blackboard")
-	FBlackboardKeySelector TargetKey;
+	FBlackboardKeySelector StartPositionKey;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Blackboard")
-	FBlackboardKeySelector OutOfBoundsKey;
+	FBlackboardKeySelector ChaseDistanceKey;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Chase")
-	float MaxChaseDistance = 2000.0f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Chase")
-	bool bUseStartLocation = true;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Blackboard")
+	FBlackboardKeySelector StateKey;
 
 protected:
 	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
-
-private:
-	FVector StartLocation;
-	bool bStartLocationSet = false;
 };

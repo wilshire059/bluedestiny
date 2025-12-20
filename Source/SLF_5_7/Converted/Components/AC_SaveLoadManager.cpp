@@ -140,8 +140,8 @@ void UAC_SaveLoadManager::AddAndSaveSlots()
 void UAC_SaveLoadManager::AddToSaveData(FGameplayTag SaveGameTag, const FInstancedStruct& DataToSave)
 {
     // Add data to the save game entry map by tag
-    // This requires FSaveGameInfo to have a SaveGameEntry map
-    // For now, this is a placeholder as the struct may need updating
+    // FSaveGameInfo needs a TMap<FGameplayTag, FInstancedStruct> property to store arbitrary data
+    // Implementation pending struct update
 }
 
 bool UAC_SaveLoadManager::GetDataByTag(FGameplayTag SaveGameTag, FInstancedStruct& OutData)

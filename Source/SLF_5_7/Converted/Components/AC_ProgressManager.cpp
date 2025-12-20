@@ -36,3 +36,16 @@ E_Progress UAC_ProgressManager::GetProgress(FGameplayTag ID) const
     }
     return E_Progress::None;
 }
+
+void UAC_ProgressManager::ExecuteGameplayEvents(const TArray<FDialogGameplayEvent>& GameplayEvents)
+{
+    // Process each gameplay event based on its EventTag
+    for (const FDialogGameplayEvent& Event : GameplayEvents)
+    {
+        if (Event.EventTag.IsValid())
+        {
+            // Handle events based on tag (e.g., progress updates, item grants, etc.)
+            // Full implementation would dispatch to appropriate handlers
+        }
+    }
+}

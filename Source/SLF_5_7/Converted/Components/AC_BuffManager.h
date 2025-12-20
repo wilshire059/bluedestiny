@@ -45,6 +45,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Buffs")
 	void RemoveBuffOfType(UPDA_Buff* Buff);
 
+	UFUNCTION(BlueprintCallable, Category = "Buffs")
+	void TryGrantBuffs(const FGameplayTagContainer& BuffTags);
+
+	UFUNCTION(BlueprintCallable, Category = "Buffs")
+	void TryRemoveBuffs(const FGameplayTagContainer& BuffTags);
+
 protected:
 	virtual void BeginPlay() override;
 

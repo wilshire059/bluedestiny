@@ -40,6 +40,7 @@ public class SLF_5_7 : ModuleRules
 			"Niagara",
 			"GeometryCollectionEngine",
 			"ChaosSolverEngine",
+			"FieldSystemEngine",
 			"PhysicsCore",
 			"EngineCameras",
 			"StructUtils",

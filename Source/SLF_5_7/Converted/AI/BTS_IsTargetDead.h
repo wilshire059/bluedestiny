@@ -5,6 +5,8 @@
 #include "BehaviorTree/BehaviorTreeTypes.h"
 #include "BTS_IsTargetDead.generated.h"
 
+class UAC_AI_BehaviorManager;
+
 UCLASS()
 class SLF_5_7_API UBTS_IsTargetDead : public UBTService_BlueprintBase
 {
@@ -15,9 +17,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Blackboard")
 	FBlackboardKeySelector TargetKey;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Blackboard")
-	FBlackboardKeySelector IsDeadKey;
 
 protected:
 	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;

@@ -4,14 +4,44 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "Interfaces/BPI_AIC.h"
+#include "Structs/FAiSenseLocationInfo.h"
+#include "Structs/FAiSenseTargetInfo.h"
+#include "Structs/FFloat.h"
 #include "StructUtils/InstancedStruct.h"
 
 UAC_AI_BehaviorManager::UAC_AI_BehaviorManager()
 {
     PrimaryComponentTick.bCanEverTick = true;
+
+    // Initialize state machine
     CurrentState = E_AI_States::Idle;
-    MaxChaseDistanceThreshold = 1500.0;
-    MinChaseDistanceThreshold = 300.0;
+    PreviousState = E_AI_States::Idle;
+
+    // Initialize distance thresholds from blueprint defaults
+    MaxChaseDistanceThreshold = 5000.0;
+    AttackDistanceThreshold = 100.0;
+    StrafeDistanceThreshold = 150.0;
+    SpeedAdjustDistanceThreshold = 500.0;
+    MinimumStrafePointDistanceThreshold = 100.0;
+
+    // Initialize StrafeMethods with blueprint defaults
+    // ((Score=0.5),(StrafeMethod=NewEnumerator1,Score=1.0),(StrafeMethod=NewEnumerator2,Score=1.0))
+    StrafeMethods.Empty();
+
+    FStrafeMethodInfo Method1;
+    Method1.StrafeMethod = E_StrafeMethod::None;
+    Method1.Score = 0.5;
+    StrafeMethods.Add(Method1);
+
+    FStrafeMethodInfo Method2;
+    Method2.StrafeMethod = E_StrafeMethod::Left;
+    Method2.Score = 1.0;
+    StrafeMethods.Add(Method2);
+
+    FStrafeMethodInfo Method3;
+    Method3.StrafeMethod = E_StrafeMethod::Right;
+    Method3.Score = 1.0;
+    StrafeMethods.Add(Method3);
 }
 
 void UAC_AI_BehaviorManager::BeginPlay()
@@ -196,11 +226,30 @@ void UAC_AI_BehaviorManager::SetPatrolPath(AB_PatrolPath* NewPatrolPath)
 
 void UAC_AI_BehaviorManager::SetTarget(AActor* NewTarget)
 {
-    Target = NewTarget;
+    CurrentTarget = NewTarget;
 
     // Also set on blackboard if available
     if (UBlackboardComponent* BB = GetBlackboard())
     {
         BB->SetValueAsObject(FName("Target"), NewTarget);
     }
+}
+
+E_AI_States UAC_AI_BehaviorManager::GetState(E_AI_StateHandle Handle) const
+{
+    // Get current or previous state based on handle
+    switch (Handle)
+    {
+        case E_AI_StateHandle::Current:
+            return CurrentState;
+        case E_AI_StateHandle::Previous:
+            return PreviousState;
+        default:
+            return CurrentState;
+    }
+}
+
+AActor* UAC_AI_BehaviorManager::GetTarget() const
+{
+    return CurrentTarget;
 }

@@ -7,7 +7,7 @@ UBTS_TryGetAbility::UBTS_TryGetAbility()
 {
 	NodeName = TEXT("Try Get Ability");
 
-	AbilityKey.AddObjectFilter(this, GET_MEMBER_NAME_CHECKED(UBTS_TryGetAbility, AbilityKey), UObject::StaticClass());
+	CanAttackKey.AddBoolFilter(this, GET_MEMBER_NAME_CHECKED(UBTS_TryGetAbility, CanAttackKey));
 }
 
 void UBTS_TryGetAbility::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
@@ -40,9 +40,9 @@ void UBTS_TryGetAbility::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* Node
 	}
 
 	// Try to get an ability from the combat manager
-	UObject* Ability = CombatManager->TryGetAbility();
-	if (Ability)
-	{
-		BlackboardComp->SetValueAsObject(AbilityKey.SelectedKeyName, Ability);
-	}
+	UObject* SelectedAbility = CombatManager->TryGetAbility();
+
+	// Set CanAttackKey to true if we got a valid ability, false otherwise
+	bool bCanAttack = (SelectedAbility != nullptr);
+	BlackboardComp->SetValueAsBool(CanAttackKey.SelectedKeyName, bCanAttack);
 }

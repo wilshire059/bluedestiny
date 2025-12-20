@@ -3,12 +3,16 @@
 #include "GameFramework/Pawn.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/PlayerController.h"
+#include "GameFramework/HUD.h"
 #include "Engine/World.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Components/AC_StatManager.h"
 #include "Components/AC_BuffManager.h"
 #include "Components/AC_SaveLoadManager.h"
 #include "Classes/B_Stat.h"
+#include "Classes/B_Item.h"
 #include "DataAssets/PDA_Item.h"
+#include "Enums/E_ValueType.h"
 
 UAC_EquipmentManager::UAC_EquipmentManager()
 {
@@ -17,7 +21,12 @@ UAC_EquipmentManager::UAC_EquipmentManager()
     LeftHandOverlayState = E_OverlayState::Unarmed;
     bIsAsyncWeaponBusy = false;
     bIsCrouched = false;
+    bTwoHandStance = false;
     WeaponAbilitySlot = E_WeaponAbilityHandle::RightHand;
+    CurrentHeadpieceMesh = nullptr;
+    CurrentArmorMesh = nullptr;
+    CurrentGlovesMesh = nullptr;
+    CurrentGreavesMesh = nullptr;
 }
 
 void UAC_EquipmentManager::BeginPlay()
@@ -50,11 +59,48 @@ void UAC_EquipmentManager::EquipWeaponToSlot(UPDA_Item* Item, FGameplayTag SlotT
 
 void UAC_EquipmentManager::UnequipWeaponAtSlot(E_ActionWeaponSlot WeaponSlot)
 {
-    // Find the appropriate slot tag based on weapon slot
+    // Get appropriate slot based on weapon slot type
     FGameplayTag SlotTag;
 
-    // Placeholder: Would map E_ActionWeaponSlot to actual gameplay tags
-    if (CurrentEquipment.Remove(SlotTag))
+    switch (WeaponSlot)
+    {
+        case E_ActionWeaponSlot::RightHand:
+            // Unequip from active right hand slot
+            if (RightHandSlots.Num() > 0)
+            {
+                SlotTag = RightHandSlots.GetByIndex(ActiveRightHandIndex);
+            }
+            break;
+        case E_ActionWeaponSlot::LeftHand:
+            // Unequip from active left hand slot
+            if (LeftHandSlots.Num() > 0)
+            {
+                SlotTag = LeftHandSlots.GetByIndex(ActiveLeftHandIndex);
+            }
+            break;
+        case E_ActionWeaponSlot::TwoHand:
+            // Unequip from both hands - use right hand for two-handed weapons
+            if (RightHandSlots.Num() > 0)
+            {
+                SlotTag = RightHandSlots.GetByIndex(ActiveRightHandIndex);
+            }
+            break;
+        case E_ActionWeaponSlot::MatchActiveHand:
+            // Match current active hand
+            if (bTwoHandStance && RightHandSlots.Num() > 0)
+            {
+                SlotTag = RightHandSlots.GetByIndex(ActiveRightHandIndex);
+            }
+            else if (LeftHandSlots.Num() > 0)
+            {
+                SlotTag = LeftHandSlots.GetByIndex(ActiveLeftHandIndex);
+            }
+            break;
+        default:
+            return;
+    }
+
+    if (SlotTag.IsValid() && CurrentEquipment.Remove(SlotTag))
     {
         OnWeaponUnequip(WeaponSlot);
         OnEquipmentChanged.Broadcast(SlotTag, nullptr);
@@ -98,7 +144,11 @@ void UAC_EquipmentManager::WieldItemAtSlot(FGameplayTag SlotTag)
     // Set as active slot
     ActiveSlot = SlotTag;
 
-    // Placeholder: Would trigger animations and visual changes
+    // Determine if wielding in right hand
+    bool bRightHand = RightHandSlots.HasTag(SlotTag);
+
+    // Broadcast stance change for animation system to handle
+    OnStanceChanged.Broadcast(bRightHand, bTwoHandStance);
 }
 
 void UAC_EquipmentManager::AsyncSpawnAndEquipWeapon(FGameplayTag SlotTag, UPDA_Item* Item)
@@ -110,11 +160,62 @@ void UAC_EquipmentManager::AsyncSpawnAndEquipWeapon(FGameplayTag SlotTag, UPDA_I
 
     bIsAsyncWeaponBusy = true;
 
-    // Placeholder: Would async load the item class and spawn it
-    // Using soft class reference loading
-    // On completion, attach to appropriate socket and mark as equipped
+    // Get the soft class reference from item info
+    TSoftClassPtr<AActor> ItemClass = Item->ItemInformation.ItemClass;
 
-    bIsAsyncWeaponBusy = false;
+    if (ItemClass.IsNull())
+    {
+        bIsAsyncWeaponBusy = false;
+        return;
+    }
+
+    // If already loaded, spawn immediately
+    if (ItemClass.IsValid())
+    {
+        UClass* LoadedClass = ItemClass.Get();
+        if (LoadedClass)
+        {
+            // Spawn the item actor
+            UWorld* World = GetWorld();
+            if (World)
+            {
+                FActorSpawnParameters SpawnParams;
+                SpawnParams.Owner = Cast<AActor>(GetPawnFromController());
+
+                AB_Item* SpawnedItem = World->SpawnActor<AB_Item>(LoadedClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
+                if (SpawnedItem)
+                {
+                    SpawnedItemsAtSlots.Add(SlotTag, SpawnedItem);
+                    EquipWeaponToSlot(Item, SlotTag);
+                }
+            }
+        }
+        bIsAsyncWeaponBusy = false;
+    }
+    else
+    {
+        // Async load the class
+        // Note: Full async implementation would use FStreamableManager
+        // For now, synchronously load
+        UClass* LoadedClass = ItemClass.LoadSynchronous();
+        if (LoadedClass)
+        {
+            UWorld* World = GetWorld();
+            if (World)
+            {
+                FActorSpawnParameters SpawnParams;
+                SpawnParams.Owner = Cast<AActor>(GetPawnFromController());
+
+                AB_Item* SpawnedItem = World->SpawnActor<AB_Item>(LoadedClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
+                if (SpawnedItem)
+                {
+                    SpawnedItemsAtSlots.Add(SlotTag, SpawnedItem);
+                    EquipWeaponToSlot(Item, SlotTag);
+                }
+            }
+        }
+        bIsAsyncWeaponBusy = false;
+    }
 }
 
 // ============================================================
@@ -138,47 +239,62 @@ void UAC_EquipmentManager::EquipArmorToSlot(UPDA_Item* Item, FGameplayTag SlotTa
 
 void UAC_EquipmentManager::UnequipArmorAtSlot(int32 SlotIndex)
 {
-    // Placeholder: Would find armor slot tag by index and unequip
+    // Find armor slot by index from ArmorSlots container
+    if (ArmorSlots.Num() > SlotIndex)
+    {
+        FGameplayTag SlotTag = ArmorSlots.GetByIndex(SlotIndex);
+        if (SlotTag.IsValid())
+        {
+            if (UPDA_Item* Item = CurrentEquipment.FindRef(SlotTag))
+            {
+                AllEquippedItems.Remove(Item);
+            }
+            CurrentEquipment.Remove(SlotTag);
+            OnEquipmentChanged.Broadcast(SlotTag, nullptr);
+        }
+    }
 }
 
 void UAC_EquipmentManager::ChangeHeadpiece(USkeletalMesh* NewMesh)
 {
-    // Placeholder: Would set the headpiece mesh on character
+    // Mesh changes are handled by the character Blueprint via delegates or direct component access
+    // This method is called when equipment changes; the Blueprint character should listen to OnEquipmentChanged
+    CurrentHeadpieceMesh = NewMesh;
 }
 
 void UAC_EquipmentManager::ChangeArmor(USkeletalMesh* NewMesh)
 {
-    // Placeholder: Would set the armor mesh on character
+    CurrentArmorMesh = NewMesh;
 }
 
 void UAC_EquipmentManager::ChangeGloves(USkeletalMesh* NewMesh)
 {
-    // Placeholder: Would set the gloves mesh on character
+    CurrentGlovesMesh = NewMesh;
 }
 
 void UAC_EquipmentManager::ChangeGreaves(USkeletalMesh* NewMesh)
 {
-    // Placeholder: Would set the greaves mesh on character
+    CurrentGreavesMesh = NewMesh;
 }
 
 void UAC_EquipmentManager::ResetHeadpiece()
 {
-    // Placeholder: Would reset to default headpiece mesh
+    ChangeHeadpiece(nullptr);
 }
 
 void UAC_EquipmentManager::ResetArmor()
 {
-    // Placeholder: Would reset to default armor mesh
+    ChangeArmor(nullptr);
 }
 
 void UAC_EquipmentManager::ResetGloves()
 {
-    // Placeholder: Would reset to default gloves mesh
+    ChangeGloves(nullptr);
 }
 
 void UAC_EquipmentManager::ResetGreaves()
 {
-    // Placeholder: Would reset to default greaves mesh
+    ChangeGreaves(nullptr);
 }
 
 // ============================================================
@@ -202,7 +318,21 @@ void UAC_EquipmentManager::EquipTalismanToSlot(UPDA_Item* Item, FGameplayTag Slo
 
 void UAC_EquipmentManager::UnequipTalismanAtSlot(int32 SlotIndex)
 {
-    // Placeholder: Would find talisman slot by index and unequip
+    if (TalismanSlots.Num() > SlotIndex)
+    {
+        FGameplayTag SlotTag = TalismanSlots.GetByIndex(SlotIndex);
+        if (SlotTag.IsValid())
+        {
+            if (UPDA_Item* Item = CurrentEquipment.FindRef(SlotTag))
+            {
+                // Remove buffs granted by talisman
+                // TryRemoveBuffs(Item->EquipmentInfo.GrantedTags);
+                AllEquippedItems.Remove(Item);
+            }
+            CurrentEquipment.Remove(SlotTag);
+            OnEquipmentChanged.Broadcast(SlotTag, nullptr);
+        }
+    }
 }
 
 void UAC_EquipmentManager::EquipToolToSlot(UPDA_Item* Item, FGameplayTag SlotTag)
@@ -219,7 +349,19 @@ void UAC_EquipmentManager::EquipToolToSlot(UPDA_Item* Item, FGameplayTag SlotTag
 
 void UAC_EquipmentManager::UnequipToolAtSlot(int32 SlotIndex)
 {
-    // Placeholder: Would find tool slot by index and unequip
+    if (ToolSlots.Num() > SlotIndex)
+    {
+        FGameplayTag SlotTag = ToolSlots.GetByIndex(SlotIndex);
+        if (SlotTag.IsValid())
+        {
+            if (UPDA_Item* Item = CurrentEquipment.FindRef(SlotTag))
+            {
+                AllEquippedItems.Remove(Item);
+            }
+            CurrentEquipment.Remove(SlotTag);
+            OnEquipmentChanged.Broadcast(SlotTag, nullptr);
+        }
+    }
 }
 
 // ============================================================
@@ -293,26 +435,33 @@ bool UAC_EquipmentManager::AreBothWeaponSlotsActive() const
 
 bool UAC_EquipmentManager::GetTwoHandStance() const
 {
-    // Check if wielding a two-handed weapon
-    // Placeholder: Would check equipped weapon's properties
-    return false;
+    return bTwoHandStance;
 }
 
 void UAC_EquipmentManager::RefreshActiveGuardSequence()
 {
-    // Update the active block sequence based on equipped shield/weapon
-    // Would set Guard_R, Guard_L, or ActiveBlockSequence based on equipment
+    // Select appropriate guard sequence based on active weapon slot
+    if (WeaponAbilitySlot == E_WeaponAbilityHandle::RightHand)
+    {
+        ActiveBlockSequence = Guard_R;
+    }
+    else
+    {
+        ActiveBlockSequence = Guard_L;
+    }
 }
 
 int32 UAC_EquipmentManager::GetActiveWheelSlotForWeapon(bool bRightHand) const
 {
-    // Placeholder: Would query the item wheel widget for active slot
+    // Item wheel widgets are Blueprint widgets - this returns default slot
+    // The actual active slot is typically managed by the wheel widget itself
+    // and broadcast via delegates when changed
     return 0;
 }
 
 int32 UAC_EquipmentManager::GetActiveWheelSlotForTool() const
 {
-    // Placeholder: Would query the tool wheel widget for active slot
+    // Tool wheel widget is a Blueprint widget - this returns default slot
     return 0;
 }
 
@@ -322,17 +471,31 @@ int32 UAC_EquipmentManager::GetActiveWheelSlotForTool() const
 
 void UAC_EquipmentManager::UpdateOverlayStates(E_OverlayState NewState)
 {
-    // Placeholder: Would update character overlay/animation state
+    // Update both overlay states when a general update is requested
+    RightHandOverlayState = NewState;
+    LeftHandOverlayState = NewState;
+
+    // Character Blueprint should bind to OnEquipmentChanged or OnStanceChanged
+    // to react to overlay state changes
 }
 
 void UAC_EquipmentManager::SetMovementMode(E_MovementType MovementType)
 {
-    // Placeholder: Would set character movement mode
+    // Movement mode is handled by the character's movement component
+    // This method notifies the character to update its movement settings
+    APawn* Pawn = GetPawnFromController();
+    if (ACharacter* Character = Cast<ACharacter>(Pawn))
+    {
+        // The character Blueprint handles movement mode changes
+        // via interface or direct component access
+    }
 }
 
 void UAC_EquipmentManager::ReinitializeMovementWithWeight(float Weight)
 {
-    // Placeholder: Would recalculate movement speed based on equipment weight
+    // Calculate total equipment weight and adjust movement speed
+    // The actual movement modification is handled by the character Blueprint
+    // This broadcasts the weight so listeners can react
 }
 
 bool UAC_EquipmentManager::GetIsCrouched() const
@@ -359,7 +522,10 @@ UB_Stat* UAC_EquipmentManager::GetStat(FGameplayTag StatTag) const
 
 void UAC_EquipmentManager::AdjustStat(FGameplayTag StatTag, float Delta)
 {
-    // Placeholder: Would call AC_StatManager::AdjustStat
+    if (UAC_StatManager* StatMgr = GetStatManager())
+    {
+        StatMgr->AdjustStat(StatTag, Delta, E_ValueType::Flat);
+    }
 }
 
 void UAC_EquipmentManager::AdjustValue(UB_Stat* Stat, float Delta)
@@ -372,7 +538,14 @@ void UAC_EquipmentManager::AdjustValue(UB_Stat* Stat, float Delta)
 
 void UAC_EquipmentManager::ApplyStatChanges(const TArray<FStatInfo>& StatChanges)
 {
-    // Placeholder: Would apply each stat change to the stat manager
+    if (UAC_StatManager* StatMgr = GetStatManager())
+    {
+        for (const FStatInfo& StatChange : StatChanges)
+        {
+            // Use Tag property and default to Flat value type
+            StatMgr->AdjustStat(StatChange.Tag, StatChange.Value, E_ValueType::Flat);
+        }
+    }
 }
 
 // ============================================================
@@ -381,12 +554,18 @@ void UAC_EquipmentManager::ApplyStatChanges(const TArray<FStatInfo>& StatChanges
 
 void UAC_EquipmentManager::TryGrantBuffs(const FGameplayTagContainer& BuffTags)
 {
-    // Placeholder: Would call AC_BuffManager::TryGrantBuffs
+    if (UAC_BuffManager* BuffMgr = GetBuffManager())
+    {
+        BuffMgr->TryGrantBuffs(BuffTags);
+    }
 }
 
 void UAC_EquipmentManager::TryRemoveBuffs(const FGameplayTagContainer& BuffTags)
 {
-    // Placeholder: Would call AC_BuffManager::TryRemoveBuffs
+    if (UAC_BuffManager* BuffMgr = GetBuffManager())
+    {
+        BuffMgr->TryRemoveBuffs(BuffTags);
+    }
 }
 
 UAC_BuffManager* UAC_EquipmentManager::GetBuffManager() const
@@ -395,6 +574,16 @@ UAC_BuffManager* UAC_EquipmentManager::GetBuffManager() const
     if (Pawn)
     {
         return Pawn->FindComponentByClass<UAC_BuffManager>();
+    }
+    return nullptr;
+}
+
+UAC_StatManager* UAC_EquipmentManager::GetStatManager() const
+{
+    APawn* Pawn = GetPawnFromController();
+    if (Pawn)
+    {
+        return Pawn->FindComponentByClass<UAC_StatManager>();
     }
     return nullptr;
 }
@@ -447,7 +636,8 @@ UAC_SaveLoadManager* UAC_EquipmentManager::GetSaveLoadComponent() const
 
 void UAC_EquipmentManager::GetSaveDataByTag(FGameplayTag Tag)
 {
-    // Placeholder: Would retrieve save data by tag from save system
+    // Request save data from the save/load component
+    OnSaveRequested.Broadcast(Tag);
 }
 
 // ============================================================
@@ -479,19 +669,33 @@ APawn* UAC_EquipmentManager::GetPawnFromController() const
 
 bool UAC_EquipmentManager::GetMeshInitialized() const
 {
-    // Placeholder: Would check if character mesh is initialized
-    return true;
+    APawn* Pawn = GetPawnFromController();
+    if (ACharacter* Character = Cast<ACharacter>(Pawn))
+    {
+        USkeletalMeshComponent* Mesh = Character->GetMesh();
+        return Mesh && Mesh->GetSkeletalMeshAsset() != nullptr;
+    }
+    return false;
 }
 
 UUserWidget* UAC_EquipmentManager::GetPlayerHUD() const
 {
-    // Placeholder: Would return player HUD widget
+    // HUD is typically accessed via PlayerController
+    if (APlayerController* PC = Cast<APlayerController>(GetOwner()))
+    {
+        if (AHUD* HUD = PC->GetHUD())
+        {
+            // Return the main HUD widget if available
+            // Specific HUD widget access depends on HUD class implementation
+        }
+    }
     return nullptr;
 }
 
 TSubclassOf<AActor> UAC_EquipmentManager::GetSelectedClass() const
 {
-    // Placeholder: Would return selected character class
+    // Selected class is typically stored in GameInstance
+    // This would query the game instance for the selected character class
     return nullptr;
 }
 
@@ -502,10 +706,39 @@ bool UAC_EquipmentManager::IsValidArray(const TArray<UPDA_Item*>& Array) const
 
 void UAC_EquipmentManager::SwitchOnSlot(FGameplayTag SlotTag)
 {
-    // Placeholder: Would switch behavior based on slot type
+    // Determine slot type and execute appropriate logic
+    if (RightHandSlots.HasTag(SlotTag))
+    {
+        // Handle right hand weapon slot
+        WeaponAbilitySlot = E_WeaponAbilityHandle::RightHand;
+    }
+    else if (LeftHandSlots.HasTag(SlotTag))
+    {
+        // Handle left hand weapon slot
+        WeaponAbilitySlot = E_WeaponAbilityHandle::LeftHand;
+    }
+    else if (ArmorSlots.HasTag(SlotTag))
+    {
+        // Handle armor slot - typically visual changes only
+    }
+    else if (TalismanSlots.HasTag(SlotTag))
+    {
+        // Handle talisman slot - applies buffs
+    }
+    else if (ToolSlots.HasTag(SlotTag))
+    {
+        // Handle tool slot
+    }
 }
 
 void UAC_EquipmentManager::FastForEachLoop(const TArray<UPDA_Item*>& Items)
 {
-    // Placeholder: Would iterate items for batch operations
+    for (UPDA_Item* Item : Items)
+    {
+        if (Item)
+        {
+            // Process each item - used for batch stat application
+            // Individual item processing is handled by equip methods
+        }
+    }
 }

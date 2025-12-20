@@ -21,6 +21,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnBossPhaseChanged, int32, NewPhase
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnBossFightStarted);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnBossFightEnded);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnBossDefeated);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnBossEncounterStarted);
 
 UCLASS(ClassGroup = (Custom), Blueprintable, meta = (BlueprintSpawnableComponent))
 class SLF_5_7_API UAC_AI_Boss : public UActorComponent
@@ -102,6 +103,9 @@ public:
 
     UPROPERTY(BlueprintAssignable, Category = "AI Boss")
     FOnBossDefeated OnBossDefeated;
+
+    UPROPERTY(BlueprintAssignable, Category = "AI Boss")
+    FOnBossEncounterStarted OnBossEncounterStarted;
 
     // ============================================================
     // INITIALIZATION

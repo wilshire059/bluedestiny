@@ -2,143 +2,163 @@
 
 ## Project Overview
 **Goal**: Migrate all Blueprints to C++ for Unreal Engine 5.7.
-**Current Phase**: System Widgets & Core Classes (Completed).
-**Immediate Next Step**: Reparenting of System Widgets and final verification.
+**Current Phase**: Quality assurance and completion of partial implementations.
+**Audit Date**: 2025-12-19
 
-## Migration Tracker
-**Total Scope**: 438 Blueprints (Source: `Plugins/NodeToCode/ExportedBlueprints`)
-**Migrated**: ~144 Files | **Skip**: 16 (Editor-only) | **Remaining**: ~278
-**Progress**: ~32% (excluding skipped)
+## Migration Status (VERIFIED)
 
-### Comprehensive Tracker Files
-- **Full Tracker**: `migration_tracker_full.md` - Every item with checkbox (NEVER truncate, only check off)
-- **Backup List**: `migration_tracker_backup.md` - Raw list of all 438 blueprints
+| Status | Count | Percentage |
+|--------|-------|------------|
+| COMPLETE | 393 | 90% |
+| PARTIAL | 23 | 5% |
+| MISSING | 2 | 0.5% |
+| SKIP | 20 | 4.5% |
+| **TOTAL** | **438** | **100%** |
 
-| Category | Total | Migrated | Status |
-|----------|-------|----------|--------|
-| Enums | 37 | 26 | 70% |
-| Structs | 27+ | 27 | 100% |
-| Interfaces | 20 | 15 | 75% |
-| DataAssets | 24 | 21 | 88% |
-| Components | 17 | 15 | 88% |
-| Classes/Actors | 109 | 21 | 19% |
-| Widgets | 101 | 17 | 17% |
-| Animation | 30 | 0 | 0% |
-| AI (BT) | 19 | 0 | 0% |
-| Game Framework | 9 | 2 | 22% |
-| Editor Utils | 16 | 0 | SKIP |
-| Other | 9 | 0 | 0% |
-| **Total** | **438** | **~144** | **~32%** |
+### Primary Tracker
+- **Active Tracker**: `migration_tracker_v2.md` - Accurate status with priority list
+- **Audit Results**: `migration_audit_results.md` - Full per-file breakdown
+- **Audit Script**: `audit_migration.py` - Automated quality checker
+
+### Category Summary
+
+| Category | Complete | Partial | Missing | Skip | Total |
+|----------|----------|---------|---------|------|-------|
+| Enums | 37 | 0 | 1 | 0 | 38 |
+| Structs | 4 | 0 | 0 | 0 | 4 |
+| Interfaces | 18 | 0 | 0 | 0 | 18 |
+| Data Assets | 23 | 1 | 0 | 0 | 24 |
+| Components | 11 | 10 | 0 | 0 | 21 |
+| Actions | 26 | 0 | 0 | 0 | 26 |
+| Classes/Actors | 48 | 2 | 0 | 0 | 50 |
+| Characters | 9 | 0 | 0 | 0 | 9 |
+| Items | 11 | 2 | 0 | 0 | 13 |
+| Animation (ABP/AN/ANS) | 28 | 3 | 0 | 0 | 31 |
+| AI (BTS/BTT/AIC) | 19 | 0 | 0 | 0 | 19 |
+| Widgets | 117 | 4 | 1 | 0 | 122 |
+| Game Framework | 6 | 1 | 0 | 0 | 7 |
+| Control Rigs | 0 | 0 | 0 | 3 | 3 |
+| Macro Libraries | 0 | 0 | 0 | 2 | 2 |
+| Editor Utils | 0 | 0 | 0 | 15 | 15 |
+
+## PRIORITY: Items Needing Work (25 total)
+
+### MISSING - Must Create (2)
+1. **E_CalculationType** - Enum header file
+2. **W_Inventory_CategoryEntry** - Widget .h/.cpp files
+
+### HIGH PRIORITY - Components with Many Placeholders (10)
+1. **AC_EquipmentManager** - ~30 placeholder methods
+2. **AC_InteractionManager** - ~30+ facade methods
+3. **AC_InventoryManager** - Cross-component calls
+4. **AC_CombatManager** - Character-dependent methods
+5. **AC_StatManager** - Game instance interface
+6. **AC_StatusEffectManager** - Effect configuration
+7. **AC_SaveLoadManager** - UI system integration
+8. **AC_ActionManager** - Stat regen/data table logic
+9. **AC_AI_Boss** - Boss door queries
+10. **AC_AI_CombatManager** - Ability selection
+
+### MEDIUM PRIORITY - Classes/Items (4)
+- **B_Item_Weapon** - Damage calc, stat scaling
+- **B_Item_Weapon_Shield** - Status effects, attack power
+- **B_BaseCharacter** - Status effect lookup
+- **B_Container** - Item data setting
+
+### LOWER PRIORITY - Other (9)
+- PC_SoulslikeFramework, PDA_Dialog
+- AN_AdjustStat, ABP_Manny_PostProcess, ABP_Quinn_PostProcess
+- W_Inventory, W_InventoryActionAmount, W_ItemWheelSlot, W_VendorSlot
 
 ## File Locations (Dual-Source Protocol)
+
 **CRITICAL**: You must use BOTH data sources to ensure high-quality migration.
 
-1.  **Structure & Logic Source (NodeToCode)**
-    *   **Path**: `c:\scripts\BlueDestiny\Plugins\NodeToCode\ExportedBlueprints`
-    *   **Count**: 438 Files.
-    *   **Use for**: Graphs, Nodes, Function Signatures, Logic flow. This is the primary source for C++ implementation.
+1. **Structure & Logic Source (NodeToCode)**
+   - **Path**: `Plugins/NodeToCode/ExportedBlueprints/`
+   - **Count**: 438 Files
+   - **Use for**: Graphs, Nodes, Function Signatures, Logic flow
 
-2.  **Property & Defaults Source (Bulk Export)**
-    *   **Path**: `c:\scripts\BlueDestiny\Saved\BlueprintComponentExports`
-    *   **Count**: 801 Files.
-    *   **Use for**: Verifying precise default values (CDO) that the user had set in Blueprint.
-    *   **Action**: You MUST cross-reference this to see if the C++ constructor needs to set specific default values (e.g., `MaxHealth = 500`).
+2. **Property & Defaults Source (Bulk Export)**
+   - **Path**: `Saved/BlueprintComponentExports/`
+   - **Count**: 801 Files
+   - **Use for**: Default values (CDO), component hierarchy, transforms
 
-## Required Output: Manual Update Guide
-The user specifically requested that you creating a `manual_update_guide.md`.
-*   **Purpose**: List properties that cannot be automatically reparented or set in C++ constructors easily (e.g., Scene Component relative locations, specific Actor tags, complex struct defaults).
-*   **Source**: Compare the `BlueprintComponentExports` values against your C++ defaults. If they differ, add them to the guide so the user knows to check them in the Editor after reparenting.
+3. **C++ Output**
+   - **Path**: `Source/SLF_5_7/Converted/`
 
-- **Output (C++)**: `c:\scripts\BlueDestiny\Source\SLF_5_7\Converted`
+## Migration Workflow
 
-## Automated Migration Workflow (MANDATORY)
-
-**CRITICAL RULES:**
-1. **NEVER truncate `migration_tracker_full.md`** - Only update checkboxes `[ ]` → `[x]`
-2. **Always use BOTH data sources** when converting
-3. **Commit after each successful migration**
-
-### Per-Item Migration Steps:
+### Per-Item Process
 
 ```
 1. READ SOURCE FILES
-   - NodeToCode JSON: Plugins/NodeToCode/ExportedBlueprints/{Name}.json
-   - Bulk Export: Saved/BlueprintComponentExports/*{Name}*.json (for defaults)
+   - NodeToCode: Plugins/NodeToCode/ExportedBlueprints/{Name}.json
+   - Bulk Export: Saved/BlueprintComponentExports/*{Name}*.json
 
-2. CONVERT TO C++
-   - Create .h and .cpp in Source/SLF_5_7/Converted/{Category}/
-   - Target: Unreal Engine 5.7
-   - Cross-reference defaults from Bulk Export
+2. ANALYZE BLUEPRINT
+   - All graphs (EventGraph, Functions)
+   - All variables from classDefaults
+   - Interface implementations
+   - Event dispatchers
 
-3. COMPILE
-   - Run: CompileBatch18.bat (single-threaded, avoids OOM)
-   - Fix any errors before proceeding
+3. GENERATE C++ (.h + .cpp)
+   - Header: UPROPERTY, UFUNCTION declarations
+   - Source: Full implementation (NO placeholders)
+   - Verify: Run audit_migration.py to check quality
 
-4. COMMIT TO GITHUB
-   - git add -A
-   - git commit -m "Migrate {ClassName} to C++"
-   - git push
+4. COMPILE
+   - Use: CompileBatch18.bat (single-threaded)
+   - Fix all errors before proceeding
 
-5. UPDATE TRACKER
-   - Edit migration_tracker_full.md
-   - Change [ ] to [x] for completed item
-   - Update summary counts in CLAUDE.md if needed
+5. COMMIT
+   - git add -A && git commit -m "Migrate {Name} to C++"
 ```
 
-### Git Configuration
+### Quality Checklist
+
+For each file, verify:
+- [ ] All Blueprint variables have UPROPERTY()
+- [ ] All Blueprint functions have UFUNCTION() methods
+- [ ] All event dispatchers use DECLARE_DYNAMIC_MULTICAST_DELEGATE
+- [ ] All interface events have virtual implementations
+- [ ] NO placeholder/stub/TODO comments remain
+- [ ] Cross-component calls use Execute_* patterns
+- [ ] Default values match BlueprintComponentExports
+
+## Technical Debt & Known Issues
+
+### 1. Placeholder Implementations
+**Issue**: Many component files have "Placeholder: Would..." comments instead of real implementations.
+**Impact**: Core systems like Equipment, Inventory, and Interaction won't function.
+**Action**: Complete all placeholder methods using NodeToCode as reference.
+
+### 2. Cross-Component Dependencies
+**Issue**: Components reference each other (e.g., AC_InteractionManager → AC_InventoryManager).
+**Pattern**: Use `FindComponentByClass<>` or cached references.
+**Action**: Wire up all cross-component calls properly.
+
+### 3. Build Environment (OOM)
+**Issue**: Out of Memory during parallel compilation.
+**Mitigation**: Use `CompileBatch18.bat` with `-MaxParallelActions=1`.
+
+### 4. Compiler Cache Issues
+**Symptom**: "Impossible" errors after fixing code.
+**Solution**: Delete file, run failing build, recreate file, recompile.
+
+## Git Configuration
 - **Repository**: https://github.com/wilshire059/bluedestiny.git
 - **Account**: wilshire059
 - **Remote URL**: https://wilshire059@github.com/wilshire059/bluedestiny.git
-- **Content folder**: EXCLUDED (2.6GB - stays local only)
-
-## Recent Accomplishments (System Batch)
-We just completed the migration of the Save/Load system and Main Menus.
-**Created Classes**:
--   `BPI_GameInstance`: Interface for game instance operations.
--   `SG_SoulslikeFramework`: SaveGame object.
--   `GI_SoulslikeFramework`: GameInstance implementation (partial SaveSlot logic).
--   `AC_SaveLoadManager`: ActorComponent handling save/load requests.
--   `UW_GameMenu`: Main menu widget logic.
--   `UW_GameMenu_Button`: Menu button logic.
--   `UW_InventoryAction` & `UW_InventoryActionAmount`: Action hints.
-
-## Technical Debt & Known Issues (CRITICAL)
-
-### 1. W_Status / NativeOnVisibilityChanged
-**Issue**: `UW_Status` (and `UW_GameMenu`) originally overrode `NativeOnVisibilityChanged`. This caused compilation errors in the current UE 5.7 context (potentially due to base class `UW_UserWidget_Base` or strictness changes).
-**Workaround**: The override was commented out in `W_Status.cpp` and `W_Status.h`.
-**Action Required**: Investigate proper visibility event handling if visual bugs occur (e.g., Fade animation not playing).
-
-### 2. Compiler Cache / Shadowing (C4458)
-**Issue**: We encountered a persistent `C4458 (declaration hides class member)` error in `W_Status.cpp` regarding the variable `StatManager`.
-**Resolution**: We renamed the local variable to `LocalStatManager`.
-**Anomaly**: The compiler continued to report the error *after* the fix was applied on disk. We had to:
-1.  Delete `W_Status.cpp`.
-2.  Run a failing build.
-3.  Recreate `W_Status.cpp` with the fix.
-4.  Recompile.
-**Takeaway**: If you see "impossible" errors, assume the Intermediate cache is corrupted/stale and force a file flush.
-
-### 3. Build Environment (OOM)
-**Issue**: The project is prone to Out of Memory errors during parallel compilation.
-**Mitigation**: Use `CompileBatch18.bat` (or similar) which sets `-MaxParallelActions=1`. **Do not run standard parallel builds** unless you are sure of memory availability.
-
-### 4. Stubbed Logic
--   `GI_SoulslikeFramework::SaveSlotList` / `LoadSlotList`: Currently placeholder implementations. Need proper `SaveGame` logic for the slot list itself.
-
-## Next Steps for the Next Agent
-1.  **Reparenting**:
-    -   Reparent `W_GameMenu`, `W_InventoryAction`, `AC_SaveLoadManager` Blueprints to their new C++ classes.
-    -   Set Project GameInstance to `GI_SoulslikeFramework`.
-2.  **Verification**:
-    -   Test Save/Load flow in editor.
-    -   Verify Menu navigation.
-3.  **Refinement**:
-    -   Address the commented-out `NativeOnVisibilityChanged` if needed.
-    -   Implement the actual saving of the Slot List in `GI_SoulslikeFramework`.
+- **Content folder**: EXCLUDED (2.6GB - local only)
 
 ## Associated Artifacts
--   `migration_tracker_full.md`: **COMPREHENSIVE TRACKER** - All 438 items with checkboxes. NEVER truncate.
--   `migration_tracker_backup.md`: Raw backup list of all blueprints.
--   `task.md`: Granular checklist.
--   `walkthrough.md`: Detailed verification steps.
+- `migration_tracker_v2.md` - **PRIMARY TRACKER** - Accurate status
+- `migration_audit_results.md` - Full per-file breakdown
+- `audit_migration.py` - Automated quality check script
+- `audit_blueprints.txt` - All 438 blueprint names
+- `audit_cpp_headers.txt` - All 463 C++ header names
+
+## Framework Documentation
+- **GitBook Docs**: https://soulslike-framework.isik.vip
+- Use MCP tool `mcp__gitbook__searchDocumentation` to query framework docs

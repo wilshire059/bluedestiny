@@ -28,6 +28,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnErrorTrigger, FText, ErrorMessage
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnItemAmountUpdated, UPDA_Item*, Item, int32, NewAmount);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSaveRequested, FGameplayTag, SaveGameTag);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInventoryItemLooted, FSLFItemInfo, Item, int32, Amount);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnActionQueued, FGameplayTag, ActionTag);
 
 UCLASS(ClassGroup = (Custom), Blueprintable, meta = (BlueprintSpawnableComponent))
 class SLF_5_7_API UAC_InventoryManager : public UActorComponent
@@ -62,6 +63,9 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
     int32 Currency;
 
+    UPROPERTY(BlueprintReadWrite, Category = "Inventory|InputBuffer")
+    TArray<FGameplayTag> InputBuffer;
+
     // ============================================================
     // DELEGATES
     // ============================================================
@@ -95,6 +99,9 @@ public:
 
     UPROPERTY(BlueprintAssignable, Category = "Inventory|Loot")
     FOnInventoryItemLooted OnItemLooted;
+
+    UPROPERTY(BlueprintAssignable, Category = "Inventory|InputBuffer")
+    FOnActionQueued OnActionQueued;
 
     // ============================================================
     // CORE INVENTORY FUNCTIONS

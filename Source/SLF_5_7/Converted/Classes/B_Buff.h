@@ -6,6 +6,7 @@
 #include "B_Buff.generated.h"
 
 class UPDA_Buff;
+class UAC_StatManager;
 
 UCLASS(Blueprintable, BlueprintType)
 class SLF_5_7_API UB_Buff : public UObject
@@ -35,4 +36,12 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Buff")
 	void OnTick(float DeltaTime);
+
+	// Get the multiplier for the current rank from the RankMultiplierCurve
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Buff")
+	float GetMultiplierForCurrentRank() const;
+
+	// Get the StatManager component from the OwnerActor
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Buff")
+	UAC_StatManager* GetOwnerStatManager() const;
 };

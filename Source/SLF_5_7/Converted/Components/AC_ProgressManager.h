@@ -4,6 +4,7 @@
 #include "Components/ActorComponent.h"
 #include "GameplayTagContainer.h"
 #include "Enums/E_Progress.h"
+#include "Structs/FDialogGameplayEvent.h"
 #include "AC_ProgressManager.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnProgressUpdated, FGameplayTag, ID, E_Progress, NewState);
@@ -39,6 +40,9 @@ public:
 
     UFUNCTION(BlueprintCallable, Category = "Progress")
     E_Progress GetProgress(FGameplayTag ID) const;
+
+    UFUNCTION(BlueprintCallable, Category = "Progress|Dialog")
+    void ExecuteGameplayEvents(const TArray<FDialogGameplayEvent>& GameplayEvents);
 
 protected:
 	virtual void BeginPlay() override;

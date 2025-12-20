@@ -16,7 +16,7 @@ public:
 	UBTS_TryGetAbility();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Blackboard")
-	FBlackboardKeySelector AbilityKey;
+	FBlackboardKeySelector CanAttackKey;
 
 protected:
 	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;

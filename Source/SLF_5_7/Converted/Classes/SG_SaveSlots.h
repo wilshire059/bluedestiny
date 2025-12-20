@@ -29,10 +29,18 @@ public:
 
 	// Get all slots
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Save Slots")
-	const TArray<FString>& GetSlots() const { return Slots; }
+	const TArray<FString>& GetAllSlots() const { return Slots; }
+
+	// Get the last saved slot name
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Save Slots")
+	FString GetLastSaveSlot() const { return LastSavedSlot; }
 
 protected:
 	// Array of save slot names
 	UPROPERTY(SaveGame, BlueprintReadWrite, Category = "Save Slots")
 	TArray<FString> Slots;
+
+	// Last saved slot name
+	UPROPERTY(SaveGame, BlueprintReadWrite, Category = "Save Slots")
+	FString LastSavedSlot;
 };

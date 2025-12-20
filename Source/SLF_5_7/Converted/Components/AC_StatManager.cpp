@@ -2,6 +2,7 @@
 #include "Components/AC_SaveLoadManager.h"
 #include "DataAssets/PDA_BaseCharacterInfo.h"
 #include "Structs/FSaveGameInfo.h"
+#include "Interfaces/BPI_GameInstance.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/PlayerController.h"
 
@@ -100,6 +101,12 @@ void UAC_StatManager::ModifyStat(FGameplayTag StatTag, float Value, E_ValueType 
     }
 
     Stat->ModifyStat(Change);
+}
+
+void UAC_StatManager::AdjustStat(FGameplayTag StatTag, float Delta, E_ValueType ValueType)
+{
+    // AdjustStat is an alias for ModifyStat with delta semantics
+    ModifyStat(StatTag, Delta, ValueType);
 }
 
 // ============================================================
@@ -267,8 +274,15 @@ UAC_SaveLoadManager* UAC_StatManager::GetSaveLoadComponent() const
 
 UPDA_BaseCharacterInfo* UAC_StatManager::GetSelectedClass() const
 {
-    // This would get the selected character class from the game instance
-    // Implementation depends on BPI_GameInstance interface
+    if (UGameInstance* GI = GetWorld()->GetGameInstance())
+    {
+        if (GI->Implements<UBPI_GameInstance>())
+        {
+            UPDA_BaseCharacterInfo* SelectedClass = nullptr;
+            IBPI_GameInstance::Execute_GetSelectedClass(GI, SelectedClass);
+            return SelectedClass;
+        }
+    }
     return nullptr;
 }
 

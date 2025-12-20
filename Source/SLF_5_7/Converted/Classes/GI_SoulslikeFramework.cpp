@@ -1,83 +1,145 @@
 #include "GI_SoulslikeFramework.h"
 #include "Kismet/GameplayStatics.h"
+#include "Classes/SG_SaveSlots.h"
 
 UGI_SoulslikeFramework::UGI_SoulslikeFramework()
 {
-    // Defaults could include loading a config or setting initial values
+	// Set defaults from classDefaults in JSON
+	SlotsSaveName = TEXT("SLF_Slots");
+	bFirstTimeOnDemoLevel = true;
+
+	// Default CustomGameSettings path: /Game/SoulslikeFramework/Data/CustomSettings/DA_CustomGameSettings
+	static ConstructorHelpers::FObjectFinder<UPDA_CustomSettings> CustomSettingsAsset(
+		TEXT("/Game/SoulslikeFramework/Data/CustomSettings/DA_CustomGameSettings.DA_CustomGameSettings"));
+	if (CustomSettingsAsset.Succeeded())
+	{
+		CustomGameSettings = CustomSettingsAsset.Object;
+	}
+
+	// Default SelectedBaseClass: /Game/SoulslikeFramework/Data/BaseCharacters/DA_Quinn
+	static ConstructorHelpers::FObjectFinder<UPDA_BaseCharacterInfo> BaseCharacterAsset(
+		TEXT("/Game/SoulslikeFramework/Data/BaseCharacters/DA_Quinn.DA_Quinn"));
+	if (BaseCharacterAsset.Succeeded())
+	{
+		SelectedBaseClass = BaseCharacterAsset.Object;
+	}
+}
+
+void UGI_SoulslikeFramework::Init()
+{
+	Super::Init();
+
+	// ReceiveInit logic from JSON EventGraph
+	// Check if SlotsSaveName save file exists
+	if (UGameplayStatics::DoesSaveGameExist(SlotsSaveName, 0))
+	{
+		// Load existing save slots
+		USaveGame* LoadedGame = UGameplayStatics::LoadGameFromSlot(SlotsSaveName, 0);
+		if (LoadedGame)
+		{
+			SGO_Slots = Cast<USG_SaveSlots>(LoadedGame);
+		}
+	}
+	else
+	{
+		// Create new save slots object if doesn't exist
+		if (!SGO_Slots)
+		{
+			SGO_Slots = Cast<USG_SaveSlots>(UGameplayStatics::CreateSaveGameObject(USG_SaveSlots::StaticClass()));
+		}
+	}
 }
 
 void UGI_SoulslikeFramework::GetCustomGameSettings_Implementation(UPDA_CustomSettings*& CustomSettingsAsset)
 {
-    CustomSettingsAsset = CustomSettings;
+	CustomSettingsAsset = CustomGameSettings;
 }
 
 void UGI_SoulslikeFramework::GetAllSaveSlots_Implementation(TArray<FString>& OutSaveSlots)
 {
-    // Need to ensure list is loaded?
-    LoadSlotList();
-    OutSaveSlots = SaveSlots;
+	if (SGO_Slots)
+	{
+		OutSaveSlots = SGO_Slots->GetAllSlots();
+	}
+	else
+	{
+		OutSaveSlots.Empty();
+	}
 }
 
 void UGI_SoulslikeFramework::SetLastSlotNameToActive_Implementation()
 {
-    LoadSlotList();
-    if (SaveSlots.Num() > 0)
-    {
-        ActiveSlotName = SaveSlots.Last();
-    }
+	if (SGO_Slots)
+	{
+		ActiveSlot = SGO_Slots->GetLastSaveSlot();
+	}
 }
 
 bool UGI_SoulslikeFramework::DoesAnySaveExist_Implementation()
 {
-    LoadSlotList();
-    return SaveSlots.Num() > 0;
+	return UGameplayStatics::DoesSaveGameExist(SlotsSaveName, 0);
 }
 
 void UGI_SoulslikeFramework::AddAndSaveSlots_Implementation(const FString& NewSlotName)
 {
-    if (!SaveSlots.Contains(NewSlotName))
-    {
-        SaveSlots.Add(NewSlotName);
-        SaveSlotList(); 
-        // Note: This saves the list of slots (e.g. to a master save file or config), 
-        // usually named "SaveSlots" or something.
-    }
+	if (SGO_Slots)
+	{
+		// AddSlot to the save slots object
+		SGO_Slots->AddSlot(NewSlotName);
+
+		// Save the slots object to disk asynchronously
+		UGameplayStatics::AsyncSaveGameToSlot(SGO_Slots, SlotsSaveName, 0);
+
+		// Print debug message
+		FString Message = FString::Printf(TEXT("\"%s\" has been added to slots list."), *NewSlotName);
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Cyan, Message);
+		}
+		UE_LOG(LogTemp, Log, TEXT("%s"), *Message);
+	}
 }
 
 void UGI_SoulslikeFramework::GetActiveSlotName_Implementation(FString& OutActiveSlotName)
 {
-    OutActiveSlotName = ActiveSlotName;
+	OutActiveSlotName = ActiveSlot;
 }
 
 void UGI_SoulslikeFramework::SetActiveSlot_Implementation(const FString& InActiveSlotName)
 {
-    ActiveSlotName = InActiveSlotName;
+	ActiveSlot = InActiveSlotName;
 }
 
 void UGI_SoulslikeFramework::GetSelectedClass_Implementation(UPDA_BaseCharacterInfo*& SelectedClass)
 {
-    SelectedClass = SelectedBaseCharacterClass;
+	SelectedClass = SelectedBaseClass;
 }
 
 void UGI_SoulslikeFramework::SetSelectedClass_Implementation(UPDA_BaseCharacterInfo* BaseCharacterClass)
 {
-    SelectedBaseCharacterClass = BaseCharacterClass;
+	SelectedBaseClass = BaseCharacterClass;
+
+	// Broadcast the delegate
+	OnSelectedClassChanged.Broadcast();
 }
 
 void UGI_SoulslikeFramework::SaveSlotList()
 {
-    // Save the 'SaveSlots' array to a dedicated save file, e.g., "SlotList"
-    // For simplicity, we can use UGameplayStatics::SaveGameToSlot with a custom SaveGame object just for the list,
-    // or just rely on the implementation detail that this list needs persistence.
-    // The JSON didn't show the internals of "AddAndSaveSlots", assuming it manages a save file.
-    // I will placeholder this or implement a basic version if I had the `SG_SaveSlots` JSON.
-    // Found `SG_SaveSlots.json` in find results earlier! 
-    // I should probably have checked it. For now, I'll just manage the array in memory 
-    // but a real implementation would save it to disk. 
-    // Logic: Create SaveGame instance of SG_SaveSlots, set slots, save to "MasterSaveSlot".
+	if (SGO_Slots)
+	{
+		// Save the slots object to disk
+		UGameplayStatics::SaveGameToSlot(SGO_Slots, SlotsSaveName, 0);
+	}
 }
 
 void UGI_SoulslikeFramework::LoadSlotList()
 {
-    // Similar to SaveSlotList, load "MasterSaveSlot" and populate SaveSlots.
+	if (UGameplayStatics::DoesSaveGameExist(SlotsSaveName, 0))
+	{
+		USaveGame* LoadedGame = UGameplayStatics::LoadGameFromSlot(SlotsSaveName, 0);
+		if (LoadedGame)
+		{
+			SGO_Slots = Cast<USG_SaveSlots>(LoadedGame);
+		}
+	}
 }

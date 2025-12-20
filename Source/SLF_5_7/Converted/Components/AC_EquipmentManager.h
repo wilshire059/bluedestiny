@@ -64,6 +64,15 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment|Weapon")
     FGameplayTagContainer LeftHandSlots;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment|Armor")
+    FGameplayTagContainer ArmorSlots;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment|Talisman")
+    FGameplayTagContainer TalismanSlots;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment|Tool")
+    FGameplayTagContainer ToolSlots;
+
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment|Wheel")
     TObjectPtr<UUserWidget> ItemWheel_RightHand;
 
@@ -106,11 +115,32 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment|State")
     bool bIsCrouched;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment|State")
+    bool bTwoHandStance;
+
+    UPROPERTY(BlueprintReadWrite, Category = "Equipment|Mesh")
+    TObjectPtr<USkeletalMesh> CurrentHeadpieceMesh;
+
+    UPROPERTY(BlueprintReadWrite, Category = "Equipment|Mesh")
+    TObjectPtr<USkeletalMesh> CurrentArmorMesh;
+
+    UPROPERTY(BlueprintReadWrite, Category = "Equipment|Mesh")
+    TObjectPtr<USkeletalMesh> CurrentGlovesMesh;
+
+    UPROPERTY(BlueprintReadWrite, Category = "Equipment|Mesh")
+    TObjectPtr<USkeletalMesh> CurrentGreavesMesh;
+
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment|Save")
     TArray<FEquipmentItemsSaveInfo> Cached_LoadedEquipment;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment|Active")
     FGameplayTag ActiveSlot;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment|Active")
+    int32 ActiveRightHandIndex;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment|Active")
+    int32 ActiveLeftHandIndex;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment|Active")
     E_WeaponAbilityHandle WeaponAbilitySlot;
@@ -329,6 +359,9 @@ public:
 
     UFUNCTION(BlueprintPure, Category = "Equipment|Helper")
     APawn* GetPawnFromController() const;
+
+    UFUNCTION(BlueprintPure, Category = "Equipment|Helper")
+    UAC_StatManager* GetStatManager() const;
 
     UFUNCTION(BlueprintPure, Category = "Equipment|Helper")
     bool GetMeshInitialized() const;

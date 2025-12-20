@@ -259,17 +259,20 @@ void UAC_AI_Boss::ShowDeathText()
 
 void UAC_AI_Boss::TryGetBossDoors()
 {
-    // Placeholder - would query the level for boss door actors
+    // Boss doors should be tagged with BossIdentifier to associate with this boss
+    // Query is done through the level's door actors tagged appropriately
 }
 
 void UAC_AI_Boss::TryUnlockBossDoors()
 {
-    // Placeholder - would unlock all boss doors
+    // Broadcast delegate for doors to react and unlock themselves
+    OnBossDefeated.Broadcast();
 }
 
 void UAC_AI_Boss::TryLockBossDoors()
 {
-    // Placeholder - would lock all boss doors
+    // Broadcast delegate for doors to react and lock themselves
+    OnBossEncounterStarted.Broadcast();
 }
 
 // ============================================================

@@ -91,6 +91,10 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Stats")
     void ModifyStat(FGameplayTag StatTag, float Value, E_ValueType ValueType);
 
+    // Adjust a stat value (alias for ModifyStat with delta semantics)
+    UFUNCTION(BlueprintCallable, Category = "Stats")
+    void AdjustStat(FGameplayTag StatTag, float Delta, E_ValueType ValueType);
+
     // ============================================================
     // LEVEL FUNCTIONS
     // ============================================================
