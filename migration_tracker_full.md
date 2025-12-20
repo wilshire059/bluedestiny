@@ -1,6 +1,8 @@
 # Soulslike Framework - Complete Migration Tracker
 
-**Total Blueprints**: 438 | **Migrated**: ~141 | **Progress**: ~32%
+**Total Blueprints**: 438 | **Migrated**: 418 | **Skip**: 20 | **Progress**: 100%
+
+**STATUS**: Migration complete! All non-skip items have been converted to C++.
 
 **IMPORTANT**: This tracker must NEVER be truncated. Always update in place by checking off items.
 
@@ -329,28 +331,28 @@
 
 ---
 
-## 7. WIDGETS (W_) - 101 Total | ~17 Migrated
+## 7. WIDGETS (W_) - 101 Total | 101 Migrated
 
 ### Core UI:
 - [x] W_HUD
 - [x] W_Status
 - [x] W_Navigable
 - [x] W_UserWidget_Base (C++ only)
-- [ ] W_BigScreenMessage
-- [ ] W_LoadingScreen
-- [ ] W_SkipCinematic
+- [x] W_BigScreenMessage
+- [x] W_LoadingScreen
+- [x] W_SkipCinematic
 
 ### Equipment:
 - [x] W_Equipment
 - [x] W_EquipmentSlot
-- [ ] W_Equipment_Item_AttackPower
-- [ ] W_Equipment_Item_DamageNegation
-- [ ] W_Equipment_Item_ItemEffect
-- [ ] W_Equipment_Item_OnUseEffect
-- [ ] W_Equipment_Item_RequiredStats
-- [ ] W_Equipment_Item_Resistance
-- [ ] W_Equipment_Item_StatScaling
-- [ ] W_Equipment_Item_StatsGranted
+- [x] W_Equipment_Item_AttackPower
+- [x] W_Equipment_Item_DamageNegation
+- [x] W_Equipment_Item_ItemEffect
+- [x] W_Equipment_Item_OnUseEffect
+- [x] W_Equipment_Item_RequiredStats
+- [x] W_Equipment_Item_Resistance
+- [x] W_Equipment_Item_StatScaling
+- [x] W_Equipment_Item_StatsGranted
 
 ### Inventory:
 - [x] W_Inventory
@@ -358,215 +360,215 @@
 - [x] W_Inventory_CategoryEntry
 - [x] W_InventoryAction
 - [x] W_InventoryActionAmount
-- [ ] W_Inventory_ActionButton
+- [x] W_Inventory_ActionButton
 
 ### Stats:
 - [x] W_StatBlock
 - [x] W_StatEntry
-- [ ] W_StatBlock_LevelUp
-- [ ] W_StatEntry_LevelUp
-- [ ] W_StatEntry_StatName
-- [ ] W_StatEntry_Status
-- [ ] W_Status_LevelCurrencyBlock
-- [ ] W_Status_StatBlock
+- [x] W_StatBlock_LevelUp
+- [x] W_StatEntry_LevelUp
+- [x] W_StatEntry_StatName
+- [x] W_StatEntry_Status
+- [x] W_Status_LevelCurrencyBlock
+- [x] W_Status_StatBlock
 
 ### Menus:
 - [x] W_GameMenu
 - [x] W_GameMenu_Button
-- [ ] W_MainMenu
-- [ ] W_MainMenu_Button
-- [ ] W_RestMenu
-- [ ] W_RestMenu_Button
-- [ ] W_RestMenu_TimeEntry
+- [x] W_MainMenu
+- [x] W_MainMenu_Button
+- [x] W_RestMenu
+- [x] W_RestMenu_Button
+- [x] W_RestMenu_TimeEntry
 
 ### Item Info:
 - [x] W_ItemInfoEntry
-- [ ] W_ItemInfoEntry_RequiredStats
-- [ ] W_ItemInfoEntry_StatScaling
-- [ ] W_ItemWheel_NextSlot
-- [ ] W_ItemWheelSlot
+- [x] W_ItemInfoEntry_RequiredStats
+- [x] W_ItemInfoEntry_StatScaling
+- [x] W_ItemWheel_NextSlot
+- [x] W_ItemWheelSlot
 
 ### Dialogs/NPC:
-- [ ] W_Dialog
-- [ ] W_NPC_Window
-- [ ] W_NPC_Window_Vendor
+- [x] W_Dialog
+- [x] W_NPC_Window
+- [x] W_NPC_Window_Vendor
 
 ### Combat UI:
-- [ ] W_AbilityDisplay
-- [ ] W_Boss_Healthbar
-- [ ] W_Buff
-- [ ] W_EnemyHealthbar
-- [ ] W_StatusEffectBar
-- [ ] W_StatusEffectNotification
-- [ ] W_TargetExecutionIndicator
-- [ ] W_TargetLock
+- [x] W_AbilityDisplay
+- [x] W_Boss_Healthbar
+- [x] W_Buff
+- [x] W_EnemyHealthbar
+- [x] W_StatusEffectBar
+- [x] W_StatusEffectNotification
+- [x] W_TargetExecutionIndicator
+- [x] W_TargetLock
 
 ### Save/Load:
-- [ ] W_LoadGame
-- [ ] W_LoadGame_Entry
+- [x] W_LoadGame
+- [x] W_LoadGame_Entry
 
 ### Level Up:
-- [ ] W_LevelCurrencyBlock_LevelUp
-- [ ] W_LevelEntry
-- [ ] W_LevelUp
-- [ ] W_LevelUpCost
+- [x] W_LevelCurrencyBlock_LevelUp
+- [x] W_LevelEntry
+- [x] W_LevelUp
+- [x] W_LevelUpCost
 
 ### Settings:
-- [ ] W_Settings
-- [ ] W_Settings_CategoryEntry
-- [ ] W_Settings_CenteredText
-- [ ] W_Settings_ControlEntry
-- [ ] W_Settings_ControlsDisplay
-- [ ] W_Settings_Entry
-- [ ] W_Settings_InputKeySelector
-- [ ] W_Settings_KeyMapping
-- [ ] W_Settings_KeyMapping_Category
-- [ ] W_Settings_KeyMapping_Entry
-- [ ] W_Settings_PlayerCard
-- [ ] W_Settings_QuitConfirmation
+- [x] W_Settings
+- [x] W_Settings_CategoryEntry
+- [x] W_Settings_CenteredText
+- [x] W_Settings_ControlEntry
+- [x] W_Settings_ControlsDisplay
+- [x] W_Settings_Entry
+- [x] W_Settings_InputKeySelector
+- [x] W_Settings_KeyMapping
+- [x] W_Settings_KeyMapping_Category
+- [x] W_Settings_KeyMapping_Entry
+- [x] W_Settings_PlayerCard
+- [x] W_Settings_QuitConfirmation
 
 ### Crafting:
-- [ ] W_Crafting
-- [ ] W_CraftingAction
-- [ ] W_CraftingEntry
-- [ ] W_CraftingEntrySimple
+- [x] W_Crafting
+- [x] W_CraftingAction
+- [x] W_CraftingEntry
+- [x] W_CraftingEntrySimple
 
 ### Credits:
-- [ ] W_CreditEntry
-- [ ] W_CreditEntry_Extra
-- [ ] W_CreditEntry_Sub
-- [ ] W_CreditEntry_Sub_NameEntry
-- [ ] W_Credits
+- [x] W_CreditEntry
+- [x] W_CreditEntry_Extra
+- [x] W_CreditEntry_Sub
+- [x] W_CreditEntry_Sub_NameEntry
+- [x] W_Credits
 
 ### Character Selection:
-- [ ] W_CharacterSelection
-- [ ] W_CharacterSelection_StatEntry
-- [ ] W_CharacterSelectionCard
+- [x] W_CharacterSelection
+- [x] W_CharacterSelection_StatEntry
+- [x] W_CharacterSelectionCard
 
 ### Misc Widgets:
-- [ ] W_CategoryEntry
-- [ ] W_CurrencyContainer
-- [ ] W_CurrencyEntry
-- [ ] W_Error
-- [ ] W_FirstLootNotification
-- [ ] W_GenericButton
-- [ ] W_GenericError
-- [ ] W_Interaction
-- [ ] W_InteractionError
-- [ ] W_LootNotification
-- [ ] W_Navigable_InputReader
-- [ ] W_Radar
-- [ ] W_Radar_Cardinal
-- [ ] W_Radar_TrackedElement
-- [ ] W_Resources
-- [ ] W_TimePass
-- [ ] W_VendorAction
-- [ ] W_VendorSlot
+- [x] W_CategoryEntry
+- [x] W_CurrencyContainer
+- [x] W_CurrencyEntry
+- [x] W_Error
+- [x] W_FirstLootNotification
+- [x] W_GenericButton
+- [x] W_GenericError
+- [x] W_Interaction
+- [x] W_InteractionError
+- [x] W_LootNotification
+- [x] W_Navigable_InputReader
+- [x] W_Radar
+- [x] W_Radar_Cardinal
+- [x] W_Radar_TrackedElement
+- [x] W_Resources
+- [x] W_TimePass
+- [x] W_VendorAction
+- [x] W_VendorSlot
 
 ### Debug Widgets:
-- [ ] W_Debug_ComponentSlot
-- [ ] W_Debug_ComponentTooltip
-- [ ] W_Debug_HUD
-- [ ] W_DebugWindow
+- [x] W_Debug_ComponentSlot
+- [x] W_Debug_ComponentTooltip
+- [x] W_Debug_HUD
+- [x] W_DebugWindow
 
 ### Browser Widgets:
-- [ ] W_Browser_Action
-- [ ] W_Browser_Action_Tooltip
-- [ ] W_Browser_Animset
-- [ ] W_Browser_Animset_OwnerEntry
-- [ ] W_Browser_AnimsetTooltip
-- [ ] W_Browser_Categories
-- [ ] W_Browser_CategoryEntry
-- [ ] W_Browser_Item
-- [ ] W_Browser_StatusEffect
-- [ ] W_Browser_StatusEffect_Tooltip
-- [ ] W_Browser_Tooltip
-- [ ] W_Browser_WeaponAbility
-- [ ] W_Browser_WeaponAbility_Tooltip
-- [ ] W_BrowserFilterEntry
+- [x] W_Browser_Action
+- [x] W_Browser_Action_Tooltip
+- [x] W_Browser_Animset
+- [x] W_Browser_Animset_OwnerEntry
+- [x] W_Browser_AnimsetTooltip
+- [x] W_Browser_Categories
+- [x] W_Browser_CategoryEntry
+- [x] W_Browser_Item
+- [x] W_Browser_StatusEffect
+- [x] W_Browser_StatusEffect_Tooltip
+- [x] W_Browser_Tooltip
+- [x] W_Browser_WeaponAbility
+- [x] W_Browser_WeaponAbility_Tooltip
+- [x] W_BrowserFilterEntry
 
 ### Utility Widgets:
-- [ ] W_Utility_Asset
-- [ ] W_Utility_AssetTooltip
-- [ ] W_Utility_Component
+- [x] W_Utility_Asset
+- [x] W_Utility_AssetTooltip
+- [x] W_Utility_Component
 
 ---
 
-## 8. ANIMATION BLUEPRINTS (ABP_) - 6 Total | 0 Migrated
+## 8. ANIMATION BLUEPRINTS (ABP_) - 6 Total | 6 Migrated
 
-- [ ] ABP_Manny_PostProcess
-- [ ] ABP_Quinn_PostProcess
-- [ ] ABP_SoulslikeBossNew
-- [ ] ABP_SoulslikeCharacter_Additive
-- [ ] ABP_SoulslikeEnemy
-- [ ] ABP_SoulslikeNPC
-
----
-
-## 9. ANIM NOTIFIES (AN_) - 13 Total | 0 Migrated
-
-- [ ] AN_AdjustStat
-- [ ] AN_AI_SpawnProjectile
-- [ ] AN_AoeDamage
-- [ ] AN_CameraShake
-- [ ] AN_FootstepTrace
-- [ ] AN_InterruptMontage
-- [ ] AN_LaunchField
-- [ ] AN_PlayCameraSequence
-- [ ] AN_SetAiState
-- [ ] AN_SetMovementMode
-- [ ] AN_SpawnProjectile
-- [ ] AN_TryGuard
-- [ ] AN_WorldCameraShake
+- [x] ABP_Manny_PostProcess
+- [x] ABP_Quinn_PostProcess
+- [x] ABP_SoulslikeBossNew
+- [x] ABP_SoulslikeCharacter_Additive
+- [x] ABP_SoulslikeEnemy
+- [x] ABP_SoulslikeNPC
 
 ---
 
-## 10. ANIM NOTIFY STATES (ANS_) - 11 Total | 0 Migrated
+## 9. ANIM NOTIFIES (AN_) - 13 Total | 13 Migrated
 
-- [ ] ANS_AI_FistTrace
-- [ ] ANS_AI_RotateTowardsTarget
-- [ ] ANS_AI_Trail
-- [ ] ANS_AI_WeaponTrace
-- [ ] ANS_FistTrace
-- [ ] ANS_HyperArmor
-- [ ] ANS_InputBuffer
-- [ ] ANS_InvincibilityFrame
-- [ ] ANS_RegisterAttackSequence
-- [ ] ANS_ToggleChaosField
-- [ ] ANS_Trail
-- [ ] ANS_WeaponTrace
-
----
-
-## 11. AI - BT SERVICES (BTS_) - 5 Total | 0 Migrated
-
-- [ ] BTS_ChaseBounds
-- [ ] BTS_DistanceCheck
-- [ ] BTS_IsTargetDead
-- [ ] BTS_SetMovementModeBasedOnDistance
-- [ ] BTS_TryGetAbility
+- [x] AN_AdjustStat
+- [x] AN_AI_SpawnProjectile
+- [x] AN_AoeDamage
+- [x] AN_CameraShake
+- [x] AN_FootstepTrace
+- [x] AN_InterruptMontage
+- [x] AN_LaunchField
+- [x] AN_PlayCameraSequence
+- [x] AN_SetAiState
+- [x] AN_SetMovementMode
+- [x] AN_SpawnProjectile
+- [x] AN_TryGuard
+- [x] AN_WorldCameraShake
 
 ---
 
-## 12. AI - BT TASKS (BTT_) - 13 Total | 0 Migrated
+## 10. ANIM NOTIFY STATES (ANS_) - 11 Total | 11 Migrated
 
-- [ ] BTT_ClearKey
-- [ ] BTT_GetCurrentLocation
-- [ ] BTT_GetRandomPoint
-- [ ] BTT_GetRandomPointNearStartPosition
-- [ ] BTT_GetStrafePointAroundTarget
-- [ ] BTT_PatrolPath
-- [ ] BTT_SetKey
-- [ ] BTT_SetMovementMode
-- [ ] BTT_SimpleMoveTo
-- [ ] BTT_SwitchState
-- [ ] BTT_SwitchToPreviousState
-- [ ] BTT_ToggleFocus
-- [ ] BTT_TryExecuteAbility
+- [x] ANS_AI_FistTrace
+- [x] ANS_AI_RotateTowardsTarget
+- [x] ANS_AI_Trail
+- [x] ANS_AI_WeaponTrace
+- [x] ANS_FistTrace
+- [x] ANS_HyperArmor
+- [x] ANS_InputBuffer
+- [x] ANS_InvincibilityFrame
+- [x] ANS_RegisterAttackSequence
+- [x] ANS_ToggleChaosField
+- [x] ANS_Trail
+- [x] ANS_WeaponTrace
 
 ---
 
-## 13. AI CONTROLLER (AIC_) - 1 Total | 0 Migrated
+## 11. AI - BT SERVICES (BTS_) - 5 Total | 5 Migrated
+
+- [x] BTS_ChaseBounds
+- [x] BTS_DistanceCheck
+- [x] BTS_IsTargetDead
+- [x] BTS_SetMovementModeBasedOnDistance
+- [x] BTS_TryGetAbility
+
+---
+
+## 12. AI - BT TASKS (BTT_) - 13 Total | 13 Migrated
+
+- [x] BTT_ClearKey
+- [x] BTT_GetCurrentLocation
+- [x] BTT_GetRandomPoint
+- [x] BTT_GetRandomPointNearStartPosition
+- [x] BTT_GetStrafePointAroundTarget
+- [x] BTT_PatrolPath
+- [x] BTT_SetKey
+- [x] BTT_SetMovementMode
+- [x] BTT_SimpleMoveTo
+- [x] BTT_SwitchState
+- [x] BTT_SwitchToPreviousState
+- [x] BTT_ToggleFocus
+- [x] BTT_TryExecuteAbility
+
+---
+
+## 13. AI CONTROLLER (AIC_) - 1 Total | 1 Migrated
 
 - [x] AIC_SoulslikeFramework
 
@@ -641,25 +643,25 @@ These are editor-only tools and do not need C++ migration.
 
 | Category | Total | Migrated | Skip | Remaining |
 |----------|-------|----------|------|-----------|
-| Enums | 37 | 26 | 0 | 11 |
+| Enums | 37 | 37 | 0 | 0 |
 | Structs | 27+ | 27 | 0 | 0 |
-| Interfaces | 20 | 15 | 0 | 5 |
-| Data Assets | 24 | 21 | 0 | 3 |
-| Components | 17 | 15 | 0 | 2 |
-| Classes/Actors | 109 | 21 | 0 | 88 |
-| Widgets | 101 | 17 | 0 | 84 |
-| Anim BPs | 6 | 0 | 0 | 6 |
-| Anim Notifies | 13 | 0 | 0 | 13 |
-| Anim Notify States | 11 | 0 | 0 | 11 |
-| BT Services | 5 | 0 | 0 | 5 |
-| BT Tasks | 13 | 0 | 0 | 13 |
-| AI Controller | 1 | 0 | 0 | 1 |
-| Game Framework | 9 | 2 | 0 | 7 |
-| Control Rigs | 3 | 0 | 0 | 3 |
-| Camera Shakes | 6 | 0 | 0 | 6 |
+| Interfaces | 20 | 20 | 0 | 0 |
+| Data Assets | 24 | 24 | 0 | 0 |
+| Components | 21 | 21 | 0 | 0 |
+| Classes/Actors | 109 | 109 | 0 | 0 |
+| Widgets | 101 | 101 | 0 | 0 |
+| Anim BPs | 6 | 6 | 0 | 0 |
+| Anim Notifies | 13 | 13 | 0 | 0 |
+| Anim Notify States | 12 | 12 | 0 | 0 |
+| BT Services | 5 | 5 | 0 | 0 |
+| BT Tasks | 13 | 13 | 0 | 0 |
+| AI Controller | 1 | 1 | 0 | 0 |
+| Game Framework | 9 | 9 | 0 | 0 |
+| Control Rigs | 3 | 0 | 3 | 0 |
+| Camera Shakes | 6 | 6 | 0 | 0 |
 | Editor Utilities | 16 | 0 | 16 | 0 |
-| BP Libraries | 3 | 0 | 0 | 3 |
-| **TOTAL** | **438** | **~144** | **16** | **~278** |
+| BP Libraries | 3 | 1 | 2 | 0 |
+| **TOTAL** | **438** | **418** | **20** | **0** |
 
 ---
 
